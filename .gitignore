@@ -1,3 +1,5 @@
 # dependencies
 node_modules
 .eslintcache
+.env
+config.json
