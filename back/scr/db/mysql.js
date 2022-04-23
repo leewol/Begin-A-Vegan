@@ -8,9 +8,9 @@ const connection = mysql.createConnection({
 	user: conf.MYSQL_USERNAME,
 	password: conf.MYSQL_PASSWORDS,
 	database: conf.MYSQL_DBNAME,
+	port: conf.MYSQL_PORT,
 });
 
-connection.connect();
 
 connection.connect((err) => {
 
