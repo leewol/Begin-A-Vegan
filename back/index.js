@@ -1,10 +1,22 @@
+import cors from "cors";
+import "dotenv/config";
 import Sequelize from "sequelize";
+import modelManager from "./src/models";
+import { sysLog, sysErrorLog } from "./src/utils/logger.js";
+import { DatabaseError } from "./src/utils/errors.js";
+
 const express = require('express');
-import modelManager from "./models";
-import { sysLog, sysErrorLog } from "./utils/logger.js";
-import { DatabaseError } from "./utils/errors.js";
+const swaggerDocument = require('./src/swagger.json');
+const { swaggerUi, specs } = require('./src/modules/swagger');
 
 const app = express();
+
+app.use(cors());
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+const PORT = process.env.SERVER_PORT || 5000;
 
 class MysqlManager {
   constructor() {
@@ -41,7 +53,17 @@ app.get('/', function (req, res) {
   res.send('Hello Express');
 });
 
-app.listen(3000, () => console.log('start...'));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {explorer: true }));
+
+  // swagger 확인용
+  app.post("/check", (req, res) => {
+    console.log(req.body);
+    res.json({isStatus: 200});
+  })
+
+app.listen(PORT, () => {
+  console.log(`정상적으로 서버를 시작하였습니다. http://localhost:${PORT}`);
+});
 
 const mysqlManager = new MysqlManager()
 
