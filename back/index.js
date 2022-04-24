@@ -1,7 +1,7 @@
 import "dotenv/config";
 import cors from "cors";
 import Sequelize from "sequelize";
-import modelManager from "./src/models";
+import modelManager from "src/models";
 import { sysLog, sysErrorLog } from "./src/utils/logger.js";
 import { DatabaseError } from "./src/utils/errors.js";
 
@@ -26,11 +26,12 @@ class MysqlManager {
   async connect(config) {
     try {
       this.sequelize = new Sequelize(
-        config.database,
-        config.username,
-        config.password, {
+        config.development.host,
+        config.development.database,
+        config.development.username,
+        config.development.password, {
           dialect: "mysql",
-          port: config.host,          
+          port: config.development.host,          
           logging: false,
         },
       );
@@ -62,9 +63,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {explorer
   })
 
 app.listen(PORT, () => {
-  console.log(`정상적으로 서버를 시작하였습니다. http://localhost:${PORT}`);
+  console.log(`정상적으로 서버를 시작하였습니다. http://localhost:${PORT}`)
 });
 
-const mysqlManager = new MysqlManager()
+const mysqlManager = new MysqlManager();
 
-export default mysqlManager
+export default mysqlManager;

@@ -1,8 +1,8 @@
 import Sequelize from "sequelize";
 
-export default class users extends Sequelize.Model {
+export default class Users extends Sequelize.Model {
     static init(sequelize) {
-        const options = {}
+        const options = {};
         options.sequelize = sequelize;
         options.tableName = "users";
 
@@ -23,4 +23,4 @@ export default class users extends Sequelize.Model {
             }
         }, options);
     };
-}
+};
