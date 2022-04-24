@@ -1,5 +1,5 @@
-import cors from "cors";
 import "dotenv/config";
+import cors from "cors";
 import Sequelize from "sequelize";
 import modelManager from "./src/models";
 import { sysLog, sysErrorLog } from "./src/utils/logger.js";
