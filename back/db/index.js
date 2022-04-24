@@ -1,4 +1,5 @@
 import Sequelize from "sequelize";
+import modelManager from "./models"
 
 class MysqlManager {
   constructor() {
@@ -27,7 +28,7 @@ class MysqlManager {
         "Mysql connection has been established successfully",
       );
 
-      ModelManager.initialize(this.sequelize);
+      modelManager.initialize(this.sequelize);
     } catch (e) {
       console.log(__filename, `mysql connection failed: ${e}`);
     }

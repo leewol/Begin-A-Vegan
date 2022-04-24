@@ -2,6 +2,9 @@ import cors from "cors";
 import modelManager from "./db/models";
 import { sysLog, sysErrorLog, DatabaseError } from "./src/utils";
 import mysqlManager from "./db";
+import * as dotenv from "dotenv"
+
+dotenv.config()
 
 const express = require("express");
 const swaggerDocument = require("./src/swagger.json");

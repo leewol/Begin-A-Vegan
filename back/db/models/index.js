@@ -5,7 +5,7 @@ class ModelManager {
     const modelNames = fs.readdirSync(__dirname);
     modelNames
     .filter((modelName) => {
-      return (modelName.indesOf(".") !== 0) && (modelName !== "index.js");
+      return (modelName.indexOf(".") !== 0) && (modelName !== "index.js");
     })
     .forEach((modelName) => {
       require(`./${modelName}`).default.init(sequelize);
