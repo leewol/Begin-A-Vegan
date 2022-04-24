@@ -1,0 +1,280 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Test_API",
+    "description": "Swagger API 명세서 작성방법",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/17Team/123/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    },
+    {
+      "url": "http://localhost:5001",
+      "description": "로컬 주소"
+    }
+  ],
+  "paths": {
+    "/check": {
+      "post": {
+        "summary": "체크용",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/check_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/check_body"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/register": {
+      "post": {
+        "summary": "회원가입",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/users_register_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "summary": "로그인",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/users_login_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "summary": "마이페이지 조회",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "마이페이지 수정",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/users_user_id_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/users_user_id_body"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "check_body": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "is_vegan": {
+            "type": "boolean"
+          },
+          "reg_date": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "user_id": 0,
+          "email": "string",
+          "password": "string",
+          "nickname": "string",
+          "is_vegan": true,
+          "reg_data": "string"
+        }
+      },
+      "users_register_body": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "is_vegan": {
+            "type": "boolean"
+          },
+          "reg_date": {
+            "type": "string"
+          },
+          "user_picture": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "user_id": 0,
+          "email": "string",
+          "password": "string",
+          "nickname": "string",
+          "is_vegan": true,
+          "reg_data": "string",
+          "user_picture": "string"
+        }
+      },
+      "users_login_body": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "email": "string",
+          "password": "string"
+        }
+      },
+      "inline_response_200": {
+        "type": "object",
+        "properties": {
+          "nickname": {
+            "type": "string"
+          },
+          "is_vegan": {
+            "type": "boolean"
+          },
+          "decription": {
+            "type": "string"
+          },
+          "user_picture": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "nickname": "string",
+          "is_vegan": true,
+          "decription": "string",
+          "user_picture": "string"
+        }
+      },
+      "users_user_id_body": {
+        "type": "object",
+        "properties": {
+          "nickname": {
+            "type": "string"
+          },
+          "is_vegan": {
+            "type": "boolean"
+          },
+          "decription": {
+            "type": "string"
+          },
+          "user_picture": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "nickname": "string",
+          "is_vegan": true,
+          "decription": "string",
+          "user_picture": "string"
+        }
+      }
+    }
+  }
+}
