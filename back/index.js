@@ -1,29 +1,48 @@
-const mysql = require('mysql');
+import Sequelize from "sequelize";
 const express = require('express');
+import modelManager from "./models";
+import { sysLog, sysErrorLog } from "./utils/logger.js";
+import { DatabaseError } from "./utils/errors.js";
+
 const app = express();
 
-const conn = {
-  host: "tolgu.ctejro5fgaj9.ap-northeast-2.rds.amazonaws.com",
-  port: "3306",
-  user: "admin",
-  password: "Aa!23456",
-  database: "team17",
+class MysqlManager {
+  constructor() {
+    this.sequelize = null
+  }
+
+  async connect(config) {
+    try {
+      this.sequelize = new Sequelize(
+        config.database,
+        config.username,
+        config.password, {
+          dialect: "mysql",
+          port: config.host,          
+          logging: false,
+        },
+      );
+
+      await this.sequelize.authenticate();
+      console.log(__filename, "Mysql connection has been established successfully");
+
+      ModelManager.initialize(this.sequelize);
+    } catch(e) {
+      console.log(__filename, `mysql connection failed: ${e}`);
+    }
+  }
+
+  getTransaction() {
+    return this.sequelize.transaction()
+  }
 }
 
 app.get('/', function (req, res) {
-
-  let connection = mysql.createConnection(conn);
-  connection.connect();
-
-  const testQuery = "SELECT * FROM Drawer";
-
-  connection.query(testQuery, (error, result, field) => {
-    if (error) {
-      console.log("ERrror Execution :", error);
-    }
-    res.send(result);
-  });
-  connection.end();
+  res.send('Hello Express');
 });
 
 app.listen(3000, () => console.log('start...'));
+
+const mysqlManager = new MysqlManager()
+
+export default mysqlManager
