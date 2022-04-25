@@ -16,9 +16,9 @@
 1. 백엔드
 
 - Express
-- Mongodb, Mongoose
+- MySQL, Sequelize
 
 2. 프론트엔드
 
-- React (create-react-app)
+- Next.js
 - axios
