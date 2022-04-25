@@ -10,7 +10,6 @@
     "sourceType": "module"
   },
   "rules": {
-    "prettier/prettier": "error",
     "indent": ["error", "tab"],
     "quotes": ["warn", "double"],
     "semi": ["error", "always"],
