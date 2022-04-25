@@ -2,13 +2,16 @@ import cors from "cors";
 import modelManager from "./db/models";
 import { sysLog, sysErrorLog, DatabaseError } from "./src/utils";
 import mysqlManager from "./db";
+import * as dotenv from "dotenv";
+import express from "express";
+import swaggerDocument from "./src/swagger.json";
 
-const express = require("express");
-const swaggerDocument = require("./src/swagger.json");
 const { swaggerUi, specs } = require("./src/modules/swagger");
 const app = express();
-const PORT = 5001;
+const PORT = 5002;
 
+dotenv.config();
+console.log(process.env.DBUSERNAME);
 mysqlManager.connect();
 
 app.use(cors());

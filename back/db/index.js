@@ -1,4 +1,5 @@
 import Sequelize from "sequelize";
+import modelManager from "./models";
 
 class MysqlManager {
   constructor() {
@@ -9,15 +10,16 @@ class MysqlManager {
     try {
       this.sequelize = new Sequelize(
         process.env.DBNAME,
-        process.env.USERNAME,
-        process.env.PASSWORD, {
-            dialect: "mysql",
-            host: process.env.HOST,
-            port: process.env.PORT,
-            define: {
-                timestamps: false,
-            },
-        logging: false,
+        process.env.DBUSERNAME,
+        process.env.PASSWORD,
+        {
+          dialect: "mysql",
+          host: process.env.HOST,
+          port: process.env.PORT,
+          define: {
+            timestamps: false,
+          },
+          logging: false,
         },
       );
 
@@ -27,7 +29,7 @@ class MysqlManager {
         "Mysql connection has been established successfully",
       );
 
-      ModelManager.initialize(this.sequelize);
+      modelManager.initialize(this.sequelize);
     } catch (e) {
       console.log(__filename, `mysql connection failed: ${e}`);
     }
