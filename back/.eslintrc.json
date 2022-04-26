@@ -39,10 +39,7 @@
     "prefer-arrow-callback": ["warn"],
     "arrow-spacing": ["warn"],
     "arrow-parens": ["warn"],
-    "no-confusing-arrow": [
-      "warn",
-      { "allowParens": true, "onlyOneSimpleParam": false }
-    ],
+    "no-confusing-arrow": ["warn", { "allowParens": true, "onlyOneSimpleParam": false }],
     "no-duplicate-imports": ["error"],
     "no-case-declarations": ["warn"],
     "brace-style": ["error"],
@@ -53,7 +50,7 @@
     "space-in-parens": ["error"],
     "array-bracket-spacing": ["warn"],
     "object-curly-spacing": ["warn", "always", { "objectsInObjects": false }],
-    "max-len": ["warn", { "code": 80 }],
+    "max-len": ["warn", { "code": 100 }],
     "comma-style": ["error"],
     "comma-dangle": [
       "warn",
