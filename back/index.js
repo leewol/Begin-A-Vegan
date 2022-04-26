@@ -4,8 +4,16 @@ import { sysLog, sysErrorLog, DatabaseError } from "./src/utils";
 import mysqlManager from "./db";
 import * as dotenv from "dotenv";
 import express from "express";
+<<<<<<< Updated upstream
 import swaggerDocument from "./src/swagger.json";
 
+=======
+import postingRouter from "./src/routers/postingRouter";
+
+dotenv.config();
+
+const swaggerDocument = require("./src/swagger.json");
+>>>>>>> Stashed changes
 const { swaggerUi, specs } = require("./src/modules/swagger");
 const app = express();
 const PORT = 5002;
@@ -22,7 +30,17 @@ app.get("/", function (req, res) {
   res.send("Hello Express");
 });
 
+<<<<<<< Updated upstream
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }));
+=======
+app.use(postingRouter);
+
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, { explorer: true }),
+);
+>>>>>>> Stashed changes
 
 // swagger 확인용
 app.post("/check", (req, res) => {
