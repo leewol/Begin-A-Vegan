@@ -9,13 +9,13 @@ class MysqlManager {
   async connect() {
     try {
       this.sequelize = new Sequelize(
-        process.env.DBNAME,
-        process.env.DBUSERNAME,
-        process.env.PASSWORD,
+        process.env.DB_NAME,
+        process.env.DB_USERNAME,
+        process.env.DB_PASSWORD,
         {
           dialect: "mysql",
-          host: process.env.HOST,
-          port: process.env.PORT,
+          host: process.env.DB_HOST,
+          port: process.env.DB_PORT,
           define: {
             timestamps: false,
           },
