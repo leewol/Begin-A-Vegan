@@ -4,7 +4,7 @@
     "es2021": true,
     "node": true
   },
-  "extends": ["next/babel", "next/core-web-vitals"],
+  "extends": ["next/core-web-vitals"],
   "rules": {
     "no-unused-vars": ["warn"],
     "quotes": ["warn", "double"],
@@ -45,7 +45,7 @@
     "space-in-parens": ["error"],
     "array-bracket-spacing": ["warn"],
     "object-curly-spacing": ["warn", "always", { "objectsInObjects": false }],
-    "max-len": ["warn", { "code": 80 }],
+    "max-len": ["warn", { "code": 100 }],
     "comma-style": ["error"],
     "comma-dangle": [
       "warn",
