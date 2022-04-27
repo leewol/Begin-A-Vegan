@@ -1,23 +1,21 @@
 import cors from "cors";
+import express from "express";
 import modelManager from "./db/models";
-import { sysLog, sysErrorLog, DatabaseError } from "./src/utils/logger";
 import mysqlManager from "./db";
+import { sysLog, sysErrorLog, DatabaseError } from "./src/utils/logger";
 import * as dotenv from "dotenv";
 import swaggerDocument from "./src/swagger.json";
-import express from "express";
 import { swaggerUi, specs } from "./src/modules/swagger";
-import userAuthRouter from "./src/routers/userRouter";
 import passport from "passport";
+import passportConfig from "./passport";
 import session from "express-session";
 import cookieParser from "cookie-parser";
-import passportConfig from "./passport";
+import userAuthRouter from "./src/routers/userRouter";
+import postingRouter from "./src/routers/postingRouter";
 
 dotenv.config();
-
 passportConfig();
 
-const swaggerDocument = require("./src/swagger.json");
-const { swaggerUi, specs } = require("./src/modules/swagger");
 const app = express();
 
 const PORT = 5001;
@@ -31,10 +29,9 @@ app.use(
   session({
     saveUninitialized: false,
     resave: false,
-    secret: process.env.PASSWORD,
+    secret: process.env.DB_PASSWORD,
   }),
 );
-
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
