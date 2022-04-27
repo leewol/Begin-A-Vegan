@@ -1,42 +1,90 @@
 import express from "express";
 import Postings from "../../db/models/postings";
 import mysqlManager from "../../db";
-import { postingService } from "../services/postingService";
+import Sequelize from "sequelize";
 
 const postingRouter = express.Router();
 
-postingRouter.post("/posting/create", async function (req, res) {
+// Posting Create
+postingRouter.post("/postings/posting", async function (req, res, next) {
   try {
     const posting = {
-      postTitle: req.body.postTitle,
-      postArticle: req.body.postArticle,
-      postFile: req.body.postFile,
+      usersId: req.body.usersId,
+      title: req.body.title,
+      article: req.body.article,
+      file_url: req.body.file_url,
     };
+    Postings.create({
+      posting,
+    }).then((result) => {
+      console.log("게시글 등록 성공!");
+    });
+  } catch (error) {
+    console.log("게시글 등록 실패");
+  }
+});
 
-    const newPosting = await postingService.addPosting({ posting });
+//create한 다음에 게시판 목록 페이지로 가게 하고싶음
+postingRouter.get("/postings", async function (req, res, next) {
+  Postings.findAll().then((result) => {
+    res.render("show", {
+      postings: result,
+    });
+  });
+});
 
-    if (newPosting.errorMessage) {
-      throw new Error(newPosting.errorMessage);
-    }
-    res.status(201).json(newPosting);
+// Posting 1개 Get
+postingRouter.get("/postings/:id", async function (req, res, next) {
+  try {
+    const id = req.params.id;
+    Postings.findOne({
+      where: { id: id },
+    }).then((result) => {
+      posting: result;
+      console.log(`게시물 postingId - ${id}`);
+    });
   } catch (error) {
     console.log(error);
   }
 });
 
-postingRouter.get("/posting/:id", async function (req, res) {
+// Posting Update
+postingRouter.put("/postings/:id", async function (req, res, next) {
   try {
-    const postId = req.params.id;
-    const posting = await postingService.getPosting({ postId });
+    const id = req.params.id;
 
-    if (posting.errorMessage) {
-      throw new Error(posting.errorMessage);
-    }
-
-    res.status(200).json(posting);
+    Postings.update(
+      {
+        usersId: req.body.usersId,
+        title: req.body.title,
+        article: req.body.article,
+        file_url: req.body.file_url,
+      },
+      {
+        where: { id: id },
+      },
+    ).then((result) => {
+      console.log("게시글 수정 완료");
+      res.redirect("/postings");
+    });
   } catch (error) {
-    console.log(error);
+    console.log(`${error} - 게시글 수정 실패`);
   }
+});
+
+// Posting Delete
+postingRouter.delete("/postings/:id", function (req, res, next) {
+  const id = req.params.id;
+
+  Postings.destroy({
+    where: { id: id },
+  })
+    .then((result) => {
+      res.redirect("/postings");
+    })
+    .catch((error) => {
+      console.log("데이터 삭제 실패");
+    });
 });
 
 export default postingRouter;

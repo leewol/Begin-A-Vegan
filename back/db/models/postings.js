@@ -4,38 +4,39 @@ export default class Postings extends Sequelize.Model {
   static init(sequelize) {
     const options = {};
     options.sequelize = sequelize;
-    options.tableName = "feed_postings";
+    options.tableName = "postings";
 
     return super.init(
       {
-        postId: {
-          type: Sequelize.INTEGER,
+        id: {
+          type: Sequelize.UUID,
+          defaultValue: Sequelize.UUIDV4,
           allowNull: false,
           primaryKey: true,
-          autoIncrement: true,
         },
-        authorId: {
-          type: Sequelize.INTEGER,
+        usersId: {
+          type: Sequelize.UUID,
+          defaultValue: Sequelize.UUIDV4,
           allowNull: false,
         },
-        postTitle: {
+        title: {
           type: Sequelize.STRING(200),
           allowNull: false,
         },
-        postArticle: {
-          type: Sequelize.STRING(300),
+        article: {
+          type: Sequelize.TEXT,
           allowNull: false,
         },
-        postFile: {
+        file_url: {
           type: Sequelize.STRING(200),
           allowNull: false,
         },
-        updatedAt: {
+        createdAt: {
           type: Sequelize.DATE,
           defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
           allowNull: false,
         },
-        postDate: {
+        updatedAt: {
           type: Sequelize.DATE,
           defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
           allowNull: false,

@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 class postingService {
   static async addPosting({ postTitle, postArticle, postFile }) {
-    const postId = uuid.v4();
+    const postId = uuidv4();
 
     const newPosting = {
       id: postId,
@@ -11,6 +11,7 @@ class postingService {
       postArticle,
       postFile,
     };
+    const createdNewPosting = await Postings.create({ newPosting });
 
     createdNewPosting.errorMessage = null; // 문제없이 저장되었음으로 에러 없음
 
