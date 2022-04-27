@@ -7,49 +7,19 @@
   },
   "servers": [
     {
-      "url": "https://virtserver.swaggerhub.com/17Team/123/1.0.0",
-      "description": "SwaggerHub API Auto Mocking"
-    },
-    {
-      "url": "http://localhost:5001",
-      "description": "로컬 주소"
+      "url": "http://localhost:5001/",
+      "description": "swagger"
     }
   ],
   "paths": {
-    "/check": {
-      "post": {
-        "summary": "체크용",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/check_body"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/check_body"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/register": {
+    "/users": {
       "post": {
         "summary": "회원가입",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/users_register_body"
+                "$ref": "#/components/schemas/users_body"
               }
             }
           }
@@ -61,14 +31,14 @@
         }
       }
     },
-    "/users/login": {
+    "/login": {
       "post": {
         "summary": "로그인",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/users_login_body"
+                "$ref": "#/components/schemas/login_body"
               }
             }
           }
@@ -80,67 +50,12 @@
         }
       }
     },
-    "/users/{user_id}": {
-      "get": {
-        "summary": "마이페이지 조회",
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+    "/logout": {
+      "post": {
+        "summary": "로그아웃",
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/inline_response_200"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "summary": "마이페이지 수정",
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/users_user_id_body"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/users_user_id_body"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
@@ -237,11 +152,11 @@
   },
   "components": {
     "schemas": {
-      "check_body": {
+      "users_body": {
         "type": "object",
         "properties": {
-          "user_id": {
-            "type": "integer"
+          "id": {
+            "type": "string"
           },
           "email": {
             "type": "string"
@@ -255,55 +170,23 @@
           "is_vegan": {
             "type": "boolean"
           },
-          "reg_date": {
-            "type": "string"
-          }
-        },
-        "example": {
-          "user_id": 0,
-          "email": "string",
-          "password": "string",
-          "nickname": "string",
-          "is_vegan": true,
-          "reg_data": "string"
-        }
-      },
-      "users_register_body": {
-        "type": "object",
-        "properties": {
-          "user_id": {
-            "type": "integer"
-          },
-          "email": {
+          "profile_url": {
             "type": "string"
           },
-          "password": {
-            "type": "string"
-          },
-          "nickname": {
-            "type": "string"
-          },
-          "is_vegan": {
+          "is_deleted": {
             "type": "boolean"
-          },
-          "reg_date": {
-            "type": "string"
-          },
-          "user_picture": {
-            "type": "string"
           }
         },
         "example": {
-          "user_id": 0,
           "email": "string",
           "password": "string",
           "nickname": "string",
           "is_vegan": true,
-          "reg_data": "string",
-          "user_picture": "string"
+          "profile_url": "string",
+          "is_deleted": true
         }
       },
-      "users_login_body": {
+      "login_body": {
         "type": "object",
         "properties": {
           "email": {
