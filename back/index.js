@@ -4,8 +4,11 @@ import { sysLog, sysErrorLog, DatabaseError } from "./src/utils";
 import mysqlManager from "./db";
 import * as dotenv from "dotenv";
 import express from "express";
-import swaggerDocument from "./src/swagger.json";
+import postingRouter from "./src/routers/postingRouter";
 
+dotenv.config();
+
+const swaggerDocument = require("./src/swagger.json");
 const { swaggerUi, specs } = require("./src/modules/swagger");
 const app = express();
 const PORT = 5002;
@@ -21,6 +24,8 @@ app.use(express.urlencoded({ extended: false }));
 app.get("/", function (req, res) {
   res.send("Hello Express");
 });
+
+app.use(postingRouter);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }));
 
