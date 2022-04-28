@@ -14,12 +14,11 @@ postingRouter.post("/postings/posting", async function (req, res, next) {
       article: req.body.article,
       file_url: req.body.file_url,
     };
-    Postings.create({
-      posting,
-    }).then((result) => {
-      console.log("게시글 등록 성공!");
-    });
+    
+    const result = await Postings.create(posting)
+    res.send(result);
   } catch (error) {
+    console.log(error)
     console.log("게시글 등록 실패");
   }
 });
