@@ -1,6 +1,11 @@
 import Sequelize from "sequelize";
 
 export default class Users extends Sequelize.Model {
+  static associate(models) {
+    Users.hasMany(models.Postings, {
+      foreignKey: "users_id",
+    });
+  }
   static init(sequelize) {
     const options = {};
     options.sequelize = sequelize;
