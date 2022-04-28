@@ -1,6 +1,15 @@
 import Sequelize from "sequelize";
 
 export default class Postings extends Sequelize.Model {
+  static associate(models) {
+    Postings.belongsTo(models.Users, {
+      foreignKey: {
+        fieldName: "users_id",
+        allowNull: true,
+      },
+      targetKey: "id",
+    });
+  }
   static init(sequelize) {
     const options = {};
     options.sequelize = sequelize;
@@ -14,10 +23,13 @@ export default class Postings extends Sequelize.Model {
           allowNull: false,
           primaryKey: true,
         },
-        usersId: {
+        users_id: {
           type: Sequelize.UUID,
-          defaultValue: Sequelize.UUIDV4,
-          allowNull: false,
+          allowNull: true,
+          reference: {
+            model: "Users",
+            key: "id",
+          },
         },
         title: {
           type: Sequelize.STRING(200),
@@ -31,17 +43,17 @@ export default class Postings extends Sequelize.Model {
           type: Sequelize.STRING(200),
           allowNull: false,
         },
-        createdAt: {
+        created_at: {
           type: Sequelize.DATE,
-          defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+          defaultValue: Sequelize.fn("NOW"),
           allowNull: false,
         },
-        updatedAt: {
+        updated_at: {
           type: Sequelize.DATE,
-          defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+          defaultValue: Sequelize.fn("NOW"),
           allowNull: false,
         },
-        isDeleted: {
+        is_deleted: {
           type: Sequelize.TINYINT,
           defaultValue: 0,
           allowNull: false,
