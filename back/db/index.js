@@ -1,5 +1,6 @@
 import Sequelize from "sequelize";
 import modelManager from "./models";
+import dotenv from "dotenv";
 
 class MysqlManager {
   constructor() {
@@ -24,10 +25,7 @@ class MysqlManager {
       );
 
       await this.sequelize.authenticate();
-      console.log(
-        __filename,
-        "Mysql connection has been established successfully",
-      );
+      console.log(__filename, "Mysql connection has been established successfully");
 
       modelManager.initialize(this.sequelize);
     } catch (e) {
