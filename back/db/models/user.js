@@ -46,6 +46,10 @@ export default class Users extends Sequelize.Model {
           allowNull: false,
           defaultValue: Sequelize.fn("NOW"),
         },
+        description: {
+          type: Sequelize.STRING(100),
+          allowNull: true,
+        },
         is_deleted: {
           type: Sequelize.TINYINT,
           allowNull: true,

@@ -60,6 +60,37 @@
         }
       }
     },
+    "/user/{id}": {
+      "patch": {
+        "summary": "닉네임 변경",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_id_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/posting/create": {
       "post": {
         "summary": "게시글 작성",
@@ -199,6 +230,21 @@
         "example": {
           "email": "string",
           "password": "string"
+        }
+      },
+      "user_id_body": {
+        "type": "object",
+        "properties": {
+          "nickname": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "nickname": "string",
+          "description": "string"
         }
       },
       "inline_response_200": {

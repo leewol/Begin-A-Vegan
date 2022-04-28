@@ -7,20 +7,21 @@ import { isLoggedIn, isNotLoggedIn } from "./middlewares";
 
 const userAuthRouter = express.Router();
 
-// userAuthRouter.get('/', (req,res,next)=> {
-//   try{
-//     if(req.user){
-//     const user = await Users.findOne({
-//       where : {id : req.user.id}
-//     });
-//     res.status(200).json(user);
-//   }else{
-//     res.status(200).json(null);
-//   }
-//   }catch(error){
+// userAuthRouter.get("/", async (req, res, next) => {
+//   try {
+//     if (req.user) {
+//       const user = await Users.findOne({
+//         where: { id: req.user.id },
+//       });
+//       res.status(200).json(user);
+//     } else {
+//       res.status(200).json(null);
+//     }
+//   } catch (error) {
 //     console.error(error);
 //     next(error);
-//   }})
+//   }
+// });
 
 userAuthRouter.post("/users", isNotLoggedIn, async (req, res) => {
   const duplicate = await Users.findOne({
@@ -74,6 +75,25 @@ userAuthRouter.post("/logout", isLoggedIn, (req, res, next) => {
   req.logout();
   req.session.destroy();
   res.send("ok");
+});
+
+userAuthRouter.patch("/user/:id", isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await Users.update(
+      {
+        nickname: req.body.nickname,
+        description: req.body.description,
+      },
+      {
+        where: { id: req.user.id },
+      },
+    );
+    res.status(200).json({ nickname: req.user.nickname, description: req.user.description });
+    console.log("ok");
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 });
 
 export default userAuthRouter;
