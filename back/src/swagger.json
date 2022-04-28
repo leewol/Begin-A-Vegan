@@ -247,52 +247,6 @@
           "description": "string"
         }
       },
-      "inline_response_200": {
-        "type": "object",
-        "properties": {
-          "nickname": {
-            "type": "string"
-          },
-          "is_vegan": {
-            "type": "boolean"
-          },
-          "decription": {
-            "type": "string"
-          },
-          "user_picture": {
-            "type": "string"
-          }
-        },
-        "example": {
-          "nickname": "string",
-          "is_vegan": true,
-          "decription": "string",
-          "user_picture": "string"
-        }
-      },
-      "users_user_id_body": {
-        "type": "object",
-        "properties": {
-          "nickname": {
-            "type": "string"
-          },
-          "is_vegan": {
-            "type": "boolean"
-          },
-          "decription": {
-            "type": "string"
-          },
-          "user_picture": {
-            "type": "string"
-          }
-        },
-        "example": {
-          "nickname": "string",
-          "is_vegan": true,
-          "decription": "string",
-          "user_picture": "string"
-        }
-      },
       "posting_create_body": {
         "type": "object",
         "properties": {
