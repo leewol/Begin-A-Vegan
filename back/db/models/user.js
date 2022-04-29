@@ -1,16 +1,7 @@
 import Sequelize from "sequelize";
 
-export default class Users extends Sequelize.Model {
-  static associate(models) {
-    Users.hasMany(models.Postings, {
-      foreignKey: "users_id",
-    });
-  }
+class Users extends Sequelize.Model {
   static init(sequelize) {
-    const options = {};
-    options.sequelize = sequelize;
-    options.tableName = "users";
-
     return super.init(
       {
         id: {
@@ -56,7 +47,26 @@ export default class Users extends Sequelize.Model {
           allowNull: true,
         },
       },
-      options,
+      {
+        sequelize,
+        timestamps: false,
+        modelName: "Users",
+        tableName: "users",
+        paranoid: false,
+        charset: false,
+        charset: "utf8",
+        collate: "utf8_general_ci",
+      },
     );
   }
+  static associate(db) {
+    this.Users.hasMany(db.Postings, {
+      foreignKey: "users_id",
+      sourceKey: "id",
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    });
+  }
 }
+
+export default Users;
