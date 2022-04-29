@@ -26,7 +26,7 @@ class Users extends Sequelize.Model {
         },
         is_vegan: {
           type: Sequelize.TINYINT,
-          allowNull: true,
+          allowNull: false,
         },
         profile_url: {
           type: Sequelize.STRING(200),
