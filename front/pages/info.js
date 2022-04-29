@@ -6,7 +6,7 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { FullPage, Slide } from "react-full-page";
 
 export default function Info(props) {
-  const VegeTypes = ["INDEX", "VEGAN", "LACTO-OVO", "LACTO", "OVO", "PESCO", "POLLO", "FLEXI"];
+  const VegeTypes = ["VEGAN", "LACTO-OVO", "LACTO", "OVO", "PESCO", "POLLO", "FLEXI"];
   // 최상단 이동
   const fullPageRef = useRef();
   const dropUpPage = () => {
@@ -23,7 +23,7 @@ export default function Info(props) {
     <FullPage ref={fullPageRef} duration={50}>
       <Slide key="selecting-section" className="section">
         {VegeTypes.map((el, idx) => (
-          <div name={idx} onClick={handleSelecting}>
+          <div name={idx + 1} onClick={handleSelecting}>
             {el}
           </div>
         ))}
