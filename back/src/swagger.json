@@ -91,6 +91,25 @@
         }
       }
     },
+    "/profile": {
+      "post": {
+        "summary": "프로필 업로드",
+        "requestBody": {
+          "content": {
+            "application/octet-stream": {
+              "schema": {
+                "$ref": "#/components/schemas/profile_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/posting/create": {
       "post": {
         "summary": "게시글 작성",
@@ -245,6 +264,14 @@
         "example": {
           "nickname": "string",
           "description": "string"
+        }
+      },
+      "profile_body": {
+        "properties": {
+          "profile_url": {
+            "type": "string",
+            "format": "binary"
+          }
         }
       },
       "posting_create_body": {

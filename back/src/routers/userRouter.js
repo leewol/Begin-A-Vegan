@@ -3,6 +3,8 @@ import mysqlManager from "../../db";
 import Users from "../../db/models/user";
 import bcrypt from "bcrypt";
 import passport from "passport";
+import path from "path";
+import multer from "multer";
 import { isLoggedIn, isNotLoggedIn } from "./middlewares";
 
 const userAuthRouter = express.Router();
@@ -38,7 +40,7 @@ userAuthRouter.post("/users", isNotLoggedIn, async (req, res) => {
     email: req.body.email,
     password: hashedPassword,
     nickname: req.body.nickname,
-    is_Vegan: req.body.is_vegan,
+    is_vegan: req.body.is_vegan,
     profile_url: req.body.profile_url,
   };
 
@@ -65,7 +67,7 @@ userAuthRouter.post("/login", isNotLoggedIn, (req, res, next) => {
         console.error(loginErr);
         return next(loginErr);
       }
-      console.log("ok");
+      console.log("OK");
       return res.json(Users);
     });
   })(req, res, next);
@@ -89,11 +91,37 @@ userAuthRouter.patch("/user/:id", isLoggedIn, async (req, res, next) => {
       },
     );
     res.status(200).json({ nickname: req.user.nickname, description: req.user.description });
-    console.log("ok");
+    console.log("OK");
   } catch (error) {
     console.error(error);
     next(error);
   }
 });
+
+const upload = multer({
+  // 저장 위치 diskStorage = 하드디스크
+  storage: multer.diskStorage({
+    destination(req, file, cb) {
+      cb(null, "uploads"); // 저장할 폴더 지정
+    },
+    filename(req, file, cb) {
+      const ext = file.originalname.substr(file.originalname.lastIndexOf(".")); // 중복피하기위한 확장자 추출 ex(.png)
+      cb(null, file.fieldname + "-" + Date.now() + ext); //파일명 저장 이름 + 날짜 + 확장자
+    },
+  }),
+
+  limits: { fileSize: 20 * 1024 * 1024 }, // 크기 지정
+});
+
+// 폼마다 형식이 다르기 떄문에 라우터마다 별도의 세팅 필요
+// storage 옵션만 s3로 바꾸면 멀터가 알아서 스토리지로 올려줌
+userAuthRouter.post("/profile", upload.single("image"), isLoggedIn, async (req, res, 봐) => {
+  console.log("OK");
+  console.log(req.file);
+  // res.json(req.file.map((v) => v.filename));
+  // res.json(req.file);
+  console.log("OK");
+});
+//upload array = 여러장 / single = 한장
 
 export default userAuthRouter;

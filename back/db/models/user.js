@@ -30,11 +30,11 @@ export default class Users extends Sequelize.Model {
         },
         is_vegan: {
           type: Sequelize.TINYINT,
-          allowNull: true,
+          allowNull: false,
         },
         profile_url: {
           type: Sequelize.STRING(200),
-          allowNull: false,
+          allowNull: true,
         },
         created_at: {
           type: Sequelize.DATE,
@@ -43,7 +43,7 @@ export default class Users extends Sequelize.Model {
         },
         updated_at: {
           type: Sequelize.DATE,
-          allowNull: false,
+          allowNull: true,
           defaultValue: Sequelize.fn("NOW"),
         },
         description: {
