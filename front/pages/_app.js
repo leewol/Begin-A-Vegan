@@ -3,6 +3,7 @@
 // 모든 컴포넌트에 공통으로 적용할 속성 관리
 
 import "../styles/globals.css";
+import "../styles/infoStyles.css";
 
 function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />;
