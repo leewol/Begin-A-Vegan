@@ -4,6 +4,8 @@
 
 import "../styles/globals.css";
 import "../styles/infoStyles.css";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+// config.autoAddCss = false;
 
 function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />;
