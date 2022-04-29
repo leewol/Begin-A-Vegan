@@ -1,11 +1,7 @@
 import Sequelize from "sequelize";
 
-export default class Users extends Sequelize.Model {
+class Users extends Sequelize.Model {
   static init(sequelize) {
-    const options = {};
-    options.sequelize = sequelize;
-    options.tableName = "users";
-
     return super.init(
       {
         id: {
@@ -30,11 +26,11 @@ export default class Users extends Sequelize.Model {
         },
         is_vegan: {
           type: Sequelize.TINYINT,
-          allowNull: false,
+          allowNull: true,
         },
         profile_url: {
           type: Sequelize.STRING(200),
-          allowNull: true,
+          allowNull: false,
         },
         created_at: {
           type: Sequelize.DATE,
@@ -43,19 +39,34 @@ export default class Users extends Sequelize.Model {
         },
         updated_at: {
           type: Sequelize.DATE,
-          allowNull: true,
+          allowNull: false,
           defaultValue: Sequelize.fn("NOW"),
-        },
-        description: {
-          type: Sequelize.STRING(100),
-          allowNull: true,
         },
         is_deleted: {
           type: Sequelize.TINYINT,
           allowNull: true,
         },
       },
-      options,
+      {
+        sequelize,
+        timestamps: false,
+        modelName: "Users",
+        tableName: "users",
+        paranoid: false,
+        charset: false,
+        charset: "utf8",
+        collate: "utf8_general_ci",
+      },
     );
   }
+  static associate(db) {
+    this.Users.hasMany(db.Postings, {
+      foreignKey: "users_id",
+      sourceKey: "id",
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    });
+  }
 }
+
+export default Users;

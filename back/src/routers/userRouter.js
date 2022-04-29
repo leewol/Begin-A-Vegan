@@ -5,27 +5,12 @@ import bcrypt from "bcrypt";
 import passport from "passport";
 import path from "path";
 import multer from "multer";
-import { isLoggedIn, isNotLoggedIn } from "./middlewares";
+import { isLoggedIn, isNotLoggedIn } from "../middlewares/Authenticate";
+import { login_required } from "../middlewares/login_required";
 
 const userAuthRouter = express.Router();
 
-// userAuthRouter.get("/", async (req, res, next) => {
-//   try {
-//     if (req.user) {
-//       const user = await Users.findOne({
-//         where: { id: req.user.id },
-//       });
-//       res.status(200).json(user);
-//     } else {
-//       res.status(200).json(null);
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     next(error);
-//   }
-// });
-
-userAuthRouter.post("/users", isNotLoggedIn, async (req, res) => {
+userAuthRouter.post("/users", async (req, res) => {
   const duplicate = await Users.findOne({
     where: {
       email: req.body.email,
@@ -53,7 +38,7 @@ userAuthRouter.post("/users", isNotLoggedIn, async (req, res) => {
     });
 });
 
-userAuthRouter.post("/login", isNotLoggedIn, (req, res, next) => {
+userAuthRouter.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, Users, info) => {
     if (err) {
       console.error(err);
@@ -73,13 +58,13 @@ userAuthRouter.post("/login", isNotLoggedIn, (req, res, next) => {
   })(req, res, next);
 });
 
-userAuthRouter.post("/logout", isLoggedIn, (req, res, next) => {
+userAuthRouter.post("/logout", (req, res, next) => {
   req.logout();
   req.session.destroy();
   res.send("ok");
 });
 
-userAuthRouter.patch("/user/:id", isLoggedIn, async (req, res, next) => {
+userAuthRouter.patch("/user/:id", async (req, res, next) => {
   try {
     const user = await Users.update(
       {
@@ -109,18 +94,14 @@ const upload = multer({
       cb(null, file.fieldname + "-" + Date.now() + ext); //파일명 저장 이름 + 날짜 + 확장자
     },
   }),
-
   limits: { fileSize: 20 * 1024 * 1024 }, // 크기 지정
 });
 
 // 폼마다 형식이 다르기 떄문에 라우터마다 별도의 세팅 필요
 // storage 옵션만 s3로 바꾸면 멀터가 알아서 스토리지로 올려줌
-userAuthRouter.post("/profile", upload.single("image"), isLoggedIn, async (req, res, 봐) => {
-  console.log("OK");
+userAuthRouter.post("/profile", upload.single("image"), async (req, res, 봐) => {
   console.log(req.file);
-  // res.json(req.file.map((v) => v.filename));
-  // res.json(req.file);
-  console.log("OK");
+  res.json(req.file);
 });
 //upload array = 여러장 / single = 한장
 

@@ -29,7 +29,6 @@ module.exports = () => {
           }
           return done(null, false, { message: "틀린 비밀번호" });
         } catch (error) {
-          console.error(error);
           return done(error);
         }
       },
