@@ -1,0 +1,294 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Test_API",
+    "description": "Swagger API 명세서 작성방법",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5001/",
+      "description": "swagger"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "summary": "회원가입",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/users_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "로그인",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/login_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "summary": "로그아웃",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/posting/create": {
+      "post": {
+        "summary": "게시글 작성",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/posting_create_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/postings_postId_body"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posting/{postId}": {
+      "get": {
+        "summary": "작성한 게시글 조회",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "description": "The Id of the user to return",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/posting_body"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "게시글 수정",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "description": "The Id of the user to return",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/postings_postId_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/postings_postId_body"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "users_body": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "is_vegan": {
+            "type": "boolean"
+          },
+          "profile_url": {
+            "type": "string"
+          },
+          "is_deleted": {
+            "type": "boolean"
+          }
+        },
+        "example": {
+          "email": "string",
+          "password": "string",
+          "nickname": "string",
+          "is_vegan": true,
+          "profile_url": "string",
+          "is_deleted": true
+        }
+      },
+      "login_body": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "email": "string",
+          "password": "string"
+        }
+      },
+      "inline_response_200": {
+        "type": "object",
+        "properties": {
+          "nickname": {
+            "type": "string"
+          },
+          "is_vegan": {
+            "type": "boolean"
+          },
+          "decription": {
+            "type": "string"
+          },
+          "user_picture": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "nickname": "string",
+          "is_vegan": true,
+          "decription": "string",
+          "user_picture": "string"
+        }
+      },
+      "users_user_id_body": {
+        "type": "object",
+        "properties": {
+          "nickname": {
+            "type": "string"
+          },
+          "is_vegan": {
+            "type": "boolean"
+          },
+          "decription": {
+            "type": "string"
+          },
+          "user_picture": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "nickname": "string",
+          "is_vegan": true,
+          "decription": "string",
+          "user_picture": "string"
+        }
+      },
+      "posting_create_body": {
+        "type": "object",
+        "properties": {
+          "postTitle": {
+            "type": "string"
+          },
+          "postArticle": {
+            "type": "string"
+          },
+          "postFile": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "postTitle": "string",
+          "postArticle": "string",
+          "postFile": "string"
+        }
+      },
+      "postings_postId_body": {
+        "type": "object",
+        "properties": {
+          "postId": {
+            "type": "integer"
+          },
+          "postTitle": {
+            "type": "string"
+          },
+          "postArticle": {
+            "type": "string"
+          },
+          "postFile": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "postId": "integer",
+          "postTitle": "string",
+          "postArticle": "string",
+          "postFile": "string"
+        }
+      }
+    }
+  }
+}
