@@ -9,7 +9,7 @@ const postingRouter = express.Router();
 postingRouter.post("/postings/posting", async (req, res, next) => {
   try {
     const posting = {
-      usersId: req.body.usersId,
+      users_id: req.body.users_id,
       title: req.body.title,
       article: req.body.article,
       file_url: req.body.file_url,
