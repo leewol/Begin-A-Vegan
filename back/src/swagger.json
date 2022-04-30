@@ -220,9 +220,6 @@
           "is_vegan": {
             "type": "boolean"
           },
-          "profile_url": {
-            "type": "string"
-          },
           "is_deleted": {
             "type": "boolean"
           }
@@ -232,7 +229,6 @@
           "password": "string",
           "nickname": "string",
           "is_vegan": true,
-          "profile_url": "default",
           "is_deleted": true
         }
       },
@@ -271,9 +267,6 @@
           "image": {
             "type": "string",
             "format": "binary"
-          },
-          "example": {
-            "image": "image"
           }
         }
       },
