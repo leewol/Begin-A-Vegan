@@ -34,8 +34,9 @@
     "@babel/node": "^7.16.8",
     "@babel/preset-env": "^7.16.11",
     "babel-cli": "^6.26.0",
-    "eslint": "^8.13.0",
+    "eslint": "^8.14.0",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "nodemon": "^2.0.15",
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.3.0"
