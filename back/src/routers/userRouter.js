@@ -3,10 +3,8 @@ import mysqlManager from "../../db";
 import Users from "../../db/models/user";
 import bcrypt from "bcrypt";
 import passport from "passport";
-import path from "path";
 import multer from "multer";
 import { isLoggedIn, isNotLoggedIn } from "../middlewares/Authenticate";
-import { login_required } from "../middlewares/login_required";
 
 const userAuthRouter = express.Router();
 
@@ -90,7 +88,7 @@ const upload = multer({
       cb(null, "uploads"); // 저장할 폴더 지정
     },
     filename(req, file, cb) {
-      const ext = file.originalname.substr(file.originalname.lastIndexOf(".")); // 중복피하기위한 확장자 추출 ex(.png)
+      const ext = file.originalname.substring(file.originalname.lastIndexOf(".")); // 중복피하기위한 확장자 추출 ex(.png)
       cb(null, file.fieldname + "-" + Date.now() + ext); //파일명 저장 이름 + 날짜 + 확장자
     },
   }),
@@ -99,7 +97,7 @@ const upload = multer({
 
 // 폼마다 형식이 다르기 떄문에 라우터마다 별도의 세팅 필요
 // storage 옵션만 s3로 바꾸면 멀터가 알아서 스토리지로 올려줌
-userAuthRouter.post("/profile", upload.single("image"), async (req, res, 봐) => {
+userAuthRouter.post("/profile", upload.single("image"), async (req, res) => {
   console.log(req.file);
   res.json(req.file);
 });

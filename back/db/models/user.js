@@ -30,7 +30,7 @@ class Users extends Sequelize.Model {
         },
         profile_url: {
           type: Sequelize.STRING(200),
-          allowNull: false,
+          allowNull: true,
         },
         created_at: {
           type: Sequelize.DATE,
