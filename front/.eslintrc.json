@@ -5,7 +5,7 @@
     "node": true
   },
   "extends": ["plugin:react/recommended", "next/core-web-vitals"],
-  "plugins": ["import", "react-hooks"],
+  "plugins": ["import"],
   "rules": {
     "no-unused-vars": ["warn"],
     "quotes": ["warn", "double"],
