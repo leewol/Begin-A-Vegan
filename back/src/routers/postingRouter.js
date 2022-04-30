@@ -6,32 +6,31 @@ import Sequelize from "sequelize";
 const postingRouter = express.Router();
 
 // Posting Create
-postingRouter.post("/postings/posting", async function (req, res, next) {
+postingRouter.post("/postings/posting", async (req, res, next) => {
   try {
     const posting = {
-      usersId: req.body.usersId,
+      users_id: req.body.users_id,
       title: req.body.title,
       article: req.body.article,
       file_url: req.body.file_url,
     };
-    Postings.create({
-      posting,
-    }).then((result) => {
-      console.log("게시글 등록 성공!");
-    });
+
+    const result = await Postings.create(posting);
+    res.send(result);
   } catch (error) {
+    console.log(error);
     console.log("게시글 등록 실패");
   }
 });
 
 //create한 다음에 게시판 목록 페이지로 가게 하고싶음
-postingRouter.get("/postings", async function (req, res, next) {
-  Postings.findAll().then((result) => {
-    res.render("show", {
-      postings: result,
-    });
-  });
-});
+// postingRouter.get("/postings", async function (req, res, next) {
+//   Postings.findAll().then((result) => {
+//     res.render("show", {
+//       postings: result,
+//     });
+//   });
+// });
 
 // Posting 1개 Get
 postingRouter.get("/postings/:id", async function (req, res, next) {
@@ -41,10 +40,10 @@ postingRouter.get("/postings/:id", async function (req, res, next) {
       where: { id: id },
     }).then((result) => {
       posting: result;
-      console.log(`게시물 postingId - ${id}`);
+      res.status(200).json(result);
     });
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 
@@ -55,7 +54,7 @@ postingRouter.put("/postings/:id", async function (req, res, next) {
 
     Postings.update(
       {
-        usersId: req.body.usersId,
+        users_id: req.body.users_id,
         title: req.body.title,
         article: req.body.article,
         file_url: req.body.file_url,
@@ -68,7 +67,7 @@ postingRouter.put("/postings/:id", async function (req, res, next) {
       res.redirect("/postings");
     });
   } catch (error) {
-    console.log(`${error} - 게시글 수정 실패`);
+    next(error);
   }
 });
 
@@ -83,7 +82,7 @@ postingRouter.delete("/postings/:id", function (req, res, next) {
       res.redirect("/postings");
     })
     .catch((error) => {
-      console.log("데이터 삭제 실패");
+      next(error);
     });
 });
 
