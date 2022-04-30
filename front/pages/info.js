@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import Image from "next/image";
 
 import styled from "styled-components";
 import { FullPage, Slide } from "react-full-page";
@@ -36,8 +37,7 @@ const InfoIndexSelecting = styled.div`
 `;
 
 const VegeTypesBox = styled.div`
-  padding: 0 20%;
-  width: 100%;
+  width: 500px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -75,14 +75,38 @@ const IconsBox = styled.div`
 const ContentSlide = styled.div`
   width: 80%;
   display: flex;
-  /* flex-direction: column; */
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  padding-right: 100px;
+`;
+
+const ContentText = styled.div`
+  margin-left: 50px;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+  // align-items: center;
+  height: 500px;
+  width: 480px;
+  p {
+    margin-top: 50px;
+  }
 `;
 
 // TODO : Nav 부분 완성 시 추가
 export default function Info() {
   const VegeTypes = ["VEGAN", "LACTO-OVO", "LACTO", "OVO", "PESCO", "POLLO", "FLEXITARIAN"];
+  const VegeTypesKor = ["비건", "락토오보", "락토", "오보", "페스코", "폴로", "플렉시테리언"];
+  const VegeTypesText = [
+    "비건 정보",
+    "락토오보 정보",
+    "락토 정보",
+    "오보 정보",
+    "페스코 정보",
+    "폴로 정보",
+    "플렉시테리언 정보",
+  ];
+
   // 최상단 이동
   const fullPageRef = useRef();
   const dropUpPage = () => {
@@ -105,17 +129,22 @@ export default function Info() {
           </h1>
           <p>
             세계채식연맹(IVU)에서는 채식주의자를{" "}
-            <b>육지동물은 물론 바다나 강에 사는 물고기도 먹지 않는 사람</b>이라고 정의한다. 단,
-            우유나 계란은 취향대로 섭취할 수 있고 안 할 수도 있다.
+            <b>육지동물은 물론 바다나 강에 사는 물고기도 먹지 않는 사람</b>이라고 정의합니다. 단,
+            우유나 계란은 취향대로 섭취할 수도 있고 하지 않을 수도 있습니다.
           </p>
           <p>
-            채식의 종류는 육류, 가금류, 생선(해산물), 달걀(알), 우유 및 유제품을 섭취하는지를
-            기준으로 구분한다.
+            따라서, 채식의 종류는 육류, 가금류, 생선(해산물), 달걀(알), 우유 및 유제품을
+            섭취하는지를 기준으로 구분합니다.
+          </p>
+          <p>
+            채식 식단은 환경 보호뿐만 아니라 동물의 고통을 줄이고, 개인의 건강을 지키는 데도 도움을
+            줍니다. 하지만 콩, 두부, 콩고기, 밀고기 등으로 양질의 단백질을 채워 주지 않거나 당류
+            중심으로 섭취를 한다면 오히려 건강상 다양한 문제가 발생할 수 있어 주의해야 합니다.
           </p>
         </InfoIndexText>
         <InfoIndexSelecting>
           {VegeTypes.map((el, idx) => (
-            <VegeTypesBox name={idx + 1} onClick={handleSelecting}>
+            <VegeTypesBox key={el} name={idx + 1} onClick={handleSelecting}>
               {el}
               <IconsBox>
                 <FontAwesomeIcon className={`food-icon ${el}`} icon={faCarrot} />
@@ -130,12 +159,18 @@ export default function Info() {
         </InfoIndexSelecting>
       </Slide>
 
-      {VegeTypes.map((el) => (
+      {VegeTypes.map((el, idx) => (
         <Slide key={el} className="section">
           <ContentSlide>
-            <div>{el}</div>
-            <KeyboardDoubleArrowUpIcon onClick={dropUpPage} className="arrow-drop-up-icon" />
+            <Image src={`/../public/img/${el}.jpg`} width={700} height={500} />
+            <ContentText>
+              <h1>
+                {VegeTypesKor[idx]} ({el})
+              </h1>
+              <p>&nbsp;{VegeTypesText[idx]}</p>
+            </ContentText>
           </ContentSlide>
+          <KeyboardDoubleArrowUpIcon onClick={dropUpPage} className="arrow-drop-up-icon" />
         </Slide>
       ))}
     </FullPage>
