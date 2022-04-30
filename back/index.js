@@ -44,6 +44,8 @@ app.use(postingRouter);
 
 app.use(userAuthRouter);
 
+app.use("/uploads", express.static("uploads"));
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }));
 
 app.listen(PORT, () => {
