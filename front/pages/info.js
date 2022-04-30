@@ -5,13 +5,15 @@ import styled from "styled-components";
 import { FullPage, Slide } from "react-full-page";
 import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLeaf } from "@fortawesome/free-solid-svg-icons";
-import { faCarrot } from "@fortawesome/free-solid-svg-icons";
-import { faBacon } from "@fortawesome/free-solid-svg-icons";
-import { faDrumstickBite } from "@fortawesome/free-solid-svg-icons";
-import { faFish } from "@fortawesome/free-solid-svg-icons";
-import { faEgg } from "@fortawesome/free-solid-svg-icons";
-import { faGlassWater } from "@fortawesome/free-solid-svg-icons";
+import {
+  faLeaf,
+  faCarrot,
+  faBacon,
+  faDrumstickBite,
+  faFish,
+  faEgg,
+  faGlassWater,
+} from "@fortawesome/free-solid-svg-icons";
 
 const InfoIndexText = styled.div`
   width: 25%;
@@ -162,7 +164,7 @@ export default function Info() {
       {VegeTypes.map((el, idx) => (
         <Slide key={el} className="section">
           <ContentSlide>
-            <Image src={`/../public/img/${el}.jpg`} width={700} height={500} />
+            <Image alt={`vegan-type-${el}`} src={`/img/${el}.jpg`} width={700} height={500} />
             <ContentText>
               <h1>
                 {VegeTypesKor[idx]} ({el})
