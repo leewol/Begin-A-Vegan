@@ -4,7 +4,8 @@
     "es2021": true,
     "node": true
   },
-  "extends": ["next/core-web-vitals"],
+  "extends": ["plugin:react/recommended", "next/core-web-vitals"],
+  "plugins": ["import", "react-hooks"],
   "rules": {
     "no-unused-vars": ["warn"],
     "quotes": ["warn", "double"],
@@ -34,7 +35,7 @@
     "prefer-arrow-callback": ["warn"],
     "arrow-spacing": ["warn"],
     "arrow-parens": ["warn", "as-needed"],
-    "no-confusing-arrow": ["warn", { "onlyOneSimpleParam": false }],
+    "no-confusing-arrow": ["warn", { "allowParens": true, "onlyOneSimpleParam": false }],
     "no-duplicate-imports": ["error"],
     "no-case-declarations": ["warn"],
     "brace-style": ["error"],
