@@ -37,7 +37,7 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get("/", function (req, res) {
+app.get("/", (req, res) => {
   res.send("Hello Express");
 });
 
