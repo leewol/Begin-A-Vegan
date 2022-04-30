@@ -35,7 +35,7 @@
     "prefer-arrow-callback": ["warn"],
     "arrow-spacing": ["warn"],
     "arrow-parens": ["warn", "as-needed"],
-    "no-confusing-arrow": ["warn", { "onlyOneSimpleParam": false }],
+    "no-confusing-arrow": ["warn", { "allowParens": true, "onlyOneSimpleParam": false }],
     "no-duplicate-imports": ["error"],
     "no-case-declarations": ["warn"],
     "brace-style": ["error"],
