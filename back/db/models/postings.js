@@ -12,7 +12,7 @@ class Postings extends Sequelize.Model {
         },
         users_id: {
           type: Sequelize.UUID,
-          allowNull: true,
+          allowNull: false,
           references: {
             model: "Users",
             key: "id",
