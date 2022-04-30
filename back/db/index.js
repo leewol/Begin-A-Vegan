@@ -20,7 +20,7 @@ class MysqlManager {
           define: {
             timestamps: false,
           },
-          logging: false,
+          logging: true,
         },
       );
 

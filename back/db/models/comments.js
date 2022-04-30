@@ -1,78 +1,78 @@
 import Sequelize from "sequelize";
 
-class Users extends Sequelize.Model {
+class Comments extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
         id: {
-          type: Sequelize.STRING(32),
+          type: Sequelize.UUID,
           defaultValue: Sequelize.UUIDV4,
           allowNull: false,
           primaryKey: true,
-          autoIncrement: true,
         },
-        email: {
-          type: Sequelize.STRING(200),
+        postings_id: {
+          type: Sequelize.UUID,
           allowNull: false,
-          unique: true,
+          references: {
+            model: "Postings",
+            key: "id",
+          },
         },
-        password: {
-          type: Sequelize.STRING(200),
-          allowNull: false,
-        },
-        nickname: {
-          type: Sequelize.STRING(50),
-          allowNull: false,
-        },
-        is_vegan: {
-          type: Sequelize.TINYINT,
-          allowNull: false,
-        },
-        profile_url: {
-          type: Sequelize.STRING(200),
+        users_id: {
+          type: Sequelize.STRING(32),
+          defaultValue: Sequelize.UUIDV4,
           allowNull: true,
+          references: {
+            model: "Users",
+            key: "id",
+          },
+        },
+        content: {
+          type: Sequelize.TEXT,
+          allowNull: false,
         },
         created_at: {
           type: Sequelize.DATE,
-          allowNull: false,
           defaultValue: Sequelize.fn("NOW"),
+          allowNull: false,
         },
         updated_at: {
           type: Sequelize.DATE,
-          allowNull: false,
           defaultValue: Sequelize.fn("NOW"),
+          allowNull: false,
         },
         is_deleted: {
           type: Sequelize.TINYINT,
-          allowNull: true,
+          defaultValue: 0,
+          allowNull: false,
         },
       },
       {
         sequelize,
         timestamps: false,
-        modelName: "Users",
-        tableName: "users",
+        underscore: false,
+        modelName: "Comments",
+        tableName: "comments",
         paranoid: false,
-        charset: false,
         charset: "utf8",
         collate: "utf8_general_ci",
       },
     );
   }
   static associate(db) {
-    this.Users.hasMany(db.Postings, {
+    this.Comments.belongsTo(db.Users, {
       foreignKey: "users_id",
-      sourceKey: "id",
+      targetkey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    this.Users.hasMany(db.Comments, {
-      foreignKey: "users_id",
-      sourceKey: "id",
+    this.Comments.belongsTo(db.Postings, {
+      foreignKey: "postings_id",
+      targetkey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
   }
 }
 
-export default Users;
+export default Comments;
