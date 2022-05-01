@@ -5,6 +5,7 @@
 import "../styles/globals.css";
 import "../styles/infoStyles.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import "react-quill/dist/quill.snow.css";
 // config.autoAddCss = false;
 
 function MyApp({ Component, pageProps }) {

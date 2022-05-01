@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 import * as Api from "../lib/api";
+import PostCreator from "../components/PostCreator";
 
 // TODO : 게시글 피드 형태로 보여 주기
 // * 상태 : 작성 가능한지, 편집 중인지
@@ -13,5 +14,9 @@ export default function Posting() {
   //   });
   // }, []);
 
-  return <div></div>;
+  return (
+    <div>
+      <PostCreator />
+    </div>
+  );
 }
