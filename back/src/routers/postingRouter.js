@@ -7,19 +7,20 @@ const postingRouter = express.Router();
 
 // Posting Create
 postingRouter.post("/postings/posting", async (req, res, next) => {
-  const posting = {
-    users_id: req.body.users_id,
-    title: req.body.title,
-    article: req.body.article,
-    file_url: req.body.file_url,
-  };
-  await Postings.create(posting)
-    .then((result) => {
-      res.status(201).json(result);
-    })
-    .catch((error) => {
-      next(error);
-    });
+  try {
+    const posting = {
+      users_id: req.body.users_id,
+      title: req.body.title,
+      article: req.body.article,
+      file_url: req.body.file_url,
+    };
+
+    const result = await Postings.create(posting);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+    console.log("게시글 등록 실패");
+  }
 });
 
 //create한 다음에 게시판 목록 페이지로 가게 하고싶음

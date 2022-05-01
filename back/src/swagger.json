@@ -60,6 +60,56 @@
         }
       }
     },
+    "/user/{id}": {
+      "patch": {
+        "summary": "닉네임 변경",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_id_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/profile": {
+      "post": {
+        "summary": "프로필 업로드",
+        "requestBody": {
+          "content": {
+            "application/octet-stream": {
+              "schema": {
+                "$ref": "#/components/schemas/profile_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/posting/create": {
       "post": {
         "summary": "게시글 작성",
@@ -170,9 +220,6 @@
           "is_vegan": {
             "type": "boolean"
           },
-          "profile_url": {
-            "type": "string"
-          },
           "is_deleted": {
             "type": "boolean"
           }
@@ -182,7 +229,6 @@
           "password": "string",
           "nickname": "string",
           "is_vegan": true,
-          "profile_url": "string",
           "is_deleted": true
         }
       },
@@ -201,50 +247,27 @@
           "password": "string"
         }
       },
-      "inline_response_200": {
+      "user_id_body": {
         "type": "object",
         "properties": {
           "nickname": {
             "type": "string"
           },
-          "is_vegan": {
-            "type": "boolean"
-          },
-          "decription": {
-            "type": "string"
-          },
-          "user_picture": {
+          "description": {
             "type": "string"
           }
         },
         "example": {
           "nickname": "string",
-          "is_vegan": true,
-          "decription": "string",
-          "user_picture": "string"
+          "description": "string"
         }
       },
-      "users_user_id_body": {
-        "type": "object",
+      "profile_body": {
         "properties": {
-          "nickname": {
-            "type": "string"
-          },
-          "is_vegan": {
-            "type": "boolean"
-          },
-          "decription": {
-            "type": "string"
-          },
-          "user_picture": {
-            "type": "string"
+          "image": {
+            "type": "string",
+            "format": "binary"
           }
-        },
-        "example": {
-          "nickname": "string",
-          "is_vegan": true,
-          "decription": "string",
-          "user_picture": "string"
         }
       },
       "posting_create_body": {

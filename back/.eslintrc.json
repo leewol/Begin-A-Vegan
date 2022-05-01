@@ -10,8 +10,7 @@
     "sourceType": "module"
   },
   "rules": {
-    "prettier/prettier": "none",
-    "indent": ["error", "tab"],
+    "no-unused-vars": ["warn"],
     "quotes": ["warn", "double"],
     "semi": ["error", "always"],
     "prefer-const": [
@@ -47,7 +46,7 @@
     "keyword-spacing": ["warn"],
     "newline-per-chained-call": ["warn", { "ignoreChainWithDepth": 2 }],
     "no-whitespace-before-property": ["warn"],
-    "padded-blocks": ["warn"],
+    "padded-blocks": ["warn", "never"],
     "space-in-parens": ["error"],
     "array-bracket-spacing": ["warn"],
     "object-curly-spacing": ["warn", "always", { "objectsInObjects": false }],

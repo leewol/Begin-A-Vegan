@@ -1,20 +1,7 @@
 import Sequelize from "sequelize";
 
-export default class Postings extends Sequelize.Model {
-  static associate(models) {
-    Postings.belongsTo(models.Users, {
-      foreignKey: {
-        fieldName: "users_id",
-        allowNull: true,
-      },
-      targetKey: "id",
-    });
-  }
+class Postings extends Sequelize.Model {
   static init(sequelize) {
-    const options = {};
-    options.sequelize = sequelize;
-    options.tableName = "postings";
-
     return super.init(
       {
         id: {
@@ -25,8 +12,8 @@ export default class Postings extends Sequelize.Model {
         },
         users_id: {
           type: Sequelize.UUID,
-          allowNull: true,
-          reference: {
+          allowNull: false,
+          references: {
             model: "Users",
             key: "id",
           },
@@ -59,7 +46,26 @@ export default class Postings extends Sequelize.Model {
           allowNull: false,
         },
       },
-      options,
+      {
+        sequelize,
+        timestamps: false,
+        underscore: false,
+        modelName: "Postings",
+        tableName: "postings",
+        paranoid: false,
+        charset: "utf8",
+        collate: "utf8_general_ci",
+      },
     );
   }
+  static associate(db) {
+    this.Postings.belongsTo(db.Users, {
+      foreignKey: "users_id",
+      targetkey: "id",
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    });
+  }
 }
+
+export default Postings;
