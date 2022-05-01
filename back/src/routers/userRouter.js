@@ -5,7 +5,10 @@ import bcrypt from "bcrypt";
 import passport from "passport";
 import multer from "multer";
 import { isLoggedIn, isNotLoggedIn } from "../middlewares/Authenticate";
-
+import jwt from "jsonwebtoken";
+import { auth } from "../middlewares/login_required";
+import dotenv from "dotenv";
+import { cookie } from "express/lib/response";
 const userAuthRouter = express.Router();
 
 userAuthRouter.post("/users", async (req, res) => {
@@ -51,6 +54,19 @@ userAuthRouter.post("/login", (req, res, next) => {
         return next(loginErr);
       }
       console.log("OK");
+
+      const email = req.body.email;
+      const password = req.body.password;
+      const token = jwt.sign(
+        {
+          type: "JWT",
+          email: email,
+          password: password,
+        },
+        process.env.JWT_SECRET_KEY,
+      );
+
+      res.cookie("token", token);
       return res.json(Users);
     });
   })(req, res, next);
@@ -58,11 +74,11 @@ userAuthRouter.post("/login", (req, res, next) => {
 
 userAuthRouter.post("/logout", (req, res, next) => {
   req.logout();
-  req.session.destroy();
+  req.cookies.destroy();
   res.send("ok");
 });
 
-userAuthRouter.patch("/user/:id", async (req, res, next) => {
+userAuthRouter.patch("/users/:id", auth, async (req, res, next) => {
   try {
     const user = await Users.update(
       {
@@ -70,11 +86,10 @@ userAuthRouter.patch("/user/:id", async (req, res, next) => {
         description: req.body.description,
       },
       {
-        where: { id: req.user.id },
+        where: { id: req.user.dataValues.id },
       },
     );
-    res.status(200).json({ nickname: req.user.nickname, description: req.user.description });
-    console.log("OK");
+    res.status(200).json("OK");
   } catch (error) {
     console.error(error);
     next(error);

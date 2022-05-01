@@ -15,7 +15,6 @@ import postingRouter from "./src/routers/postingRouter";
 
 dotenv.config();
 passportConfig();
-
 const app = express();
 
 const PORT = 5001;
