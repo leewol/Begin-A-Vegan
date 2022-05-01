@@ -1,7 +1,9 @@
 import express from "express";
 import mysqlManager from "../../db";
 import Sequelize from "sequelize";
-import { Comments, Users, Postings } from "../../db/models/comments";
+import Comments from "../../db/models/comments";
+import Users from "../../db/models/user";
+import Postings from "../../db/models/posting";
 
 const commentRouter = express.Router();
 

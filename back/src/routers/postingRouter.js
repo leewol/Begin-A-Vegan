@@ -3,7 +3,9 @@ import mysqlManager from "../../db";
 import { Sequelize, Op } from "sequelize";
 import multer from "multer";
 import path from "path";
-import { Postings, Users, Comments } from "../../db/models/user";
+import Comments from "../../db/models/comments";
+import Users from "../../db/models/user";
+import Postings from "../../db/models/posting";
 
 const postingRouter = express.Router();
 
