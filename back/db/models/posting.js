@@ -58,20 +58,20 @@ class Postings extends Sequelize.Model {
       },
     );
   }
-  static associate(db) {
-    db.Postings.belongsTo(db.Users, {
+  static associate(models) {
+    models.Postings.belongsTo(models.Users, {
       foreignKey: "users_id",
       targetkey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    db.Postings.hasMany(db.Comments, {
-      foreignKey: "id",
+    models.Postings.hasMany(models.Comments, {
+      foreignKey: "commentId",
       sourceKey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    db.Postings.belongsToMany(db.Users, { through: "Like", as: "Likers" });
+    models.Postings.belongsToMany(models.Users, { through: "Like", as: "Likers" });
   }
 }
 

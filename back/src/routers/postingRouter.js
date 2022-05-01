@@ -28,19 +28,20 @@ const upload = multer({
 });
 
 // 게시글 생성
-postingRouter.post("/postings/posting", upload.single("file_url"), async (req, res, next) => {
+postingRouter.post("/postings/posting", async (req, res, next) => {
   try {
     const posting = {
       users_id: req.body.users_id,
       title: req.body.title,
       article: req.body.article,
-      file_url: `/file_url/${req.file.filename}`, // 사진 file 경로 만들기
+      file_url: req.body.file_url, // 사진 file 경로 만들기
     };
 
     await Postings.create(posting);
     res.status(201).json(posting);
   } catch (error) {
     console.log(error);
+    next(error);
   }
 });
 
@@ -98,6 +99,8 @@ postingRouter.get("/postings/:id", async (req, res, next) => {
         },
       ],
     });
+    console.log(Users);
+
     res.status(201).json(posting);
   } catch (error) {
     next(error);

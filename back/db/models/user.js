@@ -26,7 +26,7 @@ class Users extends Sequelize.Model {
         },
         is_vegan: {
           type: Sequelize.TINYINT,
-          allowNull: false,
+          allowNull: true,
         },
         profile_url: {
           type: Sequelize.STRING(200),
@@ -58,20 +58,20 @@ class Users extends Sequelize.Model {
       },
     );
   }
-  static associate(db) {
-    db.Users.hasMany(db.Postings, {
+  static associate(models) {
+    models.Users.hasMany(models.Postings, {
       foreignKey: "users_id",
       sourceKey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    db.Users.hasMany(db.Comments, {
+    models.Users.hasMany(models.Comments, {
       foreignKey: "users_id",
       sourceKey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    db.Users.belongsToMany(db.Postings, { through: "Like", as: "Liked" });
+    models.Users.belongsToMany(models.Postings, { through: "Like", as: "Liked" });
   }
 }
 
