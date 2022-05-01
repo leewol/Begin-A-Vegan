@@ -110,41 +110,36 @@
         }
       }
     },
-    "/posting/create": {
+    "/postings/posting": {
       "post": {
         "summary": "게시글 작성",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/posting_create_body"
+                "$ref": "#/components/schemas/postings_posting_body"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/postings_postId_body"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
     },
-    "/posting/{postId}": {
+    "/postings/{postId}": {
       "get": {
         "summary": "작성한 게시글 조회",
         "parameters": [
           {
             "name": "postId",
             "in": "path",
-            "required": true,
             "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "integer"
             }
@@ -152,14 +147,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/posting_body"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       },
@@ -169,8 +157,10 @@
           {
             "name": "postId",
             "in": "path",
-            "required": true,
             "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "integer"
             }
@@ -187,14 +177,27 @@
         },
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/postings_postId_body"
-                }
-              }
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "summary": "게시글 삭제",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -233,7 +236,7 @@
           "nickname": "string",
           "is_vegan": true,
           "is_deleted": true,
-          "description": "Null"
+          "description": "null"
         }
       },
       "login_body": {
@@ -274,46 +277,42 @@
           }
         }
       },
-      "posting_create_body": {
+      "postings_posting_body": {
         "type": "object",
         "properties": {
-          "postTitle": {
+          "title": {
             "type": "string"
           },
-          "postArticle": {
+          "article": {
             "type": "string"
           },
-          "postFile": {
+          "file_url": {
             "type": "string"
           }
         },
         "example": {
-          "postTitle": "string",
-          "postArticle": "string",
-          "postFile": "string"
+          "title": "string",
+          "article": "string",
+          "file": "string"
         }
       },
       "postings_postId_body": {
         "type": "object",
         "properties": {
-          "postId": {
-            "type": "integer"
-          },
-          "postTitle": {
+          "title": {
             "type": "string"
           },
-          "postArticle": {
+          "article": {
             "type": "string"
           },
-          "postFile": {
+          "file_url": {
             "type": "string"
           }
         },
         "example": {
-          "postId": "integer",
-          "postTitle": "string",
-          "postArticle": "string",
-          "postFile": "string"
+          "title": "string",
+          "article": "string",
+          "file_url": "string"
         }
       }
     }
