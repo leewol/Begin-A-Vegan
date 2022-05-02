@@ -6,7 +6,7 @@ export default function Nav() {
     <nav className={styles.nav}>
       <ul className={styles.category}>
         <li>
-          <Link href="/#about">
+          <Link href="/about">
             <a>
               {/* 데이터 시각화 자료 */}
               <span>ABOUT</span>
@@ -14,7 +14,7 @@ export default function Nav() {
           </Link>
         </li>
         <li>
-          <Link href="/">
+          <Link href="/info">
             <a>
               {/* 비건 관련 정보 소개 페이지 */}
               <span>INFORMATION</span>
@@ -30,7 +30,7 @@ export default function Nav() {
           </Link>
         </li> */}
         <li>
-          <Link href="/">
+          <Link href="/postings">
             <a>
               <span>COMMUNITY</span>
             </a>

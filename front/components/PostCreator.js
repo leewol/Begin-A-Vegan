@@ -27,5 +27,13 @@ const QuillWrapper = dynamic(
 );
 
 export default function PostCreator() {
-  return <QuillWrapper theme="snow" />;
+  const modules = {
+    toolbar: [["bold", "italic", "underline", "strike"], ["image"], ["clean"]],
+    clipboard: {
+      // toggle to add extra line breaks when pasting HTML:
+      matchVisual: false,
+    },
+  };
+
+  return <QuillWrapper theme="snow" modules={modules} placeholder={"포스팅 내용을 입력하세요"} />;
 }
