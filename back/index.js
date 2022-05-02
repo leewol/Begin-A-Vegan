@@ -12,6 +12,7 @@ import session from "express-session";
 import cookieParser from "cookie-parser";
 import userAuthRouter from "./src/routers/userRouter";
 import postingRouter from "./src/routers/postingRouter";
+import commentRouter from "./src/routers/commentRouter";
 
 dotenv.config();
 passportConfig();
@@ -35,13 +36,13 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get("/", function (req, res) {
+app.get("/", (req, res) => {
   res.send("Hello Express");
 });
 
-app.use(postingRouter);
-
 app.use(userAuthRouter);
+app.use(postingRouter);
+app.use(commentRouter);
 
 app.use("/uploads", express.static("uploads"));
 

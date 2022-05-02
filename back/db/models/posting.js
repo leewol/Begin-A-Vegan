@@ -1,61 +1,57 @@
 import Sequelize from "sequelize";
 
-class Users extends Sequelize.Model {
+class Postings extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
         id: {
-          type: Sequelize.STRING(32),
+          type: Sequelize.UUID,
           defaultValue: Sequelize.UUIDV4,
           allowNull: false,
           primaryKey: true,
-          autoIncrement: true,
         },
-        email: {
+        users_id: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          references: {
+            model: "Users",
+            key: "id",
+          },
+        },
+        title: {
           type: Sequelize.STRING(200),
           allowNull: false,
-          unique: true,
         },
-        password: {
-          type: Sequelize.STRING(200),
+        article: {
+          type: Sequelize.TEXT,
           allowNull: false,
         },
-        nickname: {
-          type: Sequelize.STRING(50),
-          allowNull: false,
-        },
-        is_vegan: {
-          type: Sequelize.TINYINT,
-          allowNull: true,
-        },
-        profile_url: {
+        file_url: {
           type: Sequelize.STRING(200),
-          allowNull: true,
+          allowNull: false,
         },
         created_at: {
           type: Sequelize.DATE,
-          allowNull: false,
           defaultValue: Sequelize.fn("NOW"),
+          allowNull: false,
         },
         updated_at: {
           type: Sequelize.DATE,
-          allowNull: false,
           defaultValue: Sequelize.fn("NOW"),
+          allowNull: false,
         },
         is_deleted: {
           type: Sequelize.TINYINT,
-          allowNull: true,
-        },
-        description: {
-          type: Sequelize.STRING(100),
+          defaultValue: 0,
           allowNull: false,
         },
       },
       {
         sequelize,
         timestamps: false,
-        modelName: "Users",
-        tableName: "users",
+        underscore: false,
+        modelName: "Postings",
+        tableName: "postings",
         paranoid: false,
         charset: "utf8",
         collate: "utf8_general_ci",
@@ -63,20 +59,20 @@ class Users extends Sequelize.Model {
     );
   }
   static associate(models) {
-    models.Users.hasMany(models.Postings, {
+    models.Postings.belongsTo(models.Users, {
       foreignKey: "users_id",
+      targetkey: "id",
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    });
+    models.Postings.hasMany(models.Comments, {
+      foreignKey: "id",
       sourceKey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    models.Users.hasMany(models.Comments, {
-      foreignKey: "users_id",
-      sourceKey: "id",
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    });
-    models.Users.belongsToMany(models.Postings, { through: "Like", as: "Liked" });
+    models.Postings.belongsToMany(models.Users, { through: "Like", as: "Likers" });
   }
 }
 
-export default Users;
+export default Postings;
