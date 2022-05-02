@@ -66,7 +66,7 @@ class Postings extends Sequelize.Model {
       onUpdate: "cascade",
     });
     models.Postings.hasMany(models.Comments, {
-      foreignKey: "commentId",
+      foreignKey: "id",
       sourceKey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
