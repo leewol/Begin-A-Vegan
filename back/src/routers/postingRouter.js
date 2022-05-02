@@ -3,7 +3,7 @@ import mysqlManager from "../../db";
 import { Sequelize, Op } from "sequelize";
 import multer from "multer";
 import path from "path";
-import Comments from "../../db/models/comments";
+import Comments from "../../db/models/comment";
 import Users from "../../db/models/user";
 import Postings from "../../db/models/posting";
 
@@ -49,8 +49,8 @@ postingRouter.post("/postings/posting", async (req, res, next) => {
 postingRouter.get("/postingList", async (req, res, next) => {
   try {
     const where = {};
-    if (parseInt(req.query.lastId, 10)) {
-      where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
+    if (req.query.lastId) {
+      where.id = { [Op.lt]: req.query.lastId };
     }
     const postings = await Postings.findAll({
       where,
@@ -99,7 +99,6 @@ postingRouter.get("/postings/:id", async (req, res, next) => {
         },
       ],
     });
-    console.log(Users);
 
     res.status(201).json(posting);
   } catch (error) {

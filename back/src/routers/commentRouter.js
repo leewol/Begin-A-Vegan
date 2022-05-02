@@ -1,7 +1,7 @@
 import express from "express";
 import mysqlManager from "../../db";
 import Sequelize from "sequelize";
-import Comments from "../../db/models/comments";
+import Comments from "../../db/models/comment";
 import Users from "../../db/models/user";
 import Postings from "../../db/models/posting";
 
