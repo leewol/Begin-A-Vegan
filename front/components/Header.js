@@ -20,7 +20,7 @@ function Header() {
             <span>LOGIN</span>
           </a>
         </Link>
-        <Link href="/signup">
+        <Link href="/users">
           <a>
             <span>SIGNUP</span>
           </a>
