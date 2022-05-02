@@ -1,6 +1,7 @@
 import passport from "passport";
 import local from "./local";
 import google from "./googleStrategy";
+import kakao from "./kakaoStrategy";
 import Users from "../db/models/user";
 
 module.exports = () => {
@@ -15,4 +16,5 @@ module.exports = () => {
   });
   local(); // 로컬전략
   google(); // 구글 전략
+  kakao();
 };

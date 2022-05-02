@@ -14,3 +14,13 @@ authRouter.get(
 );
 
 export default authRouter;
+
+authRouter.get("/kakao", passport.authenticate("kakao"));
+
+authRouter.get(
+  "/auth/kakao/callback",
+  passport.authenticate("kakao", { failureRedirect: "/" }),
+  (req, res) => {
+    res.redirect("/");
+  },
+);
