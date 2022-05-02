@@ -11,17 +11,19 @@ import { cookie } from "express/lib/response";
 
 const userAuthRouter = express.Router();
 
-// userAuthRouter.get("/", async (req,res)=> {
-//   try {
-// 		const user =
-// 			email:
-// 			nickname:
-// 			introduce:
-// 		});
-// 	} catch (e) {
-// 		throw e;
-// 	}
-// });
+userAuthRouter.get("/users/:id", async (req, res, next) => {
+  try {
+    const user = await Users.findOne({
+      where: { id: req.params.id },
+    });
+    if (!user) {
+      return res.send("없는 사용자입니다.");
+    }
+    res.status(201).json(user);
+  } catch (error) {
+    next(error);
+  }
+});
 
 userAuthRouter.post("/users", async (req, res) => {
   const duplicate = await Users.findOne({
