@@ -1,9 +1,8 @@
 .container {
-  background-color: #e3ecf1;
+  background-color: white;
 }
 .sidebar {
-  background-color: #e3ecf1;
-  border-left: 4px solid #202020;
+  background-color: white;
   position: fixed;
   top: 0;
   bottom: 0;

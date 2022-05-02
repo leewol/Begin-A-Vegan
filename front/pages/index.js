@@ -13,7 +13,7 @@ export default function Home() {
         <Layout />
         <Slide>
           <section className={styles.first}>
-            <Sidebar width={400}>
+            <Sidebar width={450}>
               <Signup />
             </Sidebar>
             <video autoPlay muted loop className={styles.video}>
