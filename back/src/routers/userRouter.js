@@ -7,8 +7,21 @@ import multer from "multer";
 import jwt from "jsonwebtoken";
 import { login_required } from "../middlewares/login_required";
 import dotenv from "dotenv";
+import { cookie } from "express/lib/response";
 
 const userAuthRouter = express.Router();
+
+// userAuthRouter.get("/", async (req,res)=> {
+//   try {
+// 		const user =
+// 			email:
+// 			nickname:
+// 			introduce:
+// 		});
+// 	} catch (e) {
+// 		throw e;
+// 	}
+// });
 
 userAuthRouter.post("/users", async (req, res) => {
   const duplicate = await Users.findOne({
@@ -71,15 +84,14 @@ userAuthRouter.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
-userAuthRouter.post("/logout", (req, res, next) => {
+userAuthRouter.post("/logout", (req, res) => {
   req.logout();
-  req.cookies.destroy();
+  res.clearCookie("token");
   res.send("ok");
 });
 
 userAuthRouter.patch("/users/:id", async (req, res, next) => {
   try {
-    console.log("1");
     const user = await Users.update(
       {
         nickname: req.body.nickname,

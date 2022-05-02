@@ -48,7 +48,7 @@ class Users extends Sequelize.Model {
         },
         description: {
           type: Sequelize.STRING(100),
-          allowNull: false,
+          allowNull: true,
         },
       },
       {
