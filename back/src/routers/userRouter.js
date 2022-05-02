@@ -73,7 +73,7 @@ userAuthRouter.post("/login", (req, res, next) => {
 
 userAuthRouter.post("/logout", (req, res, next) => {
   req.logout();
-  req.cookies.destroy();
+  res.clearCookie("token");
   res.send("ok");
 });
 
