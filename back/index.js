@@ -16,7 +16,6 @@ import commentRouter from "./src/routers/commentRouter";
 
 dotenv.config();
 passportConfig();
-
 const app = express();
 
 const PORT = 5001;

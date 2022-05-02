@@ -46,6 +46,10 @@ class Users extends Sequelize.Model {
           type: Sequelize.TINYINT,
           allowNull: true,
         },
+        description: {
+          type: Sequelize.STRING(100),
+          allowNull: false,
+        },
       },
       {
         sequelize,
