@@ -61,6 +61,26 @@
       }
     },
     "/users/{id}": {
+      "get": {
+        "summary": "유저 정보 조회",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
       "patch": {
         "summary": "닉네임 변경",
         "parameters": [

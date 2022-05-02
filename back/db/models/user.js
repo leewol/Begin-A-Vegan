@@ -18,7 +18,7 @@ class Users extends Sequelize.Model {
         },
         password: {
           type: Sequelize.STRING(200),
-          allowNull: false,
+          allowNull: true,
         },
         nickname: {
           type: Sequelize.STRING(50),
@@ -47,6 +47,10 @@ class Users extends Sequelize.Model {
           allowNull: true,
         },
         description: {
+          type: Sequelize.STRING(100),
+          allowNull: true,
+        },
+        provider: {
           type: Sequelize.STRING(100),
           allowNull: true,
         },
