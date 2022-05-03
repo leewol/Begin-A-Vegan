@@ -5,13 +5,13 @@ class Postings extends Sequelize.Model {
     return super.init(
       {
         id: {
-          type: Sequelize.UUID,
+          type: Sequelize.STRING(32),
           defaultValue: Sequelize.UUIDV4,
           allowNull: false,
           primaryKey: true,
         },
         users_id: {
-          type: Sequelize.UUID,
+          type: Sequelize.STRING(32),
           allowNull: false,
           references: {
             model: "Users",
@@ -28,12 +28,12 @@ class Postings extends Sequelize.Model {
         },
         created_at: {
           type: Sequelize.DATE,
-          defaultValue: Sequelize.fn("NOW"),
+          defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
           allowNull: false,
         },
         updated_at: {
           type: Sequelize.DATE,
-          defaultValue: Sequelize.fn("NOW"),
+          defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
           allowNull: false,
         },
         is_deleted: {

@@ -202,6 +202,16 @@
         }
       }
     },
+    "/postingList": {
+      "get": {
+        "summary": "게시물 피드로 10개씩 보기",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/{postings_id}/comments/comment": {
       "post": {
         "summary": "댓글 작성",
@@ -308,46 +318,6 @@
           }
         }
       }
-    },
-    "/{postings_id}/like": {
-      "patch": {
-        "summary": "좋아요!",
-        "parameters": [
-          {
-            "name": "postings_id",
-            "in": "path",
-            "description": "The Id of the user to return",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "postings_id": {
-                    "type": "string"
-                  }
-                },
-                "example": {
-                  "postings_id": "string"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "OK"
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -441,7 +411,6 @@
           }
         },
         "example": {
-          "users_id": "string",
           "article": "string",
           "file_url": "string"
         }
@@ -457,7 +426,6 @@
           }
         },
         "example": {
-          "users_id": "string",
           "content": "string"
         }
       }

@@ -29,16 +29,16 @@ const upload = multer({
 });
 
 // 게시글 생성
-postingRouter.post("/postings/posting", async (req, res, next) => {
+postingRouter.post("/postings/posting", login_required, async (req, res, next) => {
   try {
     const posting = {
-      users_id: req.body.users_id,
+      users_id: req.user.id,
       article: req.body.article,
       file_url: req.body.file_url, // 사진 file 경로 만들기
     };
 
-    await Postings.create(posting);
-    res.status(201).json(posting);
+    const newPosting = await Postings.create(posting);
+    res.status(201).json(newPosting);
   } catch (error) {
     console.log(error);
     next(error);
@@ -46,7 +46,7 @@ postingRouter.post("/postings/posting", async (req, res, next) => {
 });
 
 // 등록된 모든 게시글(피드) 로딩마다 10개씩 보여주기 -> 최신 작성순
-postingRouter.get("/postingList", async (req, res, next) => {
+postingRouter.get("/postingList", login_required, async (req, res, next) => {
   try {
     const where = {};
     if (req.query.lastId) {
@@ -78,7 +78,7 @@ postingRouter.get("/postingList", async (req, res, next) => {
 });
 
 // 게시글 1개 조회
-postingRouter.get("/postings/:id", async (req, res, next) => {
+postingRouter.get("/postings/:id", login_required, async (req, res, next) => {
   try {
     const posting = await Postings.findOne({
       where: { id: req.params.id },
@@ -107,7 +107,7 @@ postingRouter.get("/postings/:id", async (req, res, next) => {
 });
 
 // 게시글 수정(제목, 내용만 수정 가능) -> 수정완료하면 수정된 게시물 조회됨
-postingRouter.put("/postings/:id", async (req, res, next) => {
+postingRouter.put("/postings/:id", login_required, async (req, res, next) => {
   try {
     const posting = await Postings.findOne({ where: { id: req.params.id } });
     if (!posting) {
@@ -140,7 +140,7 @@ postingRouter.put("/postings/:id", async (req, res, next) => {
 });
 
 // 게시글 삭제
-postingRouter.delete("/postings/:id", async (req, res, next) => {
+postingRouter.delete("/postings/:id", login_required, async (req, res, next) => {
   try {
     Postings.destroy({
       where: { id: req.params.id },
@@ -152,14 +152,14 @@ postingRouter.delete("/postings/:id", async (req, res, next) => {
 });
 
 // 게시물 좋아요 -> 좋아요 누르면 postings에 부분 수정(patch)
-postingRouter.patch("/:postings_id/like", async (req, res, next) => {
+postingRouter.patch("/:postings_id/like", login_required, async (req, res, next) => {
   try {
     const posting = await Postings.findOne({ where: { id: req.params.postings_id } });
     if (!posting) {
       return res.status(403).send("게시글이 존재하지 않습니다.");
     }
-    await posting.addLikers(req.users_id);
-    res.json({ postings_id: posting.id, users_id: posting.users_id });
+    await posting.addLikers(req.user.id);
+    res.json({ postings_id: posting.id, users_id: req.user.id });
     console.log(posting.Likers);
   } catch (error) {
     next(error);
@@ -167,14 +167,14 @@ postingRouter.patch("/:postings_id/like", async (req, res, next) => {
 });
 
 // 게시물 좋아요 취소 -> 좋아요 취소하면 postings에서 likers 삭제
-postingRouter.delete("/:postings_id/like", async (req, res, next) => {
+postingRouter.delete("/:postings_id/like", login_required, async (req, res, next) => {
   try {
     const posting = await Postings.findOne({ where: { id: req.params.posting_id } });
     if (!posting) {
       return res.status(403).send("게시글이 존재하지 않습니다.");
     }
     await posting.removeLikers(req.users_id);
-    res.json({ Postings_id: posting.id, Users_id: posting.users_id });
+    res.json({ Postings_id: posting.id, Users_id: req.user.id });
   } catch (error) {
     next(error);
   }
