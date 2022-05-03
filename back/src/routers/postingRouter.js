@@ -29,10 +29,10 @@ const upload = multer({
 });
 
 // 게시글 생성
-postingRouter.post("/postings/posting", login_required, async (req, res, next) => {
+postingRouter.post("/postings/posting", async (req, res, next) => {
   try {
     const posting = {
-      users_id: req.user.id,
+      users_id: req.body.users_id,
       article: req.body.article,
       file_url: req.body.file_url, // 사진 file 경로 만들기
     };
@@ -85,7 +85,6 @@ postingRouter.get("/postings/:id", async (req, res, next) => {
       include: [
         {
           model: Users,
-          where: { id: req.body.id },
           attributes: ["id", "nickname", "profile_url"],
         },
         {
@@ -108,13 +107,13 @@ postingRouter.get("/postings/:id", async (req, res, next) => {
 });
 
 // 게시글 수정(제목, 내용만 수정 가능) -> 수정완료하면 수정된 게시물 조회됨
-postingRouter.put("/postings/:id", login_required, async (req, res, next) => {
+postingRouter.put("/postings/:id", async (req, res, next) => {
   try {
-    const posting = await Postings.findOne({ where: { id: req.params.postings_id } });
+    const posting = await Postings.findOne({ where: { id: req.params.id } });
     if (!posting) {
       return res.status(403).send("존재하지 않는 게시글입니다.");
     }
-    await Postings.update({ article: req.body.article }, { where: { id: req.params.postings_id } });
+    await Postings.update({ article: req.body.article }, { where: { id: req.params.id } });
     const updatedPosting = await Postings.findOne({
       where: { id: req.params.id },
       include: [
@@ -141,17 +140,10 @@ postingRouter.put("/postings/:id", login_required, async (req, res, next) => {
 });
 
 // 게시글 삭제
-postingRouter.delete("/postings/:id", login_required, async (req, res, next) => {
+postingRouter.delete("/postings/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
-
-    // 게시글에 달린 댓글이 있다면 댓글 먼저 삭제
-    const comments = Comments.findAll({ where: id });
-    if (comments.length > 0) {
-      await Comment.destroy({ where: id });
-    }
-    // 댓글 삭제 후 게시글 삭제
-    await Postings.destroy({
+    Postings.destroy({
       where: { id },
     });
     res.status(200).json({ id }); //id에 담아서 프론트에 넘겨줌
@@ -161,7 +153,7 @@ postingRouter.delete("/postings/:id", login_required, async (req, res, next) => 
 });
 
 // 게시물 좋아요 -> 좋아요 누르면 postings에 부분 수정(patch)
-postingRouter.patch("/:postings_id/like", login_required, async (req, res, next) => {
+postingRouter.patch("/:postings_id/like", async (req, res, next) => {
   try {
     const posting = await Postings.findOne({ where: { id: req.params.postings_id } });
     if (!posting) {

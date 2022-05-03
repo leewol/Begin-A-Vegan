@@ -60,13 +60,13 @@ class Comments extends Sequelize.Model {
     );
   }
   static associate(models) {
-    models.Comments.belongsTo(models.Users, {
+    Comments.belongsTo(models.Users, {
       foreignKey: "users_id",
       targetkey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    models.Comments.belongsTo(models.Postings, {
+    Comments.belongsTo(models.Postings, {
       foreignKey: "postings_id",
       targetkey: "id",
       onDelete: "cascade",

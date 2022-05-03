@@ -4,7 +4,9 @@ import Users from "../../db/models/user";
 import bcrypt from "bcrypt";
 import passport from "passport";
 import multer from "multer";
-import { isLoggedIn, isNotLoggedIn } from "../middlewares/Authenticate";
+import jwt from "jsonwebtoken";
+import { login_required } from "../middlewares/login_required";
+import dotenv from "dotenv";
 
 const userAuthRouter = express.Router();
 
@@ -30,7 +32,6 @@ userAuthRouter.post("/users", async (req, res) => {
   await Users.create(user)
     .then((result) => {
       console.log("success");
-      console.log(req.user.id);
     })
     .catch((err) => {
       console.log(err);
@@ -52,6 +53,19 @@ userAuthRouter.post("/login", (req, res, next) => {
         return next(loginErr);
       }
       console.log("OK");
+
+      const email = req.body.email;
+      const password = req.body.password;
+      const token = jwt.sign(
+        {
+          type: "JWT",
+          email: email,
+          password: password,
+        },
+        process.env.JWT_SECRET_KEY,
+      );
+
+      res.cookie("token", token);
       return res.json(Users);
     });
   })(req, res, next);
@@ -59,23 +73,23 @@ userAuthRouter.post("/login", (req, res, next) => {
 
 userAuthRouter.post("/logout", (req, res, next) => {
   req.logout();
-  req.session.destroy();
+  res.clearCookie("token");
   res.send("ok");
 });
 
-userAuthRouter.patch("/user/:id", async (req, res, next) => {
+userAuthRouter.patch("/users/:id", async (req, res, next) => {
   try {
+    console.log("1");
     const user = await Users.update(
       {
         nickname: req.body.nickname,
         description: req.body.description,
       },
       {
-        where: { id: req.user.id },
+        where: { id: req.user.dataValues.id },
       },
     );
-    res.status(200).json({ nickname: req.user.nickname, description: req.user.description });
-    console.log("OK");
+    res.status(200).json("OK");
   } catch (error) {
     console.error(error);
     next(error);
@@ -98,7 +112,7 @@ const upload = multer({
 
 // 폼마다 형식이 다르기 떄문에 라우터마다 별도의 세팅 필요
 // storage 옵션만 s3로 바꾸면 멀터가 알아서 스토리지로 올려줌
-userAuthRouter.post("/profile", upload.single("image"), async (req, res) => {
+userAuthRouter.post("/profile", upload.single("image"), login_required, async (req, res) => {
   console.log(req.file);
   res.json(req.file);
 });

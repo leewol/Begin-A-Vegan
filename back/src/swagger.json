@@ -60,12 +60,12 @@
         }
       }
     },
-    "/user/{id}": {
+    "/users/{id}": {
       "patch": {
         "summary": "닉네임 변경",
         "parameters": [
           {
-            "name": "email",
+            "name": "id",
             "in": "path",
             "required": true,
             "style": "simple",
@@ -110,56 +110,44 @@
         }
       }
     },
-    "/posting/create": {
+    "/postings/posting": {
       "post": {
         "summary": "게시글 작성",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/posting_create_body"
+                "$ref": "#/components/schemas/posting_body"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/postings_postId_body"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
     },
-    "/posting/{postId}": {
+    "/postings/{postings_id}": {
       "get": {
         "summary": "작성한 게시글 조회",
         "parameters": [
           {
-            "name": "postId",
+            "name": "postings_id",
             "in": "path",
-            "required": true,
             "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
-              "type": "integer"
+              "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/posting_body"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       },
@@ -167,12 +155,14 @@
         "summary": "게시글 수정",
         "parameters": [
           {
-            "name": "postId",
+            "name": "postings_id",
             "in": "path",
-            "required": true,
             "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
-              "type": "integer"
+              "type": "string"
             }
           }
         ],
@@ -180,21 +170,141 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/postings_postId_body"
+                "$ref": "#/components/schemas/posting_body"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/postings_postId_body"
-                }
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "summary": "게시글 삭제",
+        "parameters": [
+          {
+            "name": "postings_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/{postings_id}/comments/comment": {
+      "post": {
+        "summary": "댓글 작성",
+        "parameters": [
+          {
+            "name": "postings_id",
+            "in": "path",
+            "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/comment_body"
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/postings/{postings_id}/comments/{comments_id}": {
+      "put": {
+        "summary": "댓글 수정",
+        "parameters": [
+          {
+            "name": "postings_id",
+            "in": "path",
+            "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "comments_id",
+            "in": "path",
+            "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/comment_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "summary": "댓글 삭제",
+        "parameters": [
+          {
+            "name": "postings_id",
+            "in": "path",
+            "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "comments_id",
+            "in": "path",
+            "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -222,6 +332,9 @@
           },
           "is_deleted": {
             "type": "boolean"
+          },
+          "description": {
+            "type": "string"
           }
         },
         "example": {
@@ -229,7 +342,8 @@
           "password": "string",
           "nickname": "string",
           "is_vegan": true,
-          "is_deleted": true
+          "is_deleted": true,
+          "description": "null"
         }
       },
       "login_body": {
@@ -270,67 +384,41 @@
           }
         }
       },
-      "posting_create_body": {
+      "posting_body": {
         "type": "object",
         "properties": {
-<<<<<<< Updated upstream
-          "postTitle": {
-            "type": "string"
-          },
-          "postArticle": {
-=======
-          "article": {
->>>>>>> Stashed changes
-            "type": "string"
-          },
-          "postFile": {
-            "type": "string"
-          }
-        },
-        "example": {
-<<<<<<< Updated upstream
-          "postTitle": "string",
-          "postArticle": "string",
-          "postFile": "string"
-=======
-          "article": "string",
-          "file": "string"
->>>>>>> Stashed changes
-        }
-      },
-      "postings_postId_body": {
-        "type": "object",
-        "properties": {
-<<<<<<< Updated upstream
-          "postId": {
-            "type": "integer"
-          },
-          "postTitle": {
-=======
           "id": {
             "type": "string"
           },
           "users_id": {
->>>>>>> Stashed changes
             "type": "string"
           },
-          "postArticle": {
+          "article": {
             "type": "string"
           },
-          "postFile": {
+          "file_url": {
             "type": "string"
           }
         },
         "example": {
-<<<<<<< Updated upstream
-          "postId": "integer",
-          "postTitle": "string",
-          "postArticle": "string",
-          "postFile": "string"
-=======
+          "users_id": "string",
           "article": "string",
           "file_url": "string"
->>>>>>> Stashed changes
+        }
+      },
+      "comment_body": {
+        "type": "object",
+        "properties": {
+          "users_id": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "users_id": "string",
+          "content": "string"
         }
       }
     }
