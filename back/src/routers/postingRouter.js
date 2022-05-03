@@ -108,7 +108,7 @@ postingRouter.get("/postings/:id", async (req, res, next) => {
 });
 
 // 게시글 수정(제목, 내용만 수정 가능) -> 수정완료하면 수정된 게시물 조회됨
-postingRouter.put("/postings/:id", async (req, res, next) => {
+postingRouter.put("/postings/:id", login_required, async (req, res, next) => {
   try {
     const posting = await Postings.findOne({ where: { id: req.params.postings_id } });
     if (!posting) {
@@ -141,7 +141,7 @@ postingRouter.put("/postings/:id", async (req, res, next) => {
 });
 
 // 게시글 삭제
-postingRouter.delete("/postings/:id", async (req, res, next) => {
+postingRouter.delete("/postings/:id", login_required, async (req, res, next) => {
   try {
     const id = req.params.id;
 
@@ -152,7 +152,7 @@ postingRouter.delete("/postings/:id", async (req, res, next) => {
     }
     // 댓글 삭제 후 게시글 삭제
     await Postings.destroy({
-      where: { id, users_id: req.body.id },
+      where: { id },
     });
     res.status(200).json({ id }); //id에 담아서 프론트에 넘겨줌
   } catch (error) {
@@ -161,14 +161,14 @@ postingRouter.delete("/postings/:id", async (req, res, next) => {
 });
 
 // 게시물 좋아요 -> 좋아요 누르면 postings에 부분 수정(patch)
-postingRouter.patch("/:postings_id/like", async (req, res, next) => {
+postingRouter.patch("/:postings_id/like", login_required, async (req, res, next) => {
   try {
     const posting = await Postings.findOne({ where: { id: req.params.postings_id } });
     if (!posting) {
       return res.status(403).send("게시글이 존재하지 않습니다.");
     }
-    await posting.addLikers(req.users_id); //users_id 수정 필요
-    res.json({ Postings_id: posting.id, Users_id: req.users_id });
+    await posting.addLikers(req.users_id);
+    res.json({ Postings_id: posting.id, Users_id: posting.users_id });
   } catch (error) {
     next(error);
   }
@@ -182,7 +182,7 @@ postingRouter.delete("/:postings_id/like", async (req, res, next) => {
       return res.status(403).send("게시글이 존재하지 않습니다.");
     }
     await posting.removeLikers(req.users_id);
-    res.json({ Postings_id: posting.id, Users_id: req.users_id });
+    res.json({ Postings_id: posting.id, Users_id: posting.users_id });
   } catch (error) {
     next(error);
   }
