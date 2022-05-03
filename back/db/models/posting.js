@@ -67,7 +67,7 @@ class Postings extends Sequelize.Model {
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    Postings.belongsToMany(models.Users, { through: "Like", as: "Likers" });
+    Postings.belongsToMany(models.Users, { through: "like_users_postings", as: "Likers" });
   }
 }
 

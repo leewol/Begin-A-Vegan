@@ -308,6 +308,46 @@
           }
         }
       }
+    },
+    "/{postings_id}/like": {
+      "patch": {
+        "summary": "좋아요!",
+        "parameters": [
+          {
+            "name": "postings_id",
+            "in": "path",
+            "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "postings_id": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "postings_id": "string"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      }
     }
   },
   "components": {

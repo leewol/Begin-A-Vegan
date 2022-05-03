@@ -142,11 +142,6 @@ postingRouter.put("/postings/:id", async (req, res, next) => {
 // 게시글 삭제
 postingRouter.delete("/postings/:id", async (req, res, next) => {
   try {
-    // const comments = Comments.findAll({ where: { postings_id: req.params.id } });
-    // if (comments.length > 0) {
-    //   await Comments.destroy({ where: { postings_id: req.params.id } });
-    // }
-    //
     Postings.destroy({
       where: { id: req.params.id },
     });
@@ -164,7 +159,8 @@ postingRouter.patch("/:postings_id/like", async (req, res, next) => {
       return res.status(403).send("게시글이 존재하지 않습니다.");
     }
     await posting.addLikers(req.users_id);
-    res.json({ Postings_id: posting.id, Users_id: posting.users_id });
+    res.json({ postings_id: posting.id, users_id: posting.users_id });
+    console.log(posting.Likers);
   } catch (error) {
     next(error);
   }
