@@ -41,14 +41,13 @@ export default function Sidebar({ width = 280, children }) {
         className={styles.sidebar}
         style={{ width: `${width}px`, height: "100%", transform: `translatex(${-xPosition}px)` }}
       >
-        {/* <button onClick={() => toggleMenu()} className={styles.button}>
+        <button onClick={toggleMenu} className={styles.button}>
           {isOpen ? (
             <span>X</span>
           ) : (
             <img src="images/avatar.png" alr="contact open button" className={styles.openBtn} />
           )}
-        </button> */}
-        <button onClick={toggleMenu} />
+        </button>
         <div className={styles.content}>{children}</div>
       </div>
     </div>

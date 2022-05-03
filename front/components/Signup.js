@@ -1,33 +1,25 @@
 import React, { useState } from "react";
-import "../styles/Signup.module.css";
+import styles from "../styles/Signup.module.css";
 
 import * as Api from "../lib/api";
 
 export default function Signup() {
-  const [name, setName] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [inputs, setInputs] = useState({
+    id: "",
+    nickname: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-  const onNameHandler = (event) => {
-    setName(event.currentTarget.value);
-  };
+  const { id, email, password, confirmPassword, nickname } = inputs;
 
-  const onNicknameHandler = (event) => {
-    setNickname(event.currentTarget.value);
-  };
-
-  const onEmailHandler = (event) => {
-    setEmail(event.currentTarget.value);
-  };
-
-  const onPasswordHandler = (event) => {
-    setPassword(event.currentTarget.value);
-  };
-
-  const onConfirmPasswordHandler = (event) => {
-    setConfirmPassword(event.currentTarget.value);
+  const onChange = (event) => {
+    const { name, value } = event.target;
+    setInputs({
+      ...inputs,
+      [name]: value,
+    });
   };
 
   const onSubmit = (event) => {
@@ -38,64 +30,53 @@ export default function Signup() {
   };
 
   return (
-    <div className="signup">
-      <form>
-        <div>
-          <input
-            name="name"
-            type="text"
-            placeholder="이름"
-            value={name}
-            onChange={onNameHandler}
-            className="signup__input"
-          />
-        </div>
-        <div>
-          <input
-            name="nickname"
-            type="text"
-            placeholder="닉네임"
-            value={nickname}
-            onChange={onNicknameHandler}
-            className="signup__input"
-          />
-        </div>
-        <div>
-          <input
-            name="email"
-            type="email"
-            placeholder="이메일"
-            value={email}
-            onChange={onEmailHandler}
-            className="signup__input"
-          />
-        </div>
-        <div>
-          <input
-            name="password"
-            type="password"
-            placeholder="비밀번호"
-            value={password}
-            onChange={onPasswordHandler}
-            className="signup__input"
-          />
-        </div>
-        <div>
-          <input
-            name="confirmPassword"
-            type="password"
-            placeholder="비밀번호 확인"
-            value={confirmPassword}
-            onChange={onConfirmPasswordHandler}
-            className="signup__input"
-          />
-        </div>
-        <div>
-          <button type="submit" onSubmit={onSubmit} className="signup__button">
-            회원가입
-          </button>
-        </div>
-      </form>
-    </div>
+    <form className={styles.signup}>
+      <div>
+        <span>
+          당신은
+          <br />
+          비건인가요?
+        </span>
+      </div>
+
+      <div>
+        <input name="id" placeholder="ID" onChange={onChange} value={id} />
+      </div>
+      <div>
+        <input name="nickname" placeholder="NICKNAME" onChange={onChange} value={nickname} />
+      </div>
+      <div>
+        <input name="email" placeholder="EMAIL" onChange={onChange} value={email} />
+      </div>
+      <div>
+        <input name="password" placeholder="PASSWORD" onChange={onChange} value={password} />
+      </div>
+      <div>
+        <input
+          name="confirmPassword"
+          placeholder="CONFIRM PASSWORD"
+          onChange={onChange}
+          value={confirmPassword}
+        />
+      </div>
+
+      <div>
+        <button type="submit" onSubmit={onSubmit}>
+          CREATE ACCOUNT
+        </button>
+      </div>
+
+      <style jsx>
+        {`
+          span {
+            font-size: 25px;
+          }
+
+          input {
+            margin-top: 7px;
+          }
+        `}
+      </style>
+    </form>
   );
 }
