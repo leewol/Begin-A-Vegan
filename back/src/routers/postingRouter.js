@@ -142,11 +142,15 @@ postingRouter.put("/postings/:id", async (req, res, next) => {
 // 게시글 삭제
 postingRouter.delete("/postings/:id", async (req, res, next) => {
   try {
-    const id = req.params.id;
+    // const comments = Comments.findAll({ where: { postings_id: req.params.id } });
+    // if (comments.length > 0) {
+    //   await Comments.destroy({ where: { postings_id: req.params.id } });
+    // }
+    //
     Postings.destroy({
-      where: { id },
+      where: { id: req.params.id },
     });
-    res.status(200).json({ id }); //id에 담아서 프론트에 넘겨줌
+    res.status(200).json({ id: req.params.id }); //id에 담아서 프론트에 넘겨줌
   } catch (error) {
     next(error);
   }
