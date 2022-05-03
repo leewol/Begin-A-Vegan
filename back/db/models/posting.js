@@ -18,10 +18,6 @@ class Postings extends Sequelize.Model {
             key: "id",
           },
         },
-        title: {
-          type: Sequelize.STRING(200),
-          allowNull: false,
-        },
         article: {
           type: Sequelize.TEXT,
           allowNull: false,

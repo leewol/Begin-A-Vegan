@@ -46,6 +46,13 @@ class Users extends Sequelize.Model {
           type: Sequelize.TINYINT,
           allowNull: true,
         },
+<<<<<<< Updated upstream
+=======
+        description: {
+          type: Sequelize.STRING(100),
+          allowNull: true,
+        },
+>>>>>>> Stashed changes
       },
       {
         sequelize,

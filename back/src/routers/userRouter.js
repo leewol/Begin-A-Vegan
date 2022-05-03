@@ -30,6 +30,7 @@ userAuthRouter.post("/users", async (req, res) => {
   await Users.create(user)
     .then((result) => {
       console.log("success");
+      console.log(req.user.id);
     })
     .catch((err) => {
       console.log(err);

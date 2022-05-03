@@ -273,10 +273,14 @@
       "posting_create_body": {
         "type": "object",
         "properties": {
+<<<<<<< Updated upstream
           "postTitle": {
             "type": "string"
           },
           "postArticle": {
+=======
+          "article": {
+>>>>>>> Stashed changes
             "type": "string"
           },
           "postFile": {
@@ -284,18 +288,30 @@
           }
         },
         "example": {
+<<<<<<< Updated upstream
           "postTitle": "string",
           "postArticle": "string",
           "postFile": "string"
+=======
+          "article": "string",
+          "file": "string"
+>>>>>>> Stashed changes
         }
       },
       "postings_postId_body": {
         "type": "object",
         "properties": {
+<<<<<<< Updated upstream
           "postId": {
             "type": "integer"
           },
           "postTitle": {
+=======
+          "id": {
+            "type": "string"
+          },
+          "users_id": {
+>>>>>>> Stashed changes
             "type": "string"
           },
           "postArticle": {
@@ -306,10 +322,15 @@
           }
         },
         "example": {
+<<<<<<< Updated upstream
           "postId": "integer",
           "postTitle": "string",
           "postArticle": "string",
           "postFile": "string"
+=======
+          "article": "string",
+          "file_url": "string"
+>>>>>>> Stashed changes
         }
       }
     }

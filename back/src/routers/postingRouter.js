@@ -6,6 +6,7 @@ import path from "path";
 import Comments from "../../db/models/comment";
 import Users from "../../db/models/user";
 import Postings from "../../db/models/posting";
+import { login_required } from "../middlewares/login_required";
 
 const postingRouter = express.Router();
 
@@ -28,11 +29,10 @@ const upload = multer({
 });
 
 // 게시글 생성
-postingRouter.post("/postings/posting", async (req, res, next) => {
+postingRouter.post("/postings/posting", login_required, async (req, res, next) => {
   try {
     const posting = {
-      users_id: req.body.users_id,
-      title: req.body.title,
+      users_id: req.user.id,
       article: req.body.article,
       file_url: req.body.file_url, // 사진 file 경로 만들기
     };
@@ -85,6 +85,7 @@ postingRouter.get("/postings/:id", async (req, res, next) => {
       include: [
         {
           model: Users,
+          where: { id: req.body.id },
           attributes: ["id", "nickname", "profile_url"],
         },
         {
@@ -113,10 +114,7 @@ postingRouter.put("/postings/:id", async (req, res, next) => {
     if (!posting) {
       return res.status(403).send("존재하지 않는 게시글입니다.");
     }
-    await Postings.update(
-      { title: req.body.title, article: req.body.article },
-      { where: { id: req.params.postings_id } },
-    );
+    await Postings.update({ article: req.body.article }, { where: { id: req.params.postings_id } });
     const updatedPosting = await Postings.findOne({
       where: { id: req.params.id },
       include: [

@@ -36,7 +36,7 @@ commentRouter.post("/:postings_id/comment", async (req, res, next) => {
 });
 
 // 댓글 수정
-commentRouter.put("/:postings_id/comments/:id", async (req, res, next) => {
+commentRouter.put("postings/:postings_id/comments/:comments_id", async (req, res, next) => {
   try {
     const posting = await Postings.findOne({ where: { id: req.params.postings_id } });
     if (!posting) {
@@ -60,7 +60,7 @@ commentRouter.put("/:postings_id/comments/:id", async (req, res, next) => {
 });
 
 // 댓글 삭제
-commentRouter.delete("/:postings_id/comments/:id", async (req, res, next) => {
+commentRouter.delete("postings/:postings_id/comments/:comments_id", async (req, res, next) => {
   try {
     const posting = await Postings.findOne({ where: { id: req.params.postings_id } });
     if (!posting) {
