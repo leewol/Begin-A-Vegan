@@ -45,7 +45,7 @@ commentRouter.put(
         include: [
           {
             model: Users,
-            attributes: ["id", "nickname", "profile_url"],
+            attributes: ["nickname", "profile_url"],
           },
         ],
       });

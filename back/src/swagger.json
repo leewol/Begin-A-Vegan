@@ -204,7 +204,7 @@
     },
     "/postingList": {
       "get": {
-        "summary": "게시물 피드로 10개씩 보기",
+        "summary": "게시물 전체 조회",
         "responses": {
           "200": {
             "description": "OK"

@@ -46,32 +46,46 @@ postingRouter.post("/postings/posting", login_required, async (req, res, next) =
   }
 });
 
-// 등록된 모든 게시글(피드) 로딩마다 10개씩 보여주기 -> 최신 작성순
+// 등록된 모든 게시글 조회-> 최신 작성순
 postingRouter.get("/postingList", login_required, async (req, res, next) => {
   try {
-    const where = {};
-    if (req.query.lastId) {
-      where.id = { [Op.lt]: req.query.lastId };
-    }
     const postings = await Postings.findAll({
-      where,
-      limit: 10,
+      include: [
+        {
+          model: Users,
+          attributes: ["nickname", "profile_url"],
+        },
+        {
+          model: Comments,
+          include: [
+            {
+              model: Users,
+              attributes: ["nickname", "profile_url"],
+            },
+          ],
+        },
+      ],
       order: [
         ["created_at", "DESC"],
         [Comments, "created_at", "DESC"],
       ],
-      include: [
-        {
-          model: Users,
-          attributes: ["id", "nickname"],
-        },
-        {
-          model: Users,
-          as: "Likers",
-          attributes: ["id"],
-        },
-      ],
     });
+    //   order: [
+    //     ["created_at", "DESC"],
+    //     [Comments, "created_at", "DESC"],
+    //   ],
+    //   include: [
+    //     {
+    //       model: Users,
+    //       attributes: ["id", "nickname"],
+    //     },
+    //     {
+    //       model: Users,
+    //       as: "Likers",
+    //       attributes: ["id"],
+    //     },
+    //   ],
+    // });
     res.status(200).json(postings);
   } catch (error) {
     next(error);
@@ -86,15 +100,15 @@ postingRouter.get("/postings/:id", login_required, async (req, res, next) => {
       include: [
         {
           model: Users,
-          attributes: ["id", "nickname", "profile_url"],
+          attributes: ["nickname", "profile_url"],
         },
         {
           model: Comments,
+          order: ["created_at", "DESC"],
           include: [
             {
               model: Users,
-              attributes: ["id", "nickname", "profile_url"],
-              order: ["created_at", "DESC"],
+              attributes: ["nickname", "profile_url"],
             },
           ],
         },
@@ -164,15 +178,15 @@ postingRouter.post(
           postings_id: req.params.postings_id,
         },
       });
-      if (likeCheck.length == 0) {
+      if (!likeCheck) {
+        Likes.destroy(likeCheck);
+      } else {
         const like = {
           users_id: req.user.id,
           postings_id: req.params.postings_id,
         };
         const liked = await Likes.create(like);
         res.status(201).json(liked);
-      } else {
-        Likes.destroy(likeCheck);
       }
     } catch (error) {
       next(error);
