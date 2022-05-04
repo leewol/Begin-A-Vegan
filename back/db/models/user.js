@@ -67,19 +67,19 @@ class Users extends Sequelize.Model {
     );
   }
   static associate(models) {
-    models.Users.hasMany(models.Postings, {
+    Users.hasMany(models.Postings, {
       foreignKey: "users_id",
       sourceKey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    models.Users.hasMany(models.Comments, {
+    Users.hasMany(models.Comments, {
       foreignKey: "users_id",
       sourceKey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    models.Users.belongsToMany(models.Postings, { through: "Like", as: "Liked" });
+    Users.belongsToMany(models.Postings, { through: "Like", as: "Liked" });
   }
 }
 

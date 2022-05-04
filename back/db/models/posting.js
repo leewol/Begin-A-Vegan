@@ -18,10 +18,6 @@ class Postings extends Sequelize.Model {
             key: "id",
           },
         },
-        title: {
-          type: Sequelize.STRING(200),
-          allowNull: false,
-        },
         article: {
           type: Sequelize.TEXT,
           allowNull: false,
@@ -59,19 +55,19 @@ class Postings extends Sequelize.Model {
     );
   }
   static associate(models) {
-    models.Postings.belongsTo(models.Users, {
+    Postings.belongsTo(models.Users, {
       foreignKey: "users_id",
       targetkey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    models.Postings.hasMany(models.Comments, {
+    Postings.hasMany(models.Comments, {
       foreignKey: "id",
       sourceKey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    models.Postings.belongsToMany(models.Users, { through: "Like", as: "Likers" });
+    Postings.belongsToMany(models.Users, { through: "like_users_postings", as: "Likers" });
   }
 }
 
