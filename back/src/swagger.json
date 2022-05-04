@@ -137,7 +137,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/postings_posting_body"
+                "$ref": "#/components/schemas/posting_body"
               }
             }
           }
@@ -149,19 +149,19 @@
         }
       }
     },
-    "/postings/{postId}": {
+    "/postings/{postings_id}": {
       "get": {
         "summary": "작성한 게시글 조회",
         "parameters": [
           {
-            "name": "postId",
+            "name": "postings_id",
             "in": "path",
             "description": "The Id of the user to return",
             "required": true,
             "style": "simple",
             "explode": false,
             "schema": {
-              "type": "integer"
+              "type": "string"
             }
           }
         ],
@@ -175,14 +175,14 @@
         "summary": "게시글 수정",
         "parameters": [
           {
-            "name": "postId",
+            "name": "postings_id",
             "in": "path",
             "description": "The Id of the user to return",
             "required": true,
             "style": "simple",
             "explode": false,
             "schema": {
-              "type": "integer"
+              "type": "string"
             }
           }
         ],
@@ -190,7 +190,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/postings_postId_body"
+                "$ref": "#/components/schemas/posting_body"
               }
             }
           }
@@ -205,19 +205,166 @@
         "summary": "게시글 삭제",
         "parameters": [
           {
-            "name": "postId",
+            "name": "postings_id",
             "in": "path",
             "required": true,
             "style": "simple",
             "explode": false,
             "schema": {
-              "type": "integer"
+              "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/{postings_id}/comments/comment": {
+      "post": {
+        "summary": "댓글 작성",
+        "parameters": [
+          {
+            "name": "postings_id",
+            "in": "path",
+            "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/comment_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/postings/{postings_id}/comments/{comments_id}": {
+      "put": {
+        "summary": "댓글 수정",
+        "parameters": [
+          {
+            "name": "postings_id",
+            "in": "path",
+            "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "comments_id",
+            "in": "path",
+            "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/comment_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "summary": "댓글 삭제",
+        "parameters": [
+          {
+            "name": "postings_id",
+            "in": "path",
+            "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "comments_id",
+            "in": "path",
+            "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/{postings_id}/like": {
+      "patch": {
+        "summary": "좋아요!",
+        "parameters": [
+          {
+            "name": "postings_id",
+            "in": "path",
+            "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "postings_id": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "postings_id": "string"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
           }
         }
       }
@@ -297,10 +444,13 @@
           }
         }
       },
-      "postings_posting_body": {
+      "posting_body": {
         "type": "object",
         "properties": {
-          "title": {
+          "id": {
+            "type": "string"
+          },
+          "users_id": {
             "type": "string"
           },
           "article": {
@@ -311,28 +461,24 @@
           }
         },
         "example": {
-          "title": "string",
-          "article": "string",
-          "file": "string"
-        }
-      },
-      "postings_postId_body": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string"
-          },
-          "article": {
-            "type": "string"
-          },
-          "file_url": {
-            "type": "string"
-          }
-        },
-        "example": {
-          "title": "string",
+          "users_id": "string",
           "article": "string",
           "file_url": "string"
+        }
+      },
+      "comment_body": {
+        "type": "object",
+        "properties": {
+          "users_id": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "users_id": "string",
+          "content": "string"
         }
       }
     }

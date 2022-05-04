@@ -5,7 +5,7 @@ class Users extends Sequelize.Model {
     return super.init(
       {
         id: {
-          type: Sequelize.STRING(32),
+          type: Sequelize.STRING(36),
           defaultValue: Sequelize.UUIDV4,
           allowNull: false,
           primaryKey: true,
@@ -49,10 +49,13 @@ class Users extends Sequelize.Model {
         description: {
           type: Sequelize.STRING(100),
           allowNull: true,
+<<<<<<< HEAD
         },
         provider: {
           type: Sequelize.STRING(100),
           allowNull: true,
+=======
+>>>>>>> refs/remotes/origin/dev
         },
       },
       {
@@ -67,19 +70,19 @@ class Users extends Sequelize.Model {
     );
   }
   static associate(models) {
-    models.Users.hasMany(models.Postings, {
+    Users.hasMany(models.Postings, {
       foreignKey: "users_id",
       sourceKey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    models.Users.hasMany(models.Comments, {
+    Users.hasMany(models.Comments, {
       foreignKey: "users_id",
       sourceKey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    models.Users.belongsToMany(models.Postings, { through: "Like", as: "Liked" });
+    Users.belongsToMany(models.Postings, { through: "Like", as: "Liked" });
   }
 }
 
