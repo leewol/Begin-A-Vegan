@@ -7,8 +7,23 @@ import multer from "multer";
 import jwt from "jsonwebtoken";
 import { login_required } from "../middlewares/login_required";
 import dotenv from "dotenv";
+import { cookie } from "express/lib/response";
 
 const userAuthRouter = express.Router();
+
+userAuthRouter.get("/users/:id", async (req, res, next) => {
+  try {
+    const user = await Users.findOne({
+      where: { id: req.params.id },
+    });
+    if (!user) {
+      return res.send("없는 사용자입니다.");
+    }
+    res.status(201).json(user);
+  } catch (error) {
+    next(error);
+  }
+});
 
 userAuthRouter.post("/users", async (req, res) => {
   const duplicate = await Users.findOne({
@@ -52,7 +67,6 @@ userAuthRouter.post("/login", (req, res, next) => {
         console.error(loginErr);
         return next(loginErr);
       }
-      console.log("OK");
 
       const email = req.body.email;
       const password = req.body.password;
@@ -71,7 +85,7 @@ userAuthRouter.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
-userAuthRouter.post("/logout", (req, res, next) => {
+userAuthRouter.post("/logout", (req, res) => {
   req.logout();
   res.clearCookie("token");
   res.send("ok");
@@ -79,7 +93,6 @@ userAuthRouter.post("/logout", (req, res, next) => {
 
 userAuthRouter.patch("/users/:id", async (req, res, next) => {
   try {
-    console.log("1");
     const user = await Users.update(
       {
         nickname: req.body.nickname,
@@ -89,7 +102,7 @@ userAuthRouter.patch("/users/:id", async (req, res, next) => {
         where: { id: req.user.dataValues.id },
       },
     );
-    res.status(200).json("OK");
+    res.status(200);
   } catch (error) {
     console.error(error);
     next(error);

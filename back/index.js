@@ -13,6 +13,7 @@ import cookieParser from "cookie-parser";
 import userAuthRouter from "./src/routers/userRouter";
 import postingRouter from "./src/routers/postingRouter";
 import commentRouter from "./src/routers/commentRouter";
+import authRouter from "./src/routers/authRouter";
 
 dotenv.config();
 passportConfig();
@@ -43,6 +44,7 @@ app.get("/", (req, res) => {
 app.use(userAuthRouter);
 app.use(postingRouter);
 app.use(commentRouter);
+app.use(authRouter);
 
 app.use("/uploads", express.static("uploads"));
 
