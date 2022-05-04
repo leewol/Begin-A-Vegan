@@ -28,6 +28,13 @@ class MysqlManager {
       console.log(__filename, "Mysql connection has been established successfully");
 
       modelManager.initialize(this.sequelize);
+
+      // sequelize 객체에 등록된 모델 목록을 가져온다
+      Object.values(this.sequelize.models)
+        // associate 함수가 있는 모델만 필터링한다.
+        .filter((model) => typeof model.associate === "function")
+        // associate() 함수를 실행하여 테이블간 관계를 설정한다
+        .filter((model) => model.associate(this.sequelize.models));
     } catch (e) {
       console.log(__filename, `mysql connection failed: ${e}`);
     }
