@@ -49,13 +49,10 @@ class Users extends Sequelize.Model {
         description: {
           type: Sequelize.STRING(100),
           allowNull: true,
-<<<<<<< HEAD
         },
         provider: {
           type: Sequelize.STRING(100),
           allowNull: true,
-=======
->>>>>>> refs/remotes/origin/dev
         },
       },
       {
