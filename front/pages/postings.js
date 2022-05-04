@@ -1,13 +1,31 @@
 import { useState, useEffect } from "react";
 
+import Button from "@mui/material/Button";
+import GrassIcon from "@mui/icons-material/Grass";
+import styled, { css, keyframes } from "styled-components";
+
 import * as Api from "../lib/api";
 import PostCreator from "../components/PostCreator";
+import PostCard from "../components/PostCard";
 
 // TODO : 게시글 피드 형태로 보여 주기
 // * 상태 : 작성 가능한지, 편집 중인지
 // * 모든 게시글 데이터 받아오기 (등록 시간 최근 순)
 
+const SlideBox = styled.div`
+  overflow: hidden;
+  width: 500px;
+  max-height: ${(props) => (props.isOpen ? "500px" : "0")};
+  transition: all 0.5s ease-in-out;
+`;
+
 export default function Posting() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openPostingForm = () => {
+    setIsOpen(!isOpen);
+  };
+
   // useEffect(() => {
   //   Api.get("/postings", "1").then((res) => {
   //     console.log(res.data);
@@ -15,8 +33,14 @@ export default function Posting() {
   // }, []);
 
   return (
-    <div>
-      <PostCreator />
-    </div>
+    <>
+      <Button variant="contained" size="small" onClick={openPostingForm}>
+        <GrassIcon />
+      </Button>
+      <SlideBox isOpen={isOpen}>
+        <PostCreator />
+      </SlideBox>
+      <PostCard />
+    </>
   );
 }
