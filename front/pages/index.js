@@ -5,33 +5,38 @@ import Layout from "../components/Layout";
 import Signup from "../components/Signup";
 import Sidebar from "../components/Sidebar";
 import { FullPage, Slide } from "react-full-page";
+import Charts from "../components/charts";
 
 export default function Home() {
   return (
     <main>
-      <FullPage>
-        <Layout />
-        <Slide>
-          <section className={styles.first}>
-            <Sidebar width={450}>
-              <Signup />
-            </Sidebar>
-            <video autoPlay muted loop className={styles.video}>
-              <source src="/mainVideo.mp4" type="video/mp4" />
-            </video>
-          </section>
-        </Slide>
-        <Slide>
-          <section className={styles.second} id="about">
-            <div className={styles.datagraph1}></div>
-          </section>
-        </Slide>
-        <Slide>
-          <section className={styles.third}>
-            <div className={styles.datagraph2}></div>
-          </section>
-        </Slide>
-      </FullPage>
+      <Layout />
+      <Slide>
+        <section className={styles.first}>
+          <Sidebar width={450}>
+            <Signup />
+          </Sidebar>
+          <video autoPlay muted loop className={styles.video}>
+            <source src="/mainVideo.mp4" type="video/mp4" />
+          </video>
+        </section>
+      </Slide>
+      <Slide>
+        <section>
+          <Sidebar width={450}>
+            <Signup />
+          </Sidebar>
+          <div>
+            <Charts />
+            <style jsx>{`
+              .divchart {
+                height: 60vh;
+                margin: 4rem;
+              }
+            `}</style>
+          </div>
+        </section>
+      </Slide>
     </main>
   );
 }

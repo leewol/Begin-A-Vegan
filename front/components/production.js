@@ -52,7 +52,7 @@ const MyResponsiveStream = ({ data, id }) => (
     curve="cardinal"
     offsetType="diverging"
     order="ascending"
-    colors={{ scheme: "pink_yellowGreen" }}
+    colors={{ scheme: "greens" }}
     fillOpacity={0.85}
     borderColor={{ theme: "background" }}
     defs={[

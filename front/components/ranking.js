@@ -4,10 +4,10 @@ const MyResponsiveBump = ({ data }) => (
   <ResponsiveBump
     data={data}
     interpolation="linear"
-    colors={{ scheme: "spectral" }}
+    colors={{ scheme: "pastel2" }}
     lineWidth={5}
     activeLineWidth={11}
-    inactiveLineWidth={3}
+    inactiveLineWidth={2}
     inactiveOpacity={0.15}
     startLabelPadding={30}
     startLabelTextColor={{ from: "color", modifiers: [] }}

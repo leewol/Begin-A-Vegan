@@ -6,7 +6,7 @@ const MyResponsiveFunnel = ({ data }) => (
     margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
     direction="horizontal"
     valueFormat=">-.4s"
-    colors={{ scheme: "purple_blue" }}
+    colors={{ scheme: "blues" }}
     borderWidth={20}
     borderColor={{ theme: "background" }}
     labelColor={{
