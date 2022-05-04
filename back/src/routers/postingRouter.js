@@ -6,6 +6,7 @@ import path from "path";
 import Comments from "../../db/models/comment";
 import Users from "../../db/models/user";
 import Postings from "../../db/models/posting";
+import Likes from "../../db/models/like_users_postings";
 import { login_required } from "../middlewares/login_required";
 
 const postingRouter = express.Router();
@@ -80,7 +81,7 @@ postingRouter.get("/postingList", login_required, async (req, res, next) => {
 // 게시글 1개 조회
 postingRouter.get("/postings/:id", login_required, async (req, res, next) => {
   try {
-    const posting = await Postings.findOne({
+    const posting = await Postings.findAll({
       where: { id: req.params.id },
       include: [
         {
@@ -151,33 +152,32 @@ postingRouter.delete("/postings/:id", login_required, async (req, res, next) => 
   }
 });
 
-// 게시물 좋아요 -> 좋아요 누르면 postings에 부분 수정(patch)
-postingRouter.patch("/:postings_id/like", login_required, async (req, res, next) => {
-  try {
-    const posting = await Postings.findOne({ where: { id: req.params.postings_id } });
-    if (!posting) {
-      return res.status(403).send("게시글이 존재하지 않습니다.");
+// 게시물 좋아요 -> 좋아요 누르면 좋아요 +1 / 이미 좋아요 누른 상태에서 한 번 더 좋아요 누르면 -1(좋아요 취소)
+postingRouter.post(
+  "/postings/:users_id/:postings_id/like",
+  login_required,
+  async (req, res, next) => {
+    try {
+      const likeCheck = await Likes.findAll({
+        where: {
+          users_id: req.user.id,
+          postings_id: req.params.postings_id,
+        },
+      });
+      if (likeCheck.length == 0) {
+        const like = {
+          users_id: req.user.id,
+          postings_id: req.params.postings_id,
+        };
+        const liked = await Likes.create(like);
+        res.status(201).json(liked);
+      } else {
+        Likes.destroy(likeCheck);
+      }
+    } catch (error) {
+      next(error);
     }
-    await posting.addLikers(req.user.id);
-    res.json({ postings_id: posting.id, users_id: req.user.id });
-    console.log(posting.Likers);
-  } catch (error) {
-    next(error);
-  }
-});
-
-// 게시물 좋아요 취소 -> 좋아요 취소하면 postings에서 likers 삭제
-postingRouter.delete("/:postings_id/like", login_required, async (req, res, next) => {
-  try {
-    const posting = await Postings.findOne({ where: { id: req.params.posting_id } });
-    if (!posting) {
-      return res.status(403).send("게시글이 존재하지 않습니다.");
-    }
-    await posting.removeLikers(req.users_id);
-    res.json({ Postings_id: posting.id, Users_id: req.user.id });
-  } catch (error) {
-    next(error);
-  }
-});
+  },
+);
 
 export default postingRouter;

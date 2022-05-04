@@ -1,30 +1,30 @@
 import Sequelize from "sequelize";
 
-class Postings extends Sequelize.Model {
+class Likes extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
         id: {
-          type: Sequelize.STRING(36),
+          type: Sequelize.STRING(32),
           defaultValue: Sequelize.UUIDV4,
           allowNull: false,
           primaryKey: true,
         },
         users_id: {
-          type: Sequelize.STRING(36),
+          type: Sequelize.STRING(32),
           allowNull: false,
           references: {
             model: "Users",
             key: "id",
           },
         },
-        article: {
-          type: Sequelize.TEXT,
+        postings_id: {
+          type: Sequelize.STRING(36),
           allowNull: false,
-        },
-        file_url: {
-          type: Sequelize.STRING(200),
-          allowNull: false,
+          references: {
+            model: "Postings",
+            key: "id",
+          },
         },
         created_at: {
           type: Sequelize.DATE,
@@ -46,28 +46,26 @@ class Postings extends Sequelize.Model {
         sequelize,
         timestamps: false,
         underscore: false,
-        modelName: "Postings",
-        tableName: "postings",
+        modelName: "likes",
+        tableName: "like_users_postings",
         paranoid: false,
-        charset: "utf8",
-        collate: "utf8_general_ci",
       },
     );
   }
   static associate(models) {
-    Postings.belongsTo(models.Users, {
+    Likes.belongsTo(models.Users, {
       foreignKey: "users_id",
       targetkey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    Postings.hasMany(models.Comments, {
+    Likes.belongsTo(models.Postings, {
       foreignKey: "postings_id",
+      targetkey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    Postings.belongsToMany(models.Users, { through: "like_users_postings", as: "Likers" });
   }
 }
 
-export default Postings;
+export default Likes;

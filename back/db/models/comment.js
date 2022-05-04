@@ -5,13 +5,13 @@ class Comments extends Sequelize.Model {
     return super.init(
       {
         id: {
-          type: Sequelize.STRING(32),
+          type: Sequelize.STRING(36),
           defaultValue: Sequelize.UUIDV4,
           allowNull: false,
           primaryKey: true,
         },
         postings_id: {
-          type: Sequelize.STRING(32),
+          type: Sequelize.STRING(36),
           allowNull: false,
           references: {
             model: "Postings",
@@ -19,7 +19,7 @@ class Comments extends Sequelize.Model {
           },
         },
         users_id: {
-          type: Sequelize.STRING(32),
+          type: Sequelize.STRING(36),
           defaultValue: Sequelize.UUIDV4,
           allowNull: true,
           references: {
