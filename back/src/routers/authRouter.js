@@ -13,8 +13,6 @@ authRouter.get(
   },
 );
 
-export default authRouter;
-
 authRouter.get("/kakao", passport.authenticate("kakao"));
 
 authRouter.get(
@@ -24,3 +22,5 @@ authRouter.get(
     res.redirect("/");
   },
 );
+
+export default authRouter;
