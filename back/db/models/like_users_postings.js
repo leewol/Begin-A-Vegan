@@ -5,13 +5,13 @@ class Likes extends Sequelize.Model {
     return super.init(
       {
         id: {
-          type: Sequelize.STRING(32),
+          type: Sequelize.STRING(36),
           defaultValue: Sequelize.UUIDV4,
           allowNull: false,
           primaryKey: true,
         },
         users_id: {
-          type: Sequelize.STRING(32),
+          type: Sequelize.STRING(36),
           allowNull: false,
           references: {
             model: "Users",
@@ -46,7 +46,7 @@ class Likes extends Sequelize.Model {
         sequelize,
         timestamps: false,
         underscore: false,
-        modelName: "likes",
+        modelName: "Likes",
         tableName: "like_users_postings",
         paranoid: false,
       },

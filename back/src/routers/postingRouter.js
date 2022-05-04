@@ -11,23 +11,22 @@ import { login_required } from "../middlewares/login_required";
 
 const postingRouter = express.Router();
 
-// 프론트 참고: https://handhand.tistory.com/110
-// 이미지 업로드를 위한 multer
-const upload = multer({
-  // 저장 위치 diskStorage = 하드디스크
-  storage: multer.diskStorage({
-    destination(req, file, cb) {
-      cb(null, "public/images"); // 저장할 폴더 지정(express 실행 시 자동 생성되는 public/images 폴더에 저장)
-    },
-    filename(req, file, cb) {
-      // 중복피하기위한 확장자 추출 ex(.png)
-      const ext = file.originalname.substring(file.originalname.lastIndexOf("."));
-      //파일명 저장 이름 + 날짜 + 확장자 -> 중복된 사진 생성 방지
-      cb(null, `${file.fieldname}-${Date.now()}${ext}`);
-    },
-  }),
-  limits: { fileSize: 20 * 1024 * 1024 }, // 크기 지정(프론트랑 상의 필요)
-});
+// // 이미지 업로드를 위한 multer
+// const upload = multer({
+//   // 저장 위치 diskStorage = 하드디스크
+//   storage: multer.diskStorage({
+//     destination(req, file, cb) {
+//       cb(null, "public/images"); // 저장할 폴더 지정(express 실행 시 자동 생성되는 public/images 폴더에 저장)
+//     },
+//     filename(req, file, cb) {
+//       // 중복피하기위한 확장자 추출 ex(.png)
+//       const ext = file.originalname.substring(file.originalname.lastIndexOf("."));
+//       //파일명 저장 이름 + 날짜 + 확장자 -> 중복된 사진 생성 방지
+//       cb(null, `${file.fieldname}-${Date.now()}${ext}`);
+//     },
+//   }),
+//   limits: { fileSize: 20 * 1024 * 1024 }, // 크기 지정(프론트랑 상의 필요)
+// });
 
 // 게시글 생성
 postingRouter.post("/postings/posting", login_required, async (req, res, next) => {
@@ -112,6 +111,9 @@ postingRouter.get("/postings/:id", login_required, async (req, res, next) => {
             },
           ],
         },
+        {
+          model: Likes,
+        },
       ],
     });
 
@@ -167,31 +169,40 @@ postingRouter.delete("/postings/:id", login_required, async (req, res, next) => 
 });
 
 // 게시물 좋아요 -> 좋아요 누르면 좋아요 +1 / 이미 좋아요 누른 상태에서 한 번 더 좋아요 누르면 -1(좋아요 취소)
-postingRouter.post(
-  "/postings/:users_id/:postings_id/like",
-  login_required,
-  async (req, res, next) => {
-    try {
-      const likeCheck = await Likes.findAll({
-        where: {
-          users_id: req.user.id,
-          postings_id: req.params.postings_id,
-        },
-      });
-      if (!likeCheck) {
-        Likes.destroy(likeCheck);
-      } else {
-        const like = {
-          users_id: req.user.id,
-          postings_id: req.params.postings_id,
-        };
-        const liked = await Likes.create(like);
-        res.status(201).json(liked);
-      }
-    } catch (error) {
-      next(error);
-    }
-  },
-);
+postingRouter.post("/postings/:postings_id/like", login_required, async (req, res, next) => {
+  try {
+    const like = {
+      users_id: req.user.id,
+      postings_id: req.params.postings_id,
+    };
+    const liked = await Likes.create(like);
+    res.status(201).json(liked);
+    // if (!is_liked) {
+    //   const like = {
+    //     users_id: req.user.id,
+    //     postings_id: req.params.postings_id,
+    //   };
+    //   const liked = await Likes.create(like);
+    //   res.status(201).json(liked);
+    //     where: {
+    //       users_id: req.user.id,
+    //       postings_id: req.params.postings_id,
+    //     },
+    //   });
+    //   if (!is_liked) {
+    //     const like = {
+    //       users_id: req.user.id,
+    //       postings_id: req.params.postings_id,
+    //     };
+    //     const liked = await Likes.create(like);
+    //     res.status(201).json(liked);
+    //   } else {
+    //     Likes.destroy(is_liked);
+    //     res.status(200).json(false);
+    //   }
+  } catch (error) {
+    next(error);
+  }
+});
 
 export default postingRouter;

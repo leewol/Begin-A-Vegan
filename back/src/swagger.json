@@ -318,6 +318,29 @@
           }
         }
       }
+    },
+    "/postings/:postings_id/like": {
+      "post": {
+        "summary": "좋아요 or 좋아요 취소",
+        "parameters": [
+          {
+            "name": "postings_id",
+            "in": "path",
+            "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
