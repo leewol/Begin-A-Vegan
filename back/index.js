@@ -29,6 +29,7 @@ app.use(
   session({
     saveUninitialized: false,
     resave: false,
+		secret: process.env.SESSION_SECRET,
   }),
 );
 app.use(cookieParser());
