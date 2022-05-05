@@ -33,6 +33,7 @@ async function post(endPoint, data) {
       "Content-Type": "application/json",
       // Authorization: ``;
     },
+    withCredentials: true,
   });
 }
 
