@@ -26,12 +26,11 @@ const QuillWrapper = dynamic(
   },
 );
 
-export default function PostCreator() {
+export default function PostCreator({ setIsOpen }) {
   // * userID 정보는 메인 페이지에서 받아오기
-  const LoginUserId = ""; // 임시 코드
+  const loginUserId = "a4b4baea-b4ed-424a-b7f7-96725b59"; // 임시 코드
   const [imageId, setImageId] = useState(null);
   const [postingImage, setPostingImage] = useState(null);
-  // const [uploadFile, setUploadFile] = useState(null);
   const [article, setArticle] = useState("");
   const [postable, setPostable] = useState(false);
   const quillRef = useRef(null);
@@ -94,15 +93,24 @@ export default function PostCreator() {
   // 포스트 제출
   const handleQuillSubmit = async (event) => {
     event.preventDefault();
-    // const data = await uploadFile
-    //   .promise()
-    //   .then((data) => {
-    //     setPostingImage(data.location);
-    //     return data;
-    //   }) // url 반환
-    //   .catch((err) => console.error(err));
 
-    // console.log(data.loaction);
+    // 게시글 포스팅
+    try {
+      await Api.post("/postings/posting", {
+        users_id: loginUserId,
+        article,
+        file_url: postingImage,
+      });
+    } catch (err) {
+      alert("포스팅 등록에 실패하였습니다.", err);
+    }
+    // 편집창 닫힘 & 모든 내용 초기화
+    // ? 초기화가 나중에 되게는 어떻게? 닫힐 때 지워지는 게 거슬림..
+    setIsOpen(false);
+    setArticle("");
+    setImageId(null);
+    setPostingImage(null);
+    setPostable(false);
   };
 
   const formats = ["bold", "italic", "underline", "strike", "image", "clean"];
