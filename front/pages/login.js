@@ -28,16 +28,8 @@ export default function Login() {
         password,
       });
       const user = res.data;
-      const token = user.token;
-
-      sessionStorage.setItem("userToken", token);
-
-      dispatch({
-        type: "LOGIN_SUCCESS",
-        payload: user,
-      });
     } catch (error) {
-      console.log("로그인에 실패하였습니다.\n", error);
+      console.log("로그인에 실패하였습니다!\n", error);
     }
   };
 
