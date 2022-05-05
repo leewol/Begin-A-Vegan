@@ -202,16 +202,6 @@
         }
       }
     },
-    "/postingList": {
-      "get": {
-        "summary": "게시물 전체 조회",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/{postings_id}/comments/comment": {
       "post": {
         "summary": "댓글 작성",
@@ -321,7 +311,7 @@
     },
     "/postings/{postings_id}/like": {
       "post": {
-        "summary": "좋아요 or 좋아요 취소",
+        "summary": "좋아요!",
         "parameters": [
           {
             "name": "postings_id",
@@ -335,6 +325,57 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "summary": "좋아요 취소",
+        "parameters": [
+          {
+            "name": "postings_id",
+            "in": "path",
+            "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/postingList": {
+      "get": {
+        "summary": "게시물 전체 조회",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/postings/user_like_postings": {
+      "get": {
+        "summary": "좋아요한 게시물 조회",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/postings/user_postings": {
+      "get": {
+        "summary": "작성한 게시물 조회",
         "responses": {
           "200": {
             "description": "OK"
