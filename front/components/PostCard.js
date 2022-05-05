@@ -9,14 +9,11 @@ import {
   Avatar,
   Typography,
   Collapse,
-  Box,
-  TextField,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 
 import Comment from "./Comment";
 
@@ -82,13 +79,10 @@ export default function PostCard() {
         </ExpandMore>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
+        {/* 컴포넌트화시켜서 데려오기, 수정 및 삭제 넣기 */}
         <CardContent>불러온 댓글들</CardContent>
       </Collapse>
-      <Box sx={{ display: "flex", alignItems: "flex-end", marginLeft: 2, marginBottom: 3 }}>
-        {/* 여기에 댓글 유저 프로필 사진 */}
-        <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-        <TextField id="input-comment" variant="standard" placeholder="Write a Comment" />
-      </Box>
+      <Comment />
     </Card>
   );
 }
