@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BACK_PORT = "5001";
-export const SERVER_URL = `http://localhost:${BACK_PORT}`; // ! 수정 예정
+const SERVER_URL = `http://localhost:${BACK_PORT}`; // ! 수정 예정
 // const SERVER_URL = `http://${window.location.hostname}:${BACK_PORT}/`;
 
 // * 데이터 조회 (GET)
@@ -30,10 +30,9 @@ async function post(endPoint, data) {
   console.log(`%cPOST 요청: ${uri}`, "color: #296aba;");
   console.log(`%cPOST 요청 데이터: ${bodyData}`, "color: #296aba;");
 
-  // data 처리를 axios에 위임합니다.
-  return axios.post(uri, data, {
+  return axios.post(uri, bodyData, {
     headers: {
-      // "Content-Type": "application/json",
+      "Content-Type": "application/json",
       Authorization: `Bearer ${window.localStorage.getItem("token")}`,
     },
   });
