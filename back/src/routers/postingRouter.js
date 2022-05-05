@@ -171,12 +171,19 @@ postingRouter.delete("/postings/:id", login_required, async (req, res, next) => 
 // 게시물 좋아요 -> 좋아요 누르면 좋아요 +1 / 이미 좋아요 누른 상태에서 한 번 더 좋아요 누르면 -1(좋아요 취소)
 postingRouter.post("/postings/:postings_id/like", login_required, async (req, res, next) => {
   try {
-    const like = {
-      users_id: req.user.id,
-      postings_id: req.params.postings_id,
-    };
-    const liked = await Likes.create(like);
-    res.status(201).json(liked);
+    const users_id = req.user.id;
+    const postings_id = req.params.postings_id;
+
+    const is_liked = await Likes.findAll({
+      where: { users_id, postings_id },
+    });
+    if (!is_liked) {
+      const liked = Likes.create({ users_id, postings_id });
+      res.status(201).json(liked);
+    } else {
+      Likes.destroy({ where: { users_id, postings_id } });
+      res.status(200).json(true);
+    }
     // if (!is_liked) {
     //   const like = {
     //     users_id: req.user.id,

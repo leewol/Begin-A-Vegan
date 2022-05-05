@@ -319,7 +319,7 @@
         }
       }
     },
-    "/postings/:postings_id/like": {
+    "/postings/{postings_id}/like": {
       "post": {
         "summary": "좋아요 or 좋아요 취소",
         "parameters": [
