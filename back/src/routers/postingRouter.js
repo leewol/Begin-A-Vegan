@@ -33,6 +33,7 @@ postingRouter.post("/postings/posting", async (req, res, next) => {
   try {
     const posting = {
       users_id: req.body.users_id,
+			// title: req.body.title,
       article: req.body.article,
       file_url: req.body.file_url, // 사진 file 경로 만들기
     };
@@ -75,6 +76,16 @@ postingRouter.get("/postingList", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+});
+
+postingRouter.get("/postings/me", login_required, async (req, res) => {
+  const postings = await Postings.findAll({
+    where: { users_id: req.user.id },
+    order: [["created_at", "DESC"]],
+    offset: Number(req.query.offset) || 0,
+    limit: 10,
+  });
+  res.json(postings);
 });
 
 // 게시글 1개 조회
