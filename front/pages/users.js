@@ -1,25 +1,24 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import Header from "../components/Header";
-
 import * as Api from "../lib/api";
 
 export default function Signup() {
-  const [inputs, setInputs] = useState({
-    id: "",
-    nickname: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const [email, setEmail] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const { id, email, password, confirmPassword, nickname } = inputs;
-
-  const onChange = (event) => {
-    const { name, value } = event.target;
-    setInputs({
-      ...inputs,
-      [name]: value,
-    });
+  const onEmailHandler = (event) => {
+    setEmail(event.target.value);
+  };
+  const onNicknameHandler = (event) => {
+    setNickname(event.target.value);
+  };
+  const onPasswordHandler = (event) => {
+    setPassword(event.target.value);
+  };
+  const onConfirmPasswordHandler = (event) => {
+    setConfirmPassword(event.target.value);
   };
 
   //이메일이 abc@example.com 형태인지 regex를 이용해 확인함.
@@ -37,33 +36,23 @@ export default function Signup() {
   const isPasswordValid = password.length >= 4;
   // 비밀번호와 확인용 비밀번호가 일치하는지 여부를 확인함.
   const isPasswordSame = password === confirmPassword;
-  // 이름이 2글자 이상인지 여부를 확인함.
-  const isNameValid = name.length >= 2;
-
-  // 위 4개 조건이 모두 동시에 만족되는지 여부를 확인함.
-  const isFormValid = isEmailValid && isPasswordValid && isPasswordSame && isNameValid;
 
   const onSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      await Api.post("user/users", {
-        id,
-        nickname,
+      await Api.post("/users", {
         email,
+        nickname,
         password,
       });
-    } catch (err) {
-      return alert("회원가입에 실패하였습니다.", err);
-    }
-
-    if (password !== confirmPassword) {
-      return alert("입력하신 비밀번호와 일치하지 않습니다.");
+    } catch (error) {
+      console.log("회원가입에 실패하였습니다.", error);
     }
   };
 
   return (
-    <form onSubmit={onSubmit}>
+    <div>
       <Header />
       <div>
         <span>
@@ -72,43 +61,59 @@ export default function Signup() {
           비건인가요?
         </span>
       </div>
-
-      <div>
-        <input name="id" placeholder="ID" onChange={onChange} value={id} />
-      </div>
-      <div>
-        <input name="nickname" placeholder="NICKNAME" onChange={onChange} value={nickname} />
-      </div>
-      <div>
-        <input name="email" placeholder="EMAIL" onChange={onChange} value={email} />
-      </div>
-      <div>
-        <input name="password" placeholder="PASSWORD" onChange={onChange} value={password} />
-      </div>
-      <div>
-        <input
-          name="confirmPassword"
-          placeholder="CONFIRM PASSWORD"
-          onChange={onChange}
-          value={confirmPassword}
-        />
-      </div>
-
-      <div>
-        <button disabled={!isFormValid}>CREATE ACCOUNT</button>
-      </div>
-
-      <style jsx>
-        {`
-          span {
-            font-size: 25px;
-          }
-
-          input {
-            margin-top: 7px;
-          }
-        `}
-      </style>
-    </form>
+      <form onSubmit={onSubmit}>
+        <div>
+          <input
+            type="email"
+            name="email"
+            placeholder="EMAIL"
+            value={email}
+            onChange={onEmailHandler}
+          />
+          {!isEmailValid && (
+            <div>
+              <span>이메일 형식이 올바르지 않습니다.</span>
+            </div>
+          )}
+        </div>
+        <div>
+          <input
+            name="nickname"
+            placeholder="NICKNAME"
+            value={nickname}
+            onChange={onNicknameHandler}
+          />
+        </div>
+        <div>
+          <input
+            type="password"
+            name="password"
+            placeholder="PASSWORD"
+            value={password}
+            onChange={onPasswordHandler}
+          />
+          {!isPasswordValid && (
+            <div>
+              <span>비밀번호를 4글자 이상으로 입력해주세요.</span>
+            </div>
+          )}
+        </div>
+        <div>
+          <input
+            type="password"
+            name="confirm-password"
+            placeholder="CONFIRM PASSWORD"
+            value={confirmPassword}
+            onChange={onConfirmPasswordHandler}
+          />
+          {!isPasswordSame && (
+            <div>
+              <span>비밀번호와 일치하지 않습니다.</span>
+            </div>
+          )}
+        </div>
+        <button type="submit">CREATE ACCOUNT</button>
+      </form>
+    </div>
   );
 }
