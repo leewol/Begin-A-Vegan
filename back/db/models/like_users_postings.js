@@ -1,6 +1,6 @@
 import Sequelize from "sequelize";
 
-class Comments extends Sequelize.Model {
+class Likes extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
@@ -10,6 +10,14 @@ class Comments extends Sequelize.Model {
           allowNull: false,
           primaryKey: true,
         },
+        users_id: {
+          type: Sequelize.STRING(36),
+          allowNull: false,
+          references: {
+            model: "Users",
+            key: "id",
+          },
+        },
         postings_id: {
           type: Sequelize.STRING(36),
           allowNull: false,
@@ -17,19 +25,6 @@ class Comments extends Sequelize.Model {
             model: "Postings",
             key: "id",
           },
-        },
-        users_id: {
-          type: Sequelize.STRING(36),
-          defaultValue: Sequelize.UUIDV4,
-          allowNull: true,
-          references: {
-            model: "Users",
-            key: "id",
-          },
-        },
-        content: {
-          type: Sequelize.TEXT,
-          allowNull: false,
         },
         created_at: {
           type: Sequelize.DATE,
@@ -51,22 +46,20 @@ class Comments extends Sequelize.Model {
         sequelize,
         timestamps: false,
         underscore: false,
-        modelName: "Comments",
-        tableName: "comments",
+        modelName: "Likes",
+        tableName: "like_users_postings",
         paranoid: false,
-        charset: "utf8",
-        collate: "utf8_general_ci",
       },
     );
   }
   static associate(models) {
-    Comments.belongsTo(models.Users, {
+    Likes.belongsTo(models.Users, {
       foreignKey: "users_id",
       targetkey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    Comments.belongsTo(models.Postings, {
+    Likes.belongsTo(models.Postings, {
       foreignKey: "postings_id",
       targetkey: "id",
       onDelete: "cascade",
@@ -75,4 +68,4 @@ class Comments extends Sequelize.Model {
   }
 }
 
-export default Comments;
+export default Likes;

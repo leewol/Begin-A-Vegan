@@ -79,7 +79,12 @@ class Users extends Sequelize.Model {
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    Users.belongsToMany(models.Postings, { through: "Like", as: "Liked" });
+    Users.hasMany(models.Likes, {
+      foreignKey: "users_id",
+      sourceKey: "id",
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    });
   }
 }
 

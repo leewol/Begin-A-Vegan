@@ -5,13 +5,13 @@ class Postings extends Sequelize.Model {
     return super.init(
       {
         id: {
-          type: Sequelize.UUID,
+          type: Sequelize.STRING(36),
           defaultValue: Sequelize.UUIDV4,
           allowNull: false,
           primaryKey: true,
         },
         users_id: {
-          type: Sequelize.UUID,
+          type: Sequelize.STRING(36),
           allowNull: false,
           references: {
             model: "Users",
@@ -62,12 +62,15 @@ class Postings extends Sequelize.Model {
       onUpdate: "cascade",
     });
     Postings.hasMany(models.Comments, {
-      foreignKey: "id",
-      sourceKey: "id",
+      foreignKey: "postings_id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    Postings.belongsToMany(models.Users, { through: "like_users_postings", as: "Likers" });
+    Postings.hasMany(models.Likes, {
+      foreignKey: "postings_id",
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    });
   }
 }
 

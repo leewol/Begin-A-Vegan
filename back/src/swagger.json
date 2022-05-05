@@ -222,6 +222,16 @@
         }
       }
     },
+    "/postingList": {
+      "get": {
+        "summary": "게시물 전체 조회",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/{postings_id}/comments/comment": {
       "post": {
         "summary": "댓글 작성",
@@ -329,9 +339,9 @@
         }
       }
     },
-    "/{postings_id}/like": {
-      "patch": {
-        "summary": "좋아요!",
+    "/postings/:postings_id/like": {
+      "post": {
+        "summary": "좋아요 or 좋아요 취소",
         "parameters": [
           {
             "name": "postings_id",
@@ -345,26 +355,9 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "postings_id": {
-                    "type": "string"
-                  }
-                },
-                "example": {
-                  "postings_id": "string"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "OK"
-            }
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -461,7 +454,6 @@
           }
         },
         "example": {
-          "users_id": "string",
           "article": "string",
           "file_url": "string"
         }
@@ -477,7 +469,6 @@
           }
         },
         "example": {
-          "users_id": "string",
           "content": "string"
         }
       }
