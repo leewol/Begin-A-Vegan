@@ -8,7 +8,6 @@ import sample from "../public/sample_profile.jpg";
 import edit from "../public/edit_icon.png";
 import arrowRight from "../public/arrow_right.png";
 import Header from "../components/Header";
-import Nav from "../components/Nav";
 import styles from "../styles/mypage.module.css";
 
 export default function MyPage() {
@@ -88,10 +87,9 @@ export default function MyPage() {
   return (
     <div>
       <Header></Header>
-      <Nav></Nav>
       <div className={styles.layout}>
         <div className={styles.mypage_layout}>
-          <h3 className={styles.titleA}>My Page</h3>
+          <h3 className={styles.titleA}>MY PAGE</h3>
           <div className={state ? `${styles.profile}` : `${styles.profile} ${styles.edit}`}>
             <p className={styles.titleB}>{/*Profile*/}</p>
             <div className={styles.profile_img}>
@@ -112,7 +110,7 @@ export default function MyPage() {
 
                 {/*vegan 일경우 vegan 클래스, nonvegan 일경우 nonvegan 클래스*/}
                 <p className={`${styles.grade} ${me?.is_vegan ? styles.vegan : styles.nonvegan}`}>
-                  {me?.is_vegan ? "" : "non"}vegan
+                  {me?.is_vegan ? "" : "non-"}vegan
                 </p>
                 {/* <p className={`${styles.grade} ${styles.nonvegan}`}>nonvegan</p> */}
 
