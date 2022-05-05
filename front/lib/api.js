@@ -30,9 +30,10 @@ async function post(endPoint, data) {
   console.log(`%cPOST 요청: ${uri}`, "color: #296aba;");
   console.log(`%cPOST 요청 데이터: ${bodyData}`, "color: #296aba;");
 
-  return axios.post(uri, bodyData, {
+  // data 처리를 axios에 위임합니다.
+  return axios.post(uri, data, {
     headers: {
-      "Content-Type": "application/json",
+      // "Content-Type": "application/json",
       Authorization: `Bearer ${window.localStorage.getItem("token")}`,
     },
   });
