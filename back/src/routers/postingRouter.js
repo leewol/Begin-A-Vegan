@@ -1,8 +1,6 @@
 import express from "express";
 import mysqlManager from "../../db";
 import { Sequelize, Op } from "sequelize";
-import multer from "multer";
-import path from "path";
 import Comments from "../../db/models/comment";
 import Users from "../../db/models/user";
 import Postings from "../../db/models/posting";
@@ -21,7 +19,7 @@ postingRouter.post("/postings/posting", login_required, async (req, res, next) =
     };
 
     const newPosting = await Postings.create(posting);
-    res.status(201).json(newPosting);
+    res.status(200).json(newPosting);
   } catch (error) {
     console.log(error);
     next(error);
@@ -92,20 +90,18 @@ postingRouter.get("/postings/:id", login_required, async (req, res, next) => {
       ],
     });
 
-    res.status(201).json(posting);
+    res.status(200).json(posting);
   } catch (error) {
     next(error);
   }
 });
 
 // "마이페이지" User가 좋아요 누른 게시물만 조회하기
-postingRouter.get("/postings/user_like_postings", login_required, async (req, res, next) => {
+postingRouter.get("/postings/:users_id/like_postings", login_required, async (req, res, next) => {
   try {
     const users_id = req.user.id;
-    const postings_id = req.params.id;
-
     const like_posting = await Likes.findAll({
-      where: { users_id },
+      where: { users_id: users_id },
       include: [
         {
           model: Postings,
@@ -135,50 +131,44 @@ postingRouter.get("/postings/user_like_postings", login_required, async (req, re
         },
       ],
     });
-    res.status(201).json(like_posting);
+    res.status(200).json(like_posting);
   } catch (error) {
     next(error);
   }
 });
 
 // "마이페이지" User가 작성한 게시물만 조회하기
-postingRouter.get("/postings/user_postings", login_required, async (req, res, next) => {
+postingRouter.get("/postings/:users_id/_postings", login_required, async (req, res, next) => {
   try {
     const users_id = req.user.id;
-    const postings_id = req.params.id;
 
-    const user_postings = await Postings.findAll({
-      where: { users_id },
+    const postings = await Postings.findAll({
+      where: { users_id: users_id },
       include: [
         {
-          model: Postings,
+          model: Users,
+          attributes: ["nickname", "profile_url"],
+        },
+        {
+          model: Comments,
           include: [
             {
               model: Users,
               attributes: ["nickname", "profile_url"],
             },
-            {
-              model: Comments,
-              include: [
-                {
-                  model: Users,
-                  attributes: ["nickname", "profile_url"],
-                },
-              ],
-            },
-            {
-              model: Likes,
-              attributes: ["users_id"],
-            },
-          ],
-          order: [
-            ["created_at", "DESC"],
-            [Comments, "created_at", "DESC"],
           ],
         },
+        {
+          model: Likes,
+          attributes: ["users_id"],
+        },
+      ],
+      order: [
+        ["created_at", "DESC"],
+        [Comments, "created_at", "DESC"],
       ],
     });
-    res.status(201).json(user_postings);
+    res.status(200).json(postings);
   } catch (error) {
     next(error);
   }
@@ -246,8 +236,9 @@ postingRouter.post("/postings/:postings_id/like", login_required, async (req, re
     if (!posting) {
       return res.status(403).send("존재하지 않는 게시글입니다.");
     }
-    const liked = Likes.create({ users_id, postings_id });
-    res.status(201).json(liked);
+    const liked = await Likes.create({ users_id, postings_id });
+
+    res.status(200).json(liked);
   } catch (error) {
     next(error);
   }
@@ -259,12 +250,12 @@ postingRouter.delete("/postings/:postings_id/like", login_required, async (req, 
     const users_id = req.user.id;
     const postings_id = req.params.postings_id;
 
-    const posting = await Postings.findOne({ where: { postings_id } });
-    if (!posting) {
-      return res.status(403).send("존재하지 않는 게시글입니다.");
-    }
-    Likes.destroy({ users_id, postings_id });
-    res.status(200).json(postings_id);
+    // const posting = await Postings.findOne({ where: { postings_id } });
+    // if (!posting) {
+    //   return res.status(403).send("존재하지 않는 게시글입니다.");
+    // }
+    Likes.destroy({ where: { users_id, postings_id } });
+    res.status(200).json({ postings_id });
   } catch (error) {
     next(error);
   }

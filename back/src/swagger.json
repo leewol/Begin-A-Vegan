@@ -363,9 +363,22 @@
         }
       }
     },
-    "/postings/user_like_postings": {
+    "/postings/{users_id}/like_postings": {
       "get": {
-        "summary": "좋아요한 게시물 조회",
+        "summary": "사용자가 좋아요 누른 게시물 ",
+        "parameters": [
+          {
+            "name": "users_id",
+            "in": "path",
+            "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -373,9 +386,22 @@
         }
       }
     },
-    "/postings/user_postings": {
+    "/postings/{users_id}/_postings": {
       "get": {
-        "summary": "작성한 게시물 조회",
+        "summary": "사용자가 작성한 게시물 ",
+        "parameters": [
+          {
+            "name": "users_id",
+            "in": "path",
+            "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
