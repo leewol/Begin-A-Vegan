@@ -406,7 +406,7 @@
         }
       }
     },
-    "/postings/{users_id}/_postings": {
+    "/postings/{users_id}/postings": {
       "get": {
         "summary": "사용자가 작성한 게시물 ",
         "parameters": [

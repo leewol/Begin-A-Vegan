@@ -138,7 +138,7 @@ postingRouter.get("/postings/:users_id/like_postings", login_required, async (re
 });
 
 // "마이페이지" User가 작성한 게시물만 조회하기
-postingRouter.get("/postings/:users_id/_postings", login_required, async (req, res, next) => {
+postingRouter.get("/postings/:users_id/postings", login_required, async (req, res, next) => {
   try {
     const users_id = req.user.id;
 
