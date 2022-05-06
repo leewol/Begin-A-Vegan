@@ -120,11 +120,7 @@ export default function MyPage() {
           <div className={state ? `${styles.profile}` : `${styles.profile} ${styles.edit}`}>
             <p className={styles.titleB}>{/*Profile*/}</p>
             <div className={styles.profile_img}>
-              <Image
-                src={newProfileImageUrl ?? (me?.profile_url ? me.profile_url : sample)}
-                alt=""
-                layout="fill"
-              />
+              <Image src={newProfileImageUrl ?? me?.profile_url ?? sample} alt="" layout="fill" />
               <div className={styles.img_add}>
                 <input className={styles.upload_name} />
                 <label htmlFor="file">이미지수정</label>
