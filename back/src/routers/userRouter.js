@@ -134,19 +134,44 @@ userAuthRouter.post("/profile", upload.single("image"), login_required, async (r
 
 userAuthRouter.get("/records/:id", async (req, res) => {
   try {
-    const startDay = new Date(2022, 1, 1);
-    const endDay = new Date(2022, 12, 1);
+    const months = [];
+    months.push(0);
+    const now = new Date();
+    const year = now.getFullYear();
 
+    for (let idx = 1; idx <= 12; idx++) {
+      if (idx == 2) {
+        months.push(
+          months[idx - 1] + ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0 ? 29 : 28),
+        );
+      }
+      if (idx == 1 || idx == 3 || idx == 5 || idx == 7 || idx == 8 || idx == 10 || idx == 12) {
+        months.push(months[idx - 1] + 31);
+      }
+      if (idx == 4 || idx == 6 || idx == 9 || idx == 11) {
+        months.push(months[idx - 1] + 30);
+      }
+    }
+    console.log(months);
     const record = await Postings.findAll({
       raw: true,
-      where: { users_id: req.params.id },
+      where: { users_id: req.params.id }, // 이번년도 것만 가져오도록 조건에 추가하셈
       attributes: ["created_at"],
     });
-    for (let value of record) {
-      console.log(value.created_at);
-    }
 
-    res.status(200).json(record);
+    let days = [];
+    if (now.getMonth() < 12) {
+      // days = Array.from({ length: months[6] }, () => 0);
+      days = Array.from({ length: months[12] }, () => 0);
+    }
+    //day에다가 6보다 작으면 180일까지초기화
+
+    for (let time of record) {
+      time = time.created_at;
+      const idx = months[time.getMonth()] + time.getDate() - 1;
+      days[idx] += 1;
+    }
+    res.status(200).json(days);
   } catch (err) {
     console.log(err);
   }
