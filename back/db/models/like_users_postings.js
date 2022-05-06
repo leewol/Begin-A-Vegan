@@ -31,11 +31,6 @@ class Likes extends Sequelize.Model {
           defaultValue: Sequelize.fn("NOW"),
           allowNull: false,
         },
-        updated_at: {
-          type: Sequelize.DATE,
-          defaultValue: Sequelize.fn("NOW"),
-          allowNull: false,
-        },
         is_deleted: {
           type: Sequelize.TINYINT,
           defaultValue: 0,
@@ -49,6 +44,8 @@ class Likes extends Sequelize.Model {
         modelName: "Likes",
         tableName: "like_users_postings",
         paranoid: false,
+        charset: "utf8",
+        collate: "utf8_general_ci",
       },
     );
   }

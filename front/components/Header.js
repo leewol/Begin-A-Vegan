@@ -19,8 +19,8 @@ function Header() {
       {/* 왼쪽 상단 로고 */}
       <div className={styles.logo}>
         <Link href="/">
-          <a style={{ marginLeft: "0px" }}>
-            <Image src="/logo.png" alt="logo" width={200} height={150} />
+          <a style={{ marginLeft: "5px" }}>
+            <Image src="/logo.png" alt="logo" width={200} height={200} />
           </a>
         </Link>
       </div>

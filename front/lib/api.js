@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BACK_PORT = "5001";
-const SERVER_URL = `http://localhost:${BACK_PORT}`; // ! 수정 예정
+const SERVER_URL = `http://${process.env.HOST}:${BACK_PORT}`;
 // const SERVER_URL = `http://${window.location.hostname}:${BACK_PORT}/`;
 
 // * 데이터 조회 (GET)
@@ -11,10 +11,7 @@ async function get(endPoint, params = "") {
   console.log(`%cGET 요청 ${uri}`, "color: #a25cd1;");
 
   return axios.get(uri, {
-    // Token 담아서 백엔드 서버에 보냄
-    // headers: {
-    //   Authorization: ``;
-    // }
+    withCredentials: true,
   });
 }
 
@@ -28,10 +25,10 @@ async function post(endPoint, data) {
   console.log(`%cPOST 요청: ${uri}`, "color: #296aba;");
   console.log(`%cPOST 요청 데이터: ${bodyData}`, "color: #296aba;");
 
-  return axios.post(uri, bodyData, {
+  // data 처리를 axios에 위임합니다.
+  return axios.post(uri, data, {
     headers: {
       "Content-Type": "application/json",
-      // Authorization: ``;
     },
     withCredentials: true,
   });
@@ -48,8 +45,8 @@ async function put(endPoint, data) {
   return axios.put(uri, bodyData, {
     headers: {
       "Content-Type": "application/json",
-      // Authorization: ``;
     },
+    withCredentials: true,
   });
 }
 
@@ -62,9 +59,7 @@ async function del(endPoint, params = "") {
   console.log(`DELETE 요청 ${uri}`);
 
   return axios.delete(uri, {
-    // headers: {
-    //   Authorization: ``;
-    // }
+    withCredentials: true,
   });
 }
 

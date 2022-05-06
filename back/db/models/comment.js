@@ -5,13 +5,13 @@ class Comments extends Sequelize.Model {
     return super.init(
       {
         id: {
-          type: Sequelize.STRING(36),
+          type: Sequelize.UUID,
           defaultValue: Sequelize.UUIDV4,
           allowNull: false,
           primaryKey: true,
         },
         postings_id: {
-          type: Sequelize.STRING(36),
+          type: Sequelize.UUID,
           allowNull: false,
           references: {
             model: "Postings",
@@ -19,7 +19,7 @@ class Comments extends Sequelize.Model {
           },
         },
         users_id: {
-          type: Sequelize.STRING(36),
+          type: Sequelize.UUID,
           defaultValue: Sequelize.UUIDV4,
           allowNull: true,
           references: {
@@ -60,13 +60,13 @@ class Comments extends Sequelize.Model {
     );
   }
   static associate(models) {
-    Comments.belongsTo(models.Users, {
+    models.Comments.belongsTo(models.Users, {
       foreignKey: "users_id",
       targetkey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    Comments.belongsTo(models.Postings, {
+    models.Comments.belongsTo(models.Postings, {
       foreignKey: "postings_id",
       targetkey: "id",
       onDelete: "cascade",

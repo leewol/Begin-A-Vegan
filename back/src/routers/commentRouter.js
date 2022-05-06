@@ -20,7 +20,7 @@ commentRouter.post("/:postings_id/comments/comment", login_required, async (req,
       postings_id: req.params.postings_id,
       content: req.body.content,
     });
-    res.status(201).json(comment);
+    res.status(200).json(comment);
   } catch (error) {
     next(error);
   }
