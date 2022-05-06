@@ -199,265 +199,39 @@ export default function MyPage() {
               </div>
 
               <div className={styles.month}>
-                <div className={styles.month_box}>
-                  {/*5월일정*/}
-                  <p>May</p>
-                  <div className={styles.check}>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
+                {[...Array(5 * 5)].map((_, outIndex) => {
+                  const firstDateOfWeek = now.subtract(outIndex, "w").startOf("w");
+                  return (
+                    <div className={styles.month_box} key={outIndex}>
+                      {(outIndex == 24 || firstDateOfWeek.date() < 7) && (
+                        <p>{firstDateOfWeek.format("MMM")}</p>
+                      )}
+                      <div className={styles.check}>
+                        <div>
+                          {[...Array(Math.min(now.diff(firstDateOfWeek, "d") + 1, 7))].map(
+                            (_, index) => {
+                              const date = firstDateOfWeek.add(index, "d");
+                              return (
+                                <span
+                                  data-date={date.format()}
+                                  key={index}
+                                  className={`${styles.step} ${
+                                    styles[
+                                      "step0" +
+                                        records.filter(
+                                          (record) => record.startOf("d").diff(date) === 0,
+                                        ).length
+                                    ]
+                                  }`}
+                                ></span>
+                              );
+                            },
+                          )}
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className={styles.month_box}>
-                  {/*6월일정*/}
-                  <p>Jun</p>
-                  <div className={styles.check}>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className={styles.month_box}>
-                  {/*7월일정*/}
-                  <p>Jul</p>
-                  <div className={styles.check}>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className={styles.month_box}>
-                  {/*8월일정*/}
-                  <p>Aug</p>
-                  <div className={styles.check}>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className={styles.month_box}>
-                  {/*9월일정*/}
-                  <p>Sep</p>
-                  <div className={styles.check}>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                    <div>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                      <span className={styles.step}></span>
-                    </div>
-                  </div>
-                </div>
+                  );
+                })}
               </div>
             </div>
             <div className={styles.annotation}>
