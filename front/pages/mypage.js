@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import dayjs from "dayjs";
 import * as Api from "../lib/api";
 import { Routes, Route } from "react-router-dom";
 // import PrivateRoute from "./hook/PrivateRoute";
@@ -21,6 +22,8 @@ export default function MyPage() {
   const articleIsLoading = useRef(false);
   const lastId = useRef(undefined);
   const [newProfileImageUrl, setNewProfileImageUrl] = useState();
+  const [records, setRecords] = useState([]);
+  const now = dayjs();
 
   const updateUser = useCallback(() => {
     Api.get("/me").then((res) => {
@@ -90,6 +93,13 @@ export default function MyPage() {
       window.removeEventListener("scroll", onScrollHandler);
     };
   }, [loadArticles]);
+
+  useEffect(() => {
+    if (!me) return;
+    Api.get(`/records/${me.id}`).then((res) =>
+      setRecords(res.data.map((data) => dayjs(data.created_at))),
+    );
+  }, [me]);
 
   const onChangeImageHandler = (event) => {
     setFile(event.target.files[0]);
@@ -462,7 +472,15 @@ export default function MyPage() {
             </div>
           </div>
           <p className={styles.now}>
-            이번 달은 <em>00일</em>동안 Vegan!
+            이번 달은{" "}
+            <em>
+              {records
+                .reduce((prev, curr) => prev + (curr.month() === now.month()), 0)
+                .toString()
+                .padStart(2, "0")}
+              일
+            </em>
+            동안 Vegan!
           </p>
           <span className={styles.btn} onClick={seedingHandler}>
             <Image src={arrowRight} alt="" />
