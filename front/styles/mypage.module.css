@@ -239,10 +239,15 @@
 }
 .seeding .calendar .month {
   display: flex;
+  flex-direction: row-reverse;
   width: calc(100% - 35px);
+}
+.seeding .calendar .month p {
+  position: absolute;
 }
 .seeding .calendar .check {
   display: flex;
+  margin-top: 15px;
 }
 /* .seeding .calendar .check>div{
 	
