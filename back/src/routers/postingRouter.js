@@ -101,7 +101,7 @@ postingRouter.get("/postings/:users_id/like_postings", login_required, async (re
   try {
     const users_id = req.user.id;
     const like_posting = await Likes.findAll({
-      where: { users_id: users_id },
+      where: { users_id },
       include: [
         {
           model: Postings,
@@ -143,7 +143,7 @@ postingRouter.get("/postings/:users_id/postings", login_required, async (req, re
     const users_id = req.user.id;
 
     const postings = await Postings.findAll({
-      where: { users_id: users_id },
+      where: { users_id },
       include: [
         {
           model: Users,
