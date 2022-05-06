@@ -1,8 +1,6 @@
 import express from "express";
 import mysqlManager from "../../db";
 import { Sequelize, Op } from "sequelize";
-import multer from "multer";
-import path from "path";
 import Comments from "../../db/models/comment";
 import Users from "../../db/models/user";
 import Postings from "../../db/models/posting";
@@ -11,34 +9,17 @@ import { login_required } from "../middlewares/login_required";
 
 const postingRouter = express.Router();
 
-// // 이미지 업로드를 위한 multer
-// const upload = multer({
-//   // 저장 위치 diskStorage = 하드디스크
-//   storage: multer.diskStorage({
-//     destination(req, file, cb) {
-//       cb(null, "public/images"); // 저장할 폴더 지정(express 실행 시 자동 생성되는 public/images 폴더에 저장)
-//     },
-//     filename(req, file, cb) {
-//       // 중복피하기위한 확장자 추출 ex(.png)
-//       const ext = file.originalname.substring(file.originalname.lastIndexOf("."));
-//       //파일명 저장 이름 + 날짜 + 확장자 -> 중복된 사진 생성 방지
-//       cb(null, `${file.fieldname}-${Date.now()}${ext}`);
-//     },
-//   }),
-//   limits: { fileSize: 20 * 1024 * 1024 }, // 크기 지정(프론트랑 상의 필요)
-// });
-
 // 게시글 생성
 postingRouter.post("/postings/posting", login_required, async (req, res, next) => {
   try {
     const posting = {
       users_id: req.user.id,
       article: req.body.article,
-      file_url: req.body.file_url, // 사진 file 경로 만들기
+      file_url: req.body.file_url,
     };
 
     const newPosting = await Postings.create(posting);
-    res.status(201).json(newPosting);
+    res.status(200).json(newPosting);
   } catch (error) {
     console.log(error);
     next(error);
@@ -63,28 +44,16 @@ postingRouter.get("/postingList", login_required, async (req, res, next) => {
             },
           ],
         },
+        {
+          model: Likes,
+          attributes: ["users_id"],
+        },
       ],
       order: [
         ["created_at", "DESC"],
         [Comments, "created_at", "DESC"],
       ],
     });
-    //   order: [
-    //     ["created_at", "DESC"],
-    //     [Comments, "created_at", "DESC"],
-    //   ],
-    //   include: [
-    //     {
-    //       model: Users,
-    //       attributes: ["id", "nickname"],
-    //     },
-    //     {
-    //       model: Users,
-    //       as: "Likers",
-    //       attributes: ["id"],
-    //     },
-    //   ],
-    // });
     res.status(200).json(postings);
   } catch (error) {
     next(error);
@@ -103,7 +72,6 @@ postingRouter.get("/postings/:id", login_required, async (req, res, next) => {
         },
         {
           model: Comments,
-          order: ["created_at", "DESC"],
           include: [
             {
               model: Users,
@@ -113,11 +81,94 @@ postingRouter.get("/postings/:id", login_required, async (req, res, next) => {
         },
         {
           model: Likes,
+          attributes: ["users_id"],
         },
+      ],
+      order: [
+        ["created_at", "DESC"],
+        [Comments, "created_at", "DESC"],
       ],
     });
 
-    res.status(201).json(posting);
+    res.status(200).json(posting);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// "마이페이지" User가 좋아요 누른 게시물만 조회하기
+postingRouter.get("/postings/:users_id/like_postings", login_required, async (req, res, next) => {
+  try {
+    const users_id = req.user.id;
+    const like_posting = await Likes.findAll({
+      where: { users_id: users_id },
+      include: [
+        {
+          model: Postings,
+          include: [
+            {
+              model: Users,
+              attributes: ["nickname", "profile_url"],
+            },
+            {
+              model: Comments,
+              include: [
+                {
+                  model: Users,
+                  attributes: ["nickname", "profile_url"],
+                },
+              ],
+            },
+            {
+              model: Likes,
+              attributes: ["users_id"],
+            },
+          ],
+          order: [
+            ["created_at", "DESC"],
+            [Comments, "created_at", "DESC"],
+          ],
+        },
+      ],
+    });
+    res.status(200).json(like_posting);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// "마이페이지" User가 작성한 게시물만 조회하기
+postingRouter.get("/postings/:users_id/postings", login_required, async (req, res, next) => {
+  try {
+    const users_id = req.user.id;
+
+    const postings = await Postings.findAll({
+      where: { users_id: users_id },
+      include: [
+        {
+          model: Users,
+          attributes: ["nickname", "profile_url"],
+        },
+        {
+          model: Comments,
+          include: [
+            {
+              model: Users,
+              attributes: ["nickname", "profile_url"],
+            },
+          ],
+        },
+        {
+          model: Likes,
+          attributes: ["users_id"],
+        },
+      ],
+      order: [
+        ["created_at", "DESC"],
+        [Comments, "created_at", "DESC"],
+      ],
+    });
+    res.status(200).json(postings);
   } catch (error) {
     next(error);
   }
@@ -136,18 +187,25 @@ postingRouter.put("/postings/:id", login_required, async (req, res, next) => {
       include: [
         {
           model: Users,
-          attributes: ["id", "nickname", "profile_url"],
+          attributes: ["nickname", "profile_url"],
         },
         {
           model: Comments,
           include: [
             {
               model: Users,
-              attributes: ["id", "nickname", "profile_url"],
-              order: ["created_at", "DESC"],
+              attributes: ["nickname", "profile_url"],
             },
           ],
         },
+        {
+          model: Likes,
+          attributes: ["users_id"],
+        },
+      ],
+      order: [
+        ["created_at", "DESC"],
+        [Comments, "created_at", "DESC"],
       ],
     });
     res.status(200).json(updatedPosting);
@@ -168,38 +226,36 @@ postingRouter.delete("/postings/:id", login_required, async (req, res, next) => 
   }
 });
 
-// 게시물 좋아요 -> 좋아요 누르면 좋아요 +1 / 이미 좋아요 누른 상태에서 한 번 더 좋아요 누르면 -1(좋아요 취소)
+// 게시물 좋아요
 postingRouter.post("/postings/:postings_id/like", login_required, async (req, res, next) => {
   try {
-    const like = {
-      users_id: req.user.id,
-      postings_id: req.params.postings_id,
-    };
-    const liked = await Likes.create(like);
-    res.status(201).json(liked);
-    // if (!is_liked) {
-    //   const like = {
-    //     users_id: req.user.id,
-    //     postings_id: req.params.postings_id,
-    //   };
-    //   const liked = await Likes.create(like);
-    //   res.status(201).json(liked);
-    //     where: {
-    //       users_id: req.user.id,
-    //       postings_id: req.params.postings_id,
-    //     },
-    //   });
-    //   if (!is_liked) {
-    //     const like = {
-    //       users_id: req.user.id,
-    //       postings_id: req.params.postings_id,
-    //     };
-    //     const liked = await Likes.create(like);
-    //     res.status(201).json(liked);
-    //   } else {
-    //     Likes.destroy(is_liked);
-    //     res.status(200).json(false);
-    //   }
+    const users_id = req.user.id;
+    const postings_id = req.params.postings_id;
+
+    // const posting = await Postings.findOne({ where: { postings_id } });
+    // if (!posting) {
+    //   return res.status(403).send("존재하지 않는 게시글입니다.");
+    // }
+    const liked = await Likes.create({ users_id, postings_id });
+
+    res.status(200).json(liked);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// 게시물 좋아요 취소
+postingRouter.delete("/postings/:postings_id/like", login_required, async (req, res, next) => {
+  try {
+    const users_id = req.user.id;
+    const postings_id = req.params.postings_id;
+
+    // const posting = await Postings.findOne({ where: { postings_id } });
+    // if (!posting) {
+    //   return res.status(403).send("존재하지 않는 게시글입니다.");
+    // }
+    Likes.destroy({ where: { users_id, postings_id } });
+    res.status(200).json({ postings_id });
   } catch (error) {
     next(error);
   }
