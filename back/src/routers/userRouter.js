@@ -1,6 +1,7 @@
 import express from "express";
 import mysqlManager from "../../db";
 import Users from "../../db/models/user";
+import Postings from "../../db/models/posting";
 import bcrypt from "bcrypt";
 import passport from "passport";
 import multer from "multer";
@@ -130,5 +131,52 @@ userAuthRouter.post("/profile", upload.single("image"), login_required, async (r
   res.json(req.file);
 });
 //upload array = 여러장 / single = 한장
+
+userAuthRouter.get("/records/:id", async (req, res) => {
+  try {
+    const months = [];
+    months.push(0);
+    const now = new Date();
+    const year = now.getFullYear();
+
+    for (let idx = 1; idx <= 12; idx++) {
+      if (idx == 2) {
+        months.push(
+          months[idx - 1] + ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0 ? 29 : 28),
+        );
+      }
+      if (idx == 1 || idx == 3 || idx == 5 || idx == 7 || idx == 8 || idx == 10 || idx == 12) {
+        months.push(months[idx - 1] + 31);
+      }
+      if (idx == 4 || idx == 6 || idx == 9 || idx == 11) {
+        months.push(months[idx - 1] + 30);
+      }
+    }
+
+    const record = await Postings.findAll({
+      raw: true,
+      where: { users_id: req.params.id },
+      attributes: ["created_at"],
+    });
+
+    let days = [];
+    // if (now.getMonth() < 6) {
+    //   days = Array.from({ length: months[6] }, () => 0);
+    // } else {
+    //   days = Array.from({ length: months[12] - months[6] }, () => 0);
+    // }
+    if (now.getMonth() < 12) {
+      days = Array.from({ length: months[12] }, () => 0);
+    }
+    for (let time of record) {
+      time = time.created_at;
+      const idx = months[time.getMonth()] + time.getDate() - 1;
+      days[idx] += 1;
+    }
+    res.status(200).json(days);
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 export default userAuthRouter;
