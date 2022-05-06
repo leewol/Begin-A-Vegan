@@ -19,6 +19,7 @@ export default function MyPage() {
   const [file, setFile] = useState();
   const [isViewingPostings, setIsViewingPostings] = useState(true);
   const [articles, setArticles] = useState([]);
+  const [likeArticles, setLikeArticles] = useState([]);
   const articleIsLoading = useRef(false);
   const lastId = useRef(undefined);
   const [newProfileImageUrl, setNewProfileImageUrl] = useState();
@@ -61,12 +62,15 @@ export default function MyPage() {
     if (articleIsLoading.current) return;
     if (!me) return;
     articleIsLoading.current = true;
-    Api.get(`/postings/${me.id}/postings`).then((res) => {
-      console.log(res.data.length);
-      setArticles((prev) => [...prev, ...res.data]);
-      lastId.current = res.data.length < 10 ? null : res.data.reverse()[0].id;
-      articleIsLoading.current = false;
-    });
+    Promise.all([
+      Api.get(`/postings/${me.id}/postings`).then((res) => {
+        setArticles((prev) => [...prev, ...res.data]);
+        lastId.current = res.data.length < 10 ? null : res.data.reverse()[0].id;
+      }),
+      Api.get(`/postings/${me.id}/like_postings`).then((res) => {
+        setLikeArticles((prev) => [...prev, ...res.data]);
+      }),
+    ]).then(() => (articleIsLoading.current = false));
   }, [me]);
 
   const [open, setOpen] = useState(true);
@@ -173,20 +177,18 @@ export default function MyPage() {
             </div>
           </div>
 
-          {isViewingPostings ? (
-            <div className={styles.postings}>
-              <p className={styles.titleB}>{/*postings*/}</p>
-              <ul>
-                {articles.map((article) => (
-                  <li className={styles.box} key={article.id}>
-                    <div>
-                      <Image src={`${Api.SERVER_URL}/${article.file_url}`} layout="fill" />
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
+          <div className={styles.postings}>
+            <p className={styles.titleB}>{/*postings*/}</p>
+            <ul>
+              {(isViewingPostings ? articles : likeArticles).map((article) => (
+                <li className={styles.box} key={article.id}>
+                  <div>
+                    <Image src={`${Api.SERVER_URL}/${article.file_url}`} layout="fill" />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         <div className={open ? `${styles.seeding}` : `${styles.seeding} ${styles.show}`}>
           <p className={styles.titleB}>My Vegan Calendar</p>
