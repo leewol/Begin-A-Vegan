@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BACK_PORT = "5001";
-const SERVER_URL = `http://localhost:${BACK_PORT}`; // ! 수정 예정
+const SERVER_URL = `http://${process.env.HOST}:${BACK_PORT}`; // ! 수정 예정
 // const SERVER_URL = `http://${window.location.hostname}:${BACK_PORT}/`;
 
 // * 데이터 조회 (GET)
