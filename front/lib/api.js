@@ -11,12 +11,7 @@ async function get(endPoint, params = "") {
   console.log(`%cGET 요청 ${uri}`, "color: #a25cd1;");
 
   return axios.get(uri, {
-    // Token 담아서 백엔드 서버에 보냄
-    // 백엔드와 프론트엔드의 origin이 다른 경우에
-    // CSRF를 방지하기 위해 쿠키를 보내지 않기 때문에 헤더에 인증 정보를 보내야 정상적으로 작동합니다.
-    headers: {
-      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
-    },
+    withCredentials: true,
   });
 }
 
@@ -33,8 +28,7 @@ async function post(endPoint, data) {
   // data 처리를 axios에 위임합니다.
   return axios.post(uri, data, {
     headers: {
-      // "Content-Type": "application/json",
-      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
     },
   });
 }
@@ -50,8 +44,8 @@ async function put(endPoint, data) {
   return axios.put(uri, bodyData, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
     },
+    withCredentials: true,
   });
 }
 
@@ -64,9 +58,7 @@ async function del(endPoint, params = "") {
   console.log(`DELETE 요청 ${uri}`);
 
   return axios.delete(uri, {
-    headers: {
-      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
-    },
+    withCredentials: true,
   });
 }
 
