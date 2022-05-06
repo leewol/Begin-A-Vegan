@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Button, Avatar } from "@mui/material";
 import styled from "styled-components";
 
-import * as Api from "../lib/api";
+import * as Api from "../../lib/api";
 
 const CommentBox = styled.div`
   display: flex;

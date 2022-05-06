@@ -5,8 +5,8 @@ import GrassIcon from "@mui/icons-material/Grass";
 import styled from "styled-components";
 
 import * as Api from "../lib/api";
-import PostCreator from "../components/PostCreator";
-import PostCard from "../components/PostCard";
+import PostCreator from "../components/Postings/PostCreator";
+import PostCard from "../components/Postings/PostCard";
 
 // TODO : 게시글 피드 형태로 보여 주기
 // * 상태 : 작성 가능한지, 편집 중인지
@@ -36,7 +36,7 @@ export default function Posting() {
       .catch((err) => console.error(err));
   }, []);
 
-  // console.log(postingList);
+  // console.log("postings: ", postingList);
 
   return (
     <>

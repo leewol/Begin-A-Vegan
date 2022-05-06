@@ -6,7 +6,7 @@ import AWS from "aws-sdk";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
 
-import * as Api from "../lib/api";
+import * as Api from "../../lib/api";
 
 /* 
   * document 조작의 순서 : 
@@ -95,13 +95,12 @@ export default function PostCreator({ setIsOpen, setPostingList }) {
 
     // 게시글 포스팅
     try {
-      Api.post("/postings/posting", {
+      await Api.post("/postings/posting", {
         article,
         file_url: postingImage,
       });
 
       // 포스팅 후 게시글 리스트 다시 set
-      // ! 근데 한 번은 update 되는데 두 번째부터는 안 된다..
       const res = await Api.get("/postingList");
       setPostingList(res.data);
     } catch (err) {
