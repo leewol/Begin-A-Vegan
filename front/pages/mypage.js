@@ -20,9 +20,16 @@ export default function MyPage() {
   const [articles, setArticles] = useState([]);
   const articleIsLoading = useRef(false);
   const lastId = useRef(undefined);
+  const [newProfileImageUrl, setNewProfileImageUrl] = useState();
 
   const updateUser = useCallback(() => {
-    Api.get("/me").then((res) => setMe(res.data));
+    Api.get("/me").then((res) => {
+      setMe(res.data);
+      setNewProfileImageUrl((prev) => {
+        if (prev) URL.revokeObjectURL(prev);
+        return undefined;
+      });
+    });
   }, []);
 
   const editHandler = () => {
@@ -84,6 +91,11 @@ export default function MyPage() {
     };
   }, [loadArticles]);
 
+  const onChangeImageHandler = (event) => {
+    setFile(event.target.files[0]);
+    setNewProfileImageUrl(URL.createObjectURL(event.target.files[0]));
+  };
+
   return (
     <div>
       <Header></Header>
@@ -94,14 +106,17 @@ export default function MyPage() {
             <p className={styles.titleB}>{/*Profile*/}</p>
             <div className={styles.profile_img}>
               <Image
-                src={me?.profile_url ? `${Api.SERVER_URL}/${me.profile_url}` : sample}
+                src={
+                  newProfileImageUrl ??
+                  (me?.profile_url ? `${Api.SERVER_URL}/${me.profile_url}` : sample)
+                }
                 alt=""
                 layout="fill"
               />
               <div className={styles.img_add}>
                 <input className={styles.upload_name} />
                 <label htmlFor="file">이미지수정</label>
-                <input type="file" id="file" onChange={(event) => setFile(event.target.files[0])} />
+                <input type="file" id="file" onChange={onChangeImageHandler} />
               </div>
             </div>
             <div className={styles.profile_info}>
