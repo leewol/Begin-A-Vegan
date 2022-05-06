@@ -4,16 +4,16 @@ import { Sequelize, Op } from "sequelize";
 import Comments from "../../db/models/comment";
 import Users from "../../db/models/user";
 import Postings from "../../db/models/posting";
+import Likes from "../../db/models/like_users_postings";
 import { login_required } from "../middlewares/login_required";
 
 const postingRouter = express.Router();
 
 // 게시글 생성
-postingRouter.post("/postings/posting", async (req, res, next) => {
+postingRouter.post("/postings/posting", login_required, async (req, res, next) => {
   try {
     const posting = {
-      users_id: req.body.users_id,
-      title: req.body.title,
+      users_id: req.user.id,
       article: req.body.article,
       file_url: req.body.file_url,
     };
@@ -26,13 +26,9 @@ postingRouter.post("/postings/posting", async (req, res, next) => {
   }
 });
 
-// 등록된 모든 게시글(피드) 로딩마다 10개씩 보여주기 -> 최신 작성순
-postingRouter.get("/postingList", async (req, res, next) => {
+// 등록된 모든 게시글 조회-> 최신 작성순
+postingRouter.get("/postingList", login_required, async (req, res, next) => {
   try {
-    const where = {};
-    if (req.query.lastId) {
-      where.id = { [Op.lt]: req.query.lastId };
-    }
     const postings = await Postings.findAll({
       include: [
         {
@@ -57,17 +53,6 @@ postingRouter.get("/postingList", async (req, res, next) => {
         ["created_at", "DESC"],
         [Comments, "created_at", "DESC"],
       ],
-      include: [
-        {
-          model: Users,
-          attributes: ["id", "nickname"],
-        },
-        {
-          model: Users,
-          as: "Likers",
-          attributes: ["id"],
-        },
-      ],
     });
     res.status(200).json(postings);
   } catch (error) {
@@ -75,36 +60,22 @@ postingRouter.get("/postingList", async (req, res, next) => {
   }
 });
 
-postingRouter.get("/postings/me", login_required, async (req, res) => {
-  const postings = await Postings.findAll({
-    where: {
-      users_id: req.user.id,
-      ...(req.query.lastId ? { id: { [Op.lt]: req.query.lastId } } : {}),
-    },
-    order: [["created_at", "DESC"]],
-    offset: Number(req.query.offset) || 0,
-    limit: 10,
-  });
-  res.json(postings);
-});
-
 // 게시글 1개 조회
-postingRouter.get("/postings/:id", async (req, res, next) => {
+postingRouter.get("/postings/:id", login_required, async (req, res, next) => {
   try {
-    const posting = await Postings.findOne({
+    const posting = await Postings.findAll({
       where: { id: req.params.id },
       include: [
         {
           model: Users,
-          attributes: ["id", "nickname", "profile_url"],
+          attributes: ["nickname", "profile_url"],
         },
         {
           model: Comments,
           include: [
             {
               model: Users,
-              attributes: ["id", "nickname", "profile_url"],
-              order: ["created_at", "DESC"],
+              attributes: ["nickname", "profile_url"],
             },
           ],
         },
@@ -204,16 +175,13 @@ postingRouter.get("/postings/:users_id/postings", login_required, async (req, re
 });
 
 // 게시글 수정(제목, 내용만 수정 가능) -> 수정완료하면 수정된 게시물 조회됨
-postingRouter.put("/postings/:id", async (req, res, next) => {
+postingRouter.put("/postings/:id", login_required, async (req, res, next) => {
   try {
-    const posting = await Postings.findOne({ where: { id: req.params.postings_id } });
+    const posting = await Postings.findOne({ where: { id: req.params.id } });
     if (!posting) {
       return res.status(403).send("존재하지 않는 게시글입니다.");
     }
-    await Postings.update(
-      { title: req.body.title, article: req.body.article },
-      { where: { id: req.params.postings_id } },
-    );
+    await Postings.update({ article: req.body.article }, { where: { id: req.params.id } });
     const updatedPosting = await Postings.findOne({
       where: { id: req.params.id },
       include: [
@@ -247,20 +215,12 @@ postingRouter.put("/postings/:id", async (req, res, next) => {
 });
 
 // 게시글 삭제
-postingRouter.delete("/postings/:id", async (req, res, next) => {
+postingRouter.delete("/postings/:id", login_required, async (req, res, next) => {
   try {
-    const id = req.params.id;
-
-    // 게시글에 달린 댓글이 있다면 댓글 먼저 삭제
-    const comments = Comments.findAll({ where: id });
-    if (comments.length > 0) {
-      await Comment.destroy({ where: id });
-    }
-    // 댓글 삭제 후 게시글 삭제
-    await Postings.destroy({
-      where: { id, users_id: req.body.id },
+    Postings.destroy({
+      where: { id: req.params.id },
     });
-    res.status(200).json({ id }); //id에 담아서 프론트에 넘겨줌
+    res.status(200).json({ id: req.params.id }); //id에 담아서 프론트에 넘겨줌
   } catch (error) {
     next(error);
   }
