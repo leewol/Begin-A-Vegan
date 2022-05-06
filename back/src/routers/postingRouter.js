@@ -6,6 +6,7 @@ import Users from "../../db/models/user";
 import Postings from "../../db/models/posting";
 import Likes from "../../db/models/like_users_postings";
 import { login_required } from "../middlewares/login_required";
+import { postingController } from "../controllers";
 
 const postingRouter = express.Router();
 
@@ -175,44 +176,7 @@ postingRouter.get("/postings/:users_id/postings", login_required, async (req, re
 });
 
 // 게시글 수정(제목, 내용만 수정 가능) -> 수정완료하면 수정된 게시물 조회됨
-postingRouter.put("/postings/:id", login_required, async (req, res, next) => {
-  try {
-    const posting = await Postings.findOne({ where: { id: req.params.id } });
-    if (!posting) {
-      return res.status(403).send("존재하지 않는 게시글입니다.");
-    }
-    await Postings.update({ article: req.body.article }, { where: { id: req.params.id } });
-    const updatedPosting = await Postings.findOne({
-      where: { id: req.params.id },
-      include: [
-        {
-          model: Users,
-          attributes: ["nickname", "profile_url"],
-        },
-        {
-          model: Comments,
-          include: [
-            {
-              model: Users,
-              attributes: ["nickname", "profile_url"],
-            },
-          ],
-        },
-        {
-          model: Likes,
-          attributes: ["users_id"],
-        },
-      ],
-      order: [
-        ["created_at", "DESC"],
-        [Comments, "created_at", "DESC"],
-      ],
-    });
-    res.status(200).json(updatedPosting);
-  } catch (error) {
-    next(error);
-  }
-});
+postingRouter.put("/postings/:id", login_required, postingController);
 
 // 게시글 삭제
 postingRouter.delete("/postings/:id", login_required, async (req, res, next) => {
