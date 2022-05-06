@@ -13,13 +13,12 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import InsertCommentIcon from "@mui/icons-material/InsertComment";
 
 import CommentCreator from "./CommentCreator";
 import PostingComments from "./PostingComments";
+import Like from "./Like";
 
 // TODO : 피드 레이아웃 완성
 // * 유저 데이터 받아오기
@@ -37,8 +36,9 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function PostCard({ posting }) {
+  // console.log(posting);
   const postingsId = posting.id;
-  const { users_id, User, article, file_url, Comments, is_deleted } = posting;
+  const { users_id, User, Likes, article, file_url, Comments, is_deleted } = posting;
 
   // 게시글 본문 문단별로 분리
   const articleArr = article.split("<").map((el) => el.replace("p>", "").replace("/p>", ""));
@@ -59,28 +59,29 @@ export default function PostCard({ posting }) {
             sx={{ width: 36, height: 36 }}
           />
         }
-        action={
-          <IconButton aria-label="like">
-            {/* 조건 - 좋아요 유저 목록에 있는 id 중에 현재 로그인된 유저 id가 있는가 */}
-            <FavoriteBorderIcon />
-          </IconButton>
-        }
+        action={<Like postingsId={postingsId} Likes={Likes} />}
         title={User.nickname}
         titleTypographyProps={{ fontWeight: 600 }}
       />
 
       <CardMedia
         component="img"
-        sx={{ maxHeight: 600 }}
+        sx={{ maxHeight: 600, marginBottom: 1 }}
         image={file_url.includes("https://") ? file_url : "/img/defaultPic.png"}
         alt="user-image"
       />
 
       <CardContent>
-        <Typography variant="body1" color="text" gutterBottom>
-          불러온좋아요개수표시
+        <Typography variant="button" color="text" mt={1} gutterBottom>
+          {Likes.length === 0 ? (
+            <span>
+              가장 먼저 <b>좋아요</b>를 눌러 보세요!
+            </span>
+          ) : (
+            <b>좋아요 {Likes.length}개</b>
+          )}
         </Typography>
-        <Typography variant="body2" color="text">
+        <Typography variant="body2" color="text" mt={1}>
           <b>{User.nickname}</b>{" "}
           {articleArr.map((arti) => {
             if (!arti.includes("img src=") && arti !== "/") {
