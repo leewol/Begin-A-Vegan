@@ -36,7 +36,7 @@ function Header() {
             <span>SIGNUP</span>
           </a>
         </Link>
-        <Link href="/mypage/:id">
+        <Link href="/mypage">
           <a>
             <span>MYPAGE</span>
           </a>
