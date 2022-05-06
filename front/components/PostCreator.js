@@ -26,9 +26,8 @@ const QuillWrapper = dynamic(
   },
 );
 
-export default function PostCreator({ setIsOpen }) {
-  // * userID 정보는 메인 페이지에서 받아오기
-  const loginUserId = "a4b4baea-b4ed-424a-b7f7-96725b59"; // 임시 코드
+// * userID 정보는 백엔드에서 처리됨
+export default function PostCreator({ setIsOpen, setPostingList }) {
   const [imageId, setImageId] = useState(null);
   const [postingImage, setPostingImage] = useState(null);
   const [article, setArticle] = useState("");
@@ -96,11 +95,15 @@ export default function PostCreator({ setIsOpen }) {
 
     // 게시글 포스팅
     try {
-      await Api.post("/postings/posting", {
-        users_id: loginUserId,
+      Api.post("/postings/posting", {
         article,
         file_url: postingImage,
       });
+
+      // 포스팅 후 게시글 리스트 다시 set
+      // ! 근데 한 번은 update 되는데 두 번째부터는 안 된다..
+      const res = await Api.get("/postingList");
+      setPostingList(res.data);
     } catch (err) {
       alert("포스팅 등록에 실패하였습니다.", err);
     }
@@ -113,14 +116,14 @@ export default function PostCreator({ setIsOpen }) {
     setPostable(false);
   };
 
-  const formats = ["bold", "italic", "underline", "strike", "image", "clean"];
+  const formats = ["image"];
   const modules = useMemo(
     () => ({
       toolbar: {
         handlers: {
           image: imageHandler,
         },
-        container: [["bold", "italic", "underline", "strike"], ["image"], ["clean"]],
+        container: [["image"]],
       },
       clipboard: {
         // toggle to add extra line breaks when pasting HTML:
@@ -141,6 +144,7 @@ export default function PostCreator({ setIsOpen }) {
         onChange={(value, delta, source, editor) => {
           const articleLen = editor.getLength();
           const quillArticle = editor.getHTML();
+          // const quillArticle = editor.getText();
 
           setArticle(quillArticle);
           setPostable(articleLen > 2 && imageId !== null);

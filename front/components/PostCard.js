@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 import {
   Card,
@@ -12,10 +13,12 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
+import InsertCommentIcon from "@mui/icons-material/InsertComment";
 
-import Comment from "./Comment";
+import CommentCreator from "./CommentCreator";
+import PostingComments from "./PostingComments";
+import Like from "./Like";
 
 // TODO : 피드 레이아웃 완성
 // * 유저 데이터 받아오기
@@ -32,7 +35,14 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function PostCard() {
+export default function PostCard({ posting, setPostingList }) {
+  // console.log(posting);
+  const postingsId = posting.id;
+  const { users_id, User, Likes, article, file_url, Comments, is_deleted } = posting;
+
+  // 게시글 본문 문단별로 분리
+  const articleArr = article.split("<").map((el) => el.replace("p>", "").replace("/p>", ""));
+
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
@@ -40,49 +50,77 @@ export default function PostCard() {
   };
 
   return (
-    <Card sx={{ maxWidth: 500 }}>
+    <Card sx={{ maxWidth: 500, marginBottom: 5 }}>
       <CardHeader
-        avatar={<Avatar alt="User" src="/img/defaultPic.png" sx={{ width: 36, height: 36 }} />}
-        action={
-          <IconButton aria-label="like">
-            {/* 이거 checkbox로 바꾸기 */}
-            <FavoriteIcon />
-          </IconButton>
+        avatar={
+          <Avatar
+            alt="User"
+            src={User.profile_url || "/img/defaultPic.png"}
+            sx={{ width: 36, height: 36 }}
+          />
         }
-        title="불러온닉네임"
+        action={<Like postingsId={postingsId} Likes={Likes} />}
+        title={User.nickname}
         titleTypographyProps={{ fontWeight: 600 }}
       />
+
       <CardMedia
         component="img"
-        sx={{ maxHeight: 600 }}
-        image="/img/defaultPic.png"
+        sx={{ maxHeight: 600, marginBottom: 1 }}
+        image={file_url.includes("https://") ? file_url : "/img/defaultPic.png"}
         alt="user-image"
       />
+
       <CardContent>
-        <Typography variant="body1" color="text" gutterBottom>
-          불러온좋아요개수표시
+        <Typography variant="button" color="text" mt={1} gutterBottom>
+          {Likes.length === 0 ? (
+            <span>
+              가장 먼저 <b>좋아요</b>를 눌러 보세요!
+            </span>
+          ) : (
+            <b>좋아요 {Likes.length}개</b>
+          )}
         </Typography>
-        <Typography variant="body2" color="text">
-          <b>불러온닉네임</b> 불러온본문 This impressive paella is a perfect party dish and a fun
-          meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels,
-          if you like.
+        <Typography variant="body2" color="text" mt={1}>
+          <b>{User.nickname}</b>{" "}
+          {articleArr.map((arti) => {
+            if (!arti.includes("img src=") && arti !== "/") {
+              // uuid key 사용
+              const artiKey = uuidv4();
+              return (
+                <span key={artiKey}>
+                  {arti
+                    .replace("&amp;", "&")
+                    .replace("&gt;", ">")
+                    .replace("&lt;", "<")
+                    .replace("&quot;", '"')}{" "}
+                </span>
+              );
+            }
+          })}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
         <ExpandMore
-          expand={expanded}
+          // expand={expanded}
           onClick={handleExpandClick}
           aria-expanded={expanded}
           aria-label="show more"
         >
-          <ExpandMoreIcon />
+          {expanded ? <InsertCommentIcon /> : <CommentOutlinedIcon />}
         </ExpandMore>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        {/* 컴포넌트화시켜서 데려오기, 수정 및 삭제 넣기 */}
-        <CardContent>불러온 댓글들</CardContent>
+        {/* 수정 및 삭제 넣기 */}
+        <CardContent>
+          <PostingComments Comments={Comments} />
+        </CardContent>
       </Collapse>
-      <Comment />
+      <CommentCreator
+        profile={User.profile_url}
+        postingsId={postingsId}
+        setPostingList={setPostingList}
+      />
     </Card>
   );
 }
