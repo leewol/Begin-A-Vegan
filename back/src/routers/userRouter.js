@@ -1,6 +1,7 @@
 import express from "express";
 import mysqlManager from "../../db";
 import Users from "../../db/models/user";
+import Postings from "../../db/models/posting";
 import bcrypt from "bcrypt";
 import passport from "passport";
 import multer from "multer";
@@ -77,7 +78,7 @@ userAuthRouter.post("/login", (req, res, next) => {
           email,
           password,
         },
-        process.env.JWT_SECRET_KEY
+        process.env.JWT_SECRET_KEY,
       );
 
       res.cookie("token", token);
@@ -101,7 +102,7 @@ userAuthRouter.patch("/users/:id", async (req, res, next) => {
       },
       {
         where: { id: req.user.dataValues.id },
-      }
+      },
     );
     res.status(200);
   } catch (error) {
@@ -140,6 +141,26 @@ userAuthRouter.get("/me", login_required, async (req, res) => {
 userAuthRouter.put("/description", login_required, async (req, res) => {
   req.user = await req.user.update({ description: req.body.description });
   res.json(req.user);
+});
+
+userAuthRouter.get("/records/:id", async (req, res) => {
+  try {
+    const startDay = new Date(2022, 1, 1);
+    const endDay = new Date(2022, 12, 1);
+
+    const record = await Postings.findAll({
+      raw: true,
+      where: { users_id: req.params.id },
+      attributes: ["created_at"],
+    });
+    for (const value of record) {
+      console.log(value.created_at);
+    }
+
+    res.status(200).json(record);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 export default userAuthRouter;
