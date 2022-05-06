@@ -1,7 +1,7 @@
 import CommentCard from "./CommentCard";
 
 export default function PostingComments({ Comments }) {
-  console.log(Comments);
+  // console.log(Comments);
   return (
     <>
       {Comments.map((commentInfo) => (

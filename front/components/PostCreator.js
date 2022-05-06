@@ -27,7 +27,7 @@ const QuillWrapper = dynamic(
 );
 
 // * userID 정보는 백엔드에서 처리됨
-export default function PostCreator({ setIsOpen }) {
+export default function PostCreator({ setIsOpen, setPostingList }) {
   const [imageId, setImageId] = useState(null);
   const [postingImage, setPostingImage] = useState(null);
   const [article, setArticle] = useState("");
@@ -95,10 +95,14 @@ export default function PostCreator({ setIsOpen }) {
 
     // 게시글 포스팅
     try {
-      await Api.post("/postings/posting", {
+      Api.post("/postings/posting", {
         article,
         file_url: postingImage,
       });
+
+      // 포스팅 후 게시글 리스트 다시 set
+      const res = await Api.get("/postingList");
+      setPostingList(res.data);
     } catch (err) {
       alert("포스팅 등록에 실패하였습니다.", err);
     }
@@ -110,23 +114,6 @@ export default function PostCreator({ setIsOpen }) {
     setPostingImage(null);
     setPostable(false);
   };
-
-  // const formats = ["bold", "italic", "underline", "strike", "image", "clean"];
-  // const modules = useMemo(
-  //   () => ({
-  //     toolbar: {
-  //       handlers: {
-  //         image: imageHandler,
-  //       },
-  //       container: [["bold", "italic", "underline", "strike"], ["image"], ["clean"]],
-  //     },
-  //     clipboard: {
-  //       // toggle to add extra line breaks when pasting HTML:
-  //       matchVisual: false,
-  //     },
-  //   }),
-  //   [],
-  // );
 
   const formats = ["image"];
   const modules = useMemo(
