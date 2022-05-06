@@ -11,10 +11,7 @@ async function get(endPoint, params = "") {
   console.log(`%cGET 요청 ${uri}`, "color: #a25cd1;");
 
   return axios.get(uri, {
-    // Token 담아서 백엔드 서버에 보냄
-    // headers: {
-    //   Authorization: ``;
-    // }
+    withCredentials: true,
   });
 }
 
@@ -31,8 +28,8 @@ async function post(endPoint, data) {
   return axios.post(uri, bodyData, {
     headers: {
       "Content-Type": "application/json",
-      // Authorization: ``;
     },
+    withCredentials: true,
   });
 }
 
@@ -47,8 +44,8 @@ async function put(endPoint, data) {
   return axios.put(uri, bodyData, {
     headers: {
       "Content-Type": "application/json",
-      // Authorization: ``;
     },
+    withCredentials: true,
   });
 }
 
@@ -61,9 +58,7 @@ async function del(endPoint, params = "") {
   console.log(`DELETE 요청 ${uri}`);
 
   return axios.delete(uri, {
-    // headers: {
-    //   Authorization: ``;
-    // }
+    withCredentials: true,
   });
 }
 

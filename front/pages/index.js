@@ -2,8 +2,6 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Layout from "../components/Layout";
-import Signup from "../components/Signup";
-import Sidebar from "../components/Sidebar";
 import { FullPage, Slide } from "react-full-page";
 
 export default function Home() {
@@ -13,9 +11,6 @@ export default function Home() {
         <Layout />
         <Slide>
           <section className={styles.first}>
-            <Sidebar width={450}>
-              <Signup />
-            </Sidebar>
             <video autoPlay muted loop className={styles.video}>
               <source src="/mainVideo.mp4" type="video/mp4" />
             </video>
@@ -28,7 +23,9 @@ export default function Home() {
         </Slide>
         <Slide>
           <section className={styles.third}>
-            <div className={styles.datagraph2}></div>
+            <div className={styles.datagraph2}>
+              <Image src="/background2.jpg" layout="fill" />
+            </div>
           </section>
         </Slide>
       </FullPage>

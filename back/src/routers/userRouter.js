@@ -1,6 +1,7 @@
 import express from "express";
 import mysqlManager from "../../db";
 import Users from "../../db/models/user";
+import Postings from "../../db/models/posting";
 import bcrypt from "bcrypt";
 import passport from "passport";
 import multer from "multer";
@@ -79,7 +80,7 @@ userAuthRouter.post("/login", (req, res, next) => {
         process.env.JWT_SECRET_KEY,
       );
 
-      res.cookie("token", token);
+      res.cookie("token", token, { httpOnly: true });
       return res.json(Users);
     });
   })(req, res, next);
@@ -130,5 +131,25 @@ userAuthRouter.post("/profile", upload.single("image"), login_required, async (r
   res.json(req.file);
 });
 //upload array = 여러장 / single = 한장
+
+userAuthRouter.get("/records/:id", async (req, res) => {
+  try {
+    const startDay = new Date(2022, 1, 1);
+    const endDay = new Date(2022, 12, 1);
+
+    const record = await Postings.findAll({
+      raw: true,
+      where: { users_id: req.params.id },
+      attributes: ["created_at"],
+    });
+    for (let value of record) {
+      console.log(value.created_at);
+    }
+
+    res.status(200).json(record);
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 export default userAuthRouter;
