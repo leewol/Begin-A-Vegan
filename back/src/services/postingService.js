@@ -7,7 +7,7 @@ class PostingService {
     async updatePosting(postings_id, raw) {
         const posting = await Postings.findOne({ where: { id: postings_id } });
         if (!posting) {
-            return failResponse("FAIL", "fail to get posting!!");
+            return failResponse(FAIL, "fail to get posting!!");
         }
 
         const result = await Postings.update({ article: req.body.article }, { where: { id: raw.id } });
