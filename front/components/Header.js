@@ -1,8 +1,19 @@
+import React, { useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "../styles/Header.module.css";
+import Router from "next/router";
+import { AppContext } from "../pages/_app";
 
 function Header() {
+  const store = useContext(AppContext);
+
+  const logout = (event) => {
+    store.setLogin(false);
+    store.setUser(false);
+    Router.push("/");
+  };
+
   return (
     <div className={styles.header}>
       {/* 왼쪽 상단 로고 */}
@@ -30,6 +41,11 @@ function Header() {
             <span>MYPAGE</span>
           </a>
         </Link>
+        {login && (
+          <a onClick={logout} style={{ cursor: "pointer" }}>
+            <span>LOGOUT</span>
+          </a>
+        )}
       </div>
       <style jsx>
         {`
@@ -39,7 +55,7 @@ function Header() {
           span {
             display: inline-block;
             padding-bottom: 2px;
-            background-image: linear-gradient(white, white);
+            background-image: linear-gradient(#06ff00, #06ff00);
             background-position: right -100% bottom 0;
             background-size: 200% 2px;
             background-repeat: no-repeat;

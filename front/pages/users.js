@@ -1,6 +1,53 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
 import * as Api from "../lib/api";
+import styled from "styled-components";
+import Router from "next/router";
+
+const Button = styled.button`
+  display: inline-block;
+  outline: 0;
+  cursor: pointer;
+  padding: 5px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  width: 200px;
+  vertical-align: middle;
+  border: 1px solid;
+  border-radius: 6px;
+  color: #21e065;
+  background-color: #fafbfc;
+  border-color: #1b1f2326;
+  box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px 0px,
+    rgba(255, 255, 255, 0.25) 0px 1px 0px 0px inset;
+  transition: 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  transition-property: color, background-color, border-color;
+  :hover {
+    color: #ffffff;
+    background-color: #21e065;
+    border-color: #1b1f2326;
+    box-shadow: rgba(27, 31, 35, 0.1) 0px 1px 0px 0px,
+      rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset;
+    transition-duration: 0.1s;
+  }
+`;
+
+const Container = styled.div`
+  margin-left: 40%;
+  margin-top: 5%;
+`;
+
+const Text = styled.span`
+  font-size: 12px;
+  color: red;
+`;
+
+const Input = styled.input`
+  height: 32px;
+  width: 200px;
+  margin-bottom: 5px;
+`;
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -46,74 +93,67 @@ export default function Signup() {
         nickname,
         password,
       });
+      Router.push("/");
     } catch (error) {
       console.log("회원가입에 실패하였습니다.", error);
+      alert("회원가입에 실패하였습니다.", error);
     }
   };
 
   return (
     <div>
       <Header />
-      <div>
-        <span>
-          당신은
-          <br />
-          비건인가요?
-        </span>
-      </div>
-      <form onSubmit={onSubmit}>
+      <Container>
         <div>
-          <input
-            type="email"
-            name="email"
-            placeholder="EMAIL"
-            value={email}
-            onChange={onEmailHandler}
-          />
-          {!isEmailValid && (
-            <div>
-              <span>이메일 형식이 올바르지 않습니다.</span>
-            </div>
-          )}
+          <h2>SIGN UP</h2>
         </div>
-        <div>
-          <input
-            name="nickname"
-            placeholder="NICKNAME"
-            value={nickname}
-            onChange={onNicknameHandler}
-          />
-        </div>
-        <div>
-          <input
-            type="password"
-            name="password"
-            placeholder="PASSWORD"
-            value={password}
-            onChange={onPasswordHandler}
-          />
-          {!isPasswordValid && (
-            <div>
-              <span>비밀번호를 4글자 이상으로 입력해주세요.</span>
-            </div>
-          )}
-        </div>
-        <div>
-          <input
-            type="password"
-            name="confirm-password"
-            placeholder="CONFIRM PASSWORD"
-            value={confirmPassword}
-            onChange={onConfirmPasswordHandler}
-          />
-          {!isPasswordSame && (
-            <div>
-              <span>비밀번호와 일치하지 않습니다.</span>
-            </div>
-          )}
-        </div>
-        <button type="submit">CREATE ACCOUNT</button>
-      </form>
+
+        <form onSubmit={onSubmit}>
+          <div>
+            <Input
+              type="email"
+              name="email"
+              placeholder="EMAIL"
+              value={email}
+              onChange={onEmailHandler}
+            />
+            {!isEmailValid && <Text>이메일 형식이 올바르지 않습니다.</Text>}
+          </div>
+          <div>
+            <Input
+              name="nickname"
+              placeholder="NICKNAME"
+              value={nickname}
+              onChange={onNicknameHandler}
+            />
+          </div>
+          <div>
+            <Input
+              type="password"
+              name="password"
+              placeholder="PASSWORD"
+              value={password}
+              onChange={onPasswordHandler}
+            />
+            {!isPasswordValid && <Text>비밀번호를 4글자 이상으로 입력해주세요.</Text>}
+          </div>
+          <div>
+            <Input
+              type="password"
+              name="confirm-password"
+              placeholder="CONFIRM PASSWORD"
+              value={confirmPassword}
+              onChange={onConfirmPasswordHandler}
+            />
+            {!isPasswordSame && (
+              <div>
+                <span>비밀번호와 일치하지 않습니다.</span>
+              </div>
+            )}
+          </div>
+          <Button type="submit">CREATE ACCOUNT</Button>
+        </form>
+      </Container>
     </div>
   );
 }
