@@ -9,13 +9,13 @@ class ModelManager {
     Posting.init(sequelize);
     Comment.init(sequelize);
 
-    await User.sync();
-    await Posting.sync();
-    await Comment.sync();
+    // await User.sync();
+    // await Posting.sync();
+    // await Comment.sync();
 
-    User.associate(sequelize.models);
-    Posting.associate(sequelize.models);
-    Comment.associate(sequelize.models);
+    // User.associate(sequelize.models);
+    // Posting.associate(sequelize.models);
+    // Comment.associate(sequelize.models);
   }
 }
 
