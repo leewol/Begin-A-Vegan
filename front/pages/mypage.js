@@ -59,14 +59,15 @@ export default function MyPage() {
   const loadArticles = useCallback(() => {
     if (lastId.current === null) return;
     if (articleIsLoading.current) return;
+    if (!me) return;
     articleIsLoading.current = true;
-    Api.get(`/postings/me${lastId.current ? `?lastId=${lastId.current}` : ""}`).then((res) => {
+    Api.get(`/postings/${me.id}/postings`).then((res) => {
       console.log(res.data.length);
       setArticles((prev) => [...prev, ...res.data]);
       lastId.current = res.data.length < 10 ? null : res.data.reverse()[0].id;
       articleIsLoading.current = false;
     });
-  }, []);
+  }, [me]);
 
   const [open, setOpen] = useState(true);
   const seedingHandler = () => {
@@ -75,7 +76,6 @@ export default function MyPage() {
 
   useEffect(() => {
     updateUser();
-    loadArticles();
   }, []);
 
   useEffect(() => {
@@ -96,6 +96,7 @@ export default function MyPage() {
 
   useEffect(() => {
     if (!me) return;
+    loadArticles();
     Api.get(`/records/${me.id}`).then((res) =>
       setRecords(res.data.map((data) => dayjs(data.created_at))),
     );
