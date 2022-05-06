@@ -14,7 +14,7 @@ export default function MyPage() {
   const [state, setState] = useState(true);
   const text = state ? "" : "수정하기";
   const [me, setMe] = useState();
-  const [newDescription, setNewDescription] = useState("당신을 소개해주세요.");
+  const [newDescription, setNewDescription] = useState("안녕하세요. 당신을 소개해주세요.");
   const [file, setFile] = useState();
   const [isViewingPostings, setIsViewingPostings] = useState(true);
   const [articles, setArticles] = useState([]);
