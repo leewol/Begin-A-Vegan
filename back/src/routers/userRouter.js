@@ -4,11 +4,10 @@ import Users from "../../db/models/user";
 import Postings from "../../db/models/posting";
 import bcrypt from "bcrypt";
 import passport from "passport";
-import multer from "multer";
 import jwt from "jsonwebtoken";
 import { login_required } from "../middlewares/login_required";
-import dotenv from "dotenv";
 import { cookie } from "express/lib/response";
+import upload from "../utils/upload";
 
 const userAuthRouter = express.Router();
 
@@ -111,25 +110,11 @@ userAuthRouter.patch("/users/:id", async (req, res, next) => {
   }
 });
 
-const upload = multer({
-  // 저장 위치 diskStorage = 하드디스크
-  storage: multer.diskStorage({
-    destination(req, file, cb) {
-      cb(null, "uploads"); // 저장할 폴더 지정
-    },
-    filename(req, file, cb) {
-      const ext = file.originalname.substring(file.originalname.lastIndexOf(".")); // 중복피하기위한 확장자 추출 ex(.png)
-      cb(null, `${file.fieldname}-${Date.now()}${ext}`); //파일명 저장 이름 + 날짜 + 확장자
-    },
-  }),
-  limits: { fileSize: 20 * 1024 * 1024 }, // 크기 지정
-});
-
 // 폼마다 형식이 다르기 떄문에 라우터마다 별도의 세팅 필요
 // storage 옵션만 s3로 바꾸면 멀터가 알아서 스토리지로 올려줌
 userAuthRouter.post("/profile", upload.single("image"), login_required, async (req, res) => {
   console.log(req.file);
-  await req.user.update({ profile_url: req.file.path });
+  await req.user.update({ profile_url: req.file.location });
   res.json(req.file);
 });
 //upload array = 여러장 / single = 한장

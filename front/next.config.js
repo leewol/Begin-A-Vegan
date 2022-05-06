@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-	images: {
-    domains: ["localhost"],
-	},
+  images: {
+    domains: ["localhost", "portfolio-10team.s3.ap-northeast-2.amazonaws.com"],
+  },
   // env 추가
   env: {
     S3_REGION: process.env.S3_REGION,

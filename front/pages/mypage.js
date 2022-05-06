@@ -121,10 +121,7 @@ export default function MyPage() {
             <p className={styles.titleB}>{/*Profile*/}</p>
             <div className={styles.profile_img}>
               <Image
-                src={
-                  newProfileImageUrl ??
-                  (me?.profile_url ? `${Api.SERVER_URL}/${me.profile_url}` : sample)
-                }
+                src={newProfileImageUrl ?? (me?.profile_url ? me.profile_url : sample)}
                 alt=""
                 layout="fill"
               />
@@ -183,7 +180,7 @@ export default function MyPage() {
               {(isViewingPostings ? articles : likeArticles).map((article) => (
                 <li className={styles.box} key={article.id}>
                   <div>
-                    <Image src={`${Api.SERVER_URL}/${article.file_url}`} layout="fill" />
+                    <Image src={article.file_url} layout="fill" />
                   </div>
                 </li>
               ))}
