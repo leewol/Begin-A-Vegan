@@ -232,10 +232,10 @@ postingRouter.post("/postings/:postings_id/like", login_required, async (req, re
     const users_id = req.user.id;
     const postings_id = req.params.postings_id;
 
-    const posting = await Postings.findOne({ where: { postings_id } });
-    if (!posting) {
-      return res.status(403).send("존재하지 않는 게시글입니다.");
-    }
+    // const posting = await Postings.findOne({ where: { postings_id } });
+    // if (!posting) {
+    //   return res.status(403).send("존재하지 않는 게시글입니다.");
+    // }
     const liked = await Likes.create({ users_id, postings_id });
 
     res.status(200).json(liked);
