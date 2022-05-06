@@ -1,15 +1,21 @@
-import fs from "fs";
+import Comment from "./comment";
+import Posting from "./posting";
+import User from "./user";
 
 class ModelManager {
-  initialize(sequelize) {
-    const modelNames = fs.readdirSync(__dirname);
-    modelNames
-      .filter((modelName) => {
-        return modelName.indexOf(".") !== 0 && modelName !== "index.js";
-      })
-      .forEach((modelName) => {
-        require(`./${modelName}`).default.init(sequelize);
-      });
+  async initialize(sequelize) {
+    // 각각 모델의 dependency가 있기 때문에 순서에 맞게 sync를 해야 합니다.
+    User.init(sequelize);
+    Posting.init(sequelize);
+    Comment.init(sequelize);
+
+    await User.sync();
+    await Posting.sync();
+    await Comment.sync();
+
+    User.associate(sequelize.models);
+    Posting.associate(sequelize.models);
+    Comment.associate(sequelize.models);
   }
 }
 

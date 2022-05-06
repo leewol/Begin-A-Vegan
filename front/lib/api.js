@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BACK_PORT = "5001";
-const SERVER_URL = `http://localhost:${BACK_PORT}`; // ! 수정 예정
+export const SERVER_URL = `http://localhost:${BACK_PORT}`; // ! 수정 예정
 // const SERVER_URL = `http://${window.location.hostname}:${BACK_PORT}/`;
 
 // * 데이터 조회 (GET)
@@ -12,9 +12,11 @@ async function get(endPoint, params = "") {
 
   return axios.get(uri, {
     // Token 담아서 백엔드 서버에 보냄
-    // headers: {
-    //   Authorization: ``;
-    // }
+    // 백엔드와 프론트엔드의 origin이 다른 경우에
+    // CSRF를 방지하기 위해 쿠키를 보내지 않기 때문에 헤더에 인증 정보를 보내야 정상적으로 작동합니다.
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+    },
   });
 }
 
@@ -28,12 +30,12 @@ async function post(endPoint, data) {
   console.log(`%cPOST 요청: ${uri}`, "color: #296aba;");
   console.log(`%cPOST 요청 데이터: ${bodyData}`, "color: #296aba;");
 
-  return axios.post(uri, bodyData, {
+  // data 처리를 axios에 위임합니다.
+  return axios.post(uri, data, {
     headers: {
-      "Content-Type": "application/json",
-      // Authorization: ``;
+      // "Content-Type": "application/json",
+      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
     },
-    withCredentials: true,
   });
 }
 
@@ -48,7 +50,7 @@ async function put(endPoint, data) {
   return axios.put(uri, bodyData, {
     headers: {
       "Content-Type": "application/json",
-      // Authorization: ``;
+      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
     },
   });
 }
@@ -62,9 +64,9 @@ async function del(endPoint, params = "") {
   console.log(`DELETE 요청 ${uri}`);
 
   return axios.delete(uri, {
-    // headers: {
-    //   Authorization: ``;
-    // }
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+    },
   });
 }
 
