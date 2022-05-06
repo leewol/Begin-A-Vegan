@@ -20,7 +20,6 @@ class Comments extends Sequelize.Model {
         },
         users_id: {
           type: Sequelize.STRING(36),
-          defaultValue: Sequelize.UUIDV4,
           allowNull: true,
           references: {
             model: "Users",
