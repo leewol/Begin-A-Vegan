@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 import {
   Card,
@@ -12,10 +13,13 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
+import InsertCommentIcon from "@mui/icons-material/InsertComment";
 
-import Comment from "./Comment";
+import CommentCreator from "./CommentCreator";
+import PostingComments from "./PostingComments";
 
 // TODO : 피드 레이아웃 완성
 // * 유저 데이터 받아오기
@@ -32,7 +36,13 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function PostCard() {
+export default function PostCard({ posting }) {
+  const postingsId = posting.id;
+  const { users_id, User, article, file_url, Comments, is_deleted } = posting;
+
+  // 게시글 본문 문단별로 분리
+  const articleArr = article.split("<").map((el) => el.replace("p>", "").replace("/p>", ""));
+
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
@@ -40,49 +50,72 @@ export default function PostCard() {
   };
 
   return (
-    <Card sx={{ maxWidth: 500 }}>
+    <Card sx={{ maxWidth: 500, marginBottom: 5 }}>
       <CardHeader
-        avatar={<Avatar alt="User" src="/img/defaultPic.png" sx={{ width: 36, height: 36 }} />}
+        avatar={
+          <Avatar
+            alt="User"
+            src={User.profile_url || "/img/defaultPic.png"}
+            sx={{ width: 36, height: 36 }}
+          />
+        }
         action={
           <IconButton aria-label="like">
-            {/* 이거 checkbox로 바꾸기 */}
-            <FavoriteIcon />
+            {/* 조건 - 좋아요 유저 목록에 있는 id 중에 현재 로그인된 유저 id가 있는가 */}
+            <FavoriteBorderIcon />
           </IconButton>
         }
-        title="불러온닉네임"
+        title={User.nickname}
         titleTypographyProps={{ fontWeight: 600 }}
       />
+
       <CardMedia
         component="img"
         sx={{ maxHeight: 600 }}
-        image="/img/defaultPic.png"
+        image={file_url.includes("https://") ? file_url : "/img/defaultPic.png"}
         alt="user-image"
       />
+
       <CardContent>
         <Typography variant="body1" color="text" gutterBottom>
           불러온좋아요개수표시
         </Typography>
         <Typography variant="body2" color="text">
-          <b>불러온닉네임</b> 불러온본문 This impressive paella is a perfect party dish and a fun
-          meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels,
-          if you like.
+          <b>{User.nickname}</b>{" "}
+          {articleArr.map((arti) => {
+            if (!arti.includes("img src=") && arti !== "/") {
+              // uuid key 사용
+              const artiKey = uuidv4();
+              return (
+                <span key={artiKey}>
+                  {arti
+                    .replace("&amp;", "&")
+                    .replace("&gt;", ">")
+                    .replace("&lt;", "<")
+                    .replace("&quot;", '"')}{" "}
+                </span>
+              );
+            }
+          })}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
         <ExpandMore
-          expand={expanded}
+          // expand={expanded}
           onClick={handleExpandClick}
           aria-expanded={expanded}
           aria-label="show more"
         >
-          <ExpandMoreIcon />
+          {expanded ? <InsertCommentIcon /> : <CommentOutlinedIcon />}
         </ExpandMore>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        {/* 컴포넌트화시켜서 데려오기, 수정 및 삭제 넣기 */}
-        <CardContent>불러온 댓글들</CardContent>
+        {/* 수정 및 삭제 넣기 */}
+        <CardContent>
+          <PostingComments Comments={Comments} />
+        </CardContent>
       </Collapse>
-      <Comment />
+      <CommentCreator profile={User.profile_url} postingsId={postingsId} />
     </Card>
   );
 }

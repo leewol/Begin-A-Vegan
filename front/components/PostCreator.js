@@ -26,9 +26,8 @@ const QuillWrapper = dynamic(
   },
 );
 
+// * userID 정보는 백엔드에서 처리됨
 export default function PostCreator({ setIsOpen }) {
-  // * userID 정보는 메인 페이지에서 받아오기
-  const loginUserId = "a4b4baea-b4ed-424a-b7f7-96725b59"; // 임시 코드
   const [imageId, setImageId] = useState(null);
   const [postingImage, setPostingImage] = useState(null);
   const [article, setArticle] = useState("");
@@ -97,7 +96,6 @@ export default function PostCreator({ setIsOpen }) {
     // 게시글 포스팅
     try {
       await Api.post("/postings/posting", {
-        users_id: loginUserId,
         article,
         file_url: postingImage,
       });
@@ -113,14 +111,31 @@ export default function PostCreator({ setIsOpen }) {
     setPostable(false);
   };
 
-  const formats = ["bold", "italic", "underline", "strike", "image", "clean"];
+  // const formats = ["bold", "italic", "underline", "strike", "image", "clean"];
+  // const modules = useMemo(
+  //   () => ({
+  //     toolbar: {
+  //       handlers: {
+  //         image: imageHandler,
+  //       },
+  //       container: [["bold", "italic", "underline", "strike"], ["image"], ["clean"]],
+  //     },
+  //     clipboard: {
+  //       // toggle to add extra line breaks when pasting HTML:
+  //       matchVisual: false,
+  //     },
+  //   }),
+  //   [],
+  // );
+
+  const formats = ["image"];
   const modules = useMemo(
     () => ({
       toolbar: {
         handlers: {
           image: imageHandler,
         },
-        container: [["bold", "italic", "underline", "strike"], ["image"], ["clean"]],
+        container: [["image"]],
       },
       clipboard: {
         // toggle to add extra line breaks when pasting HTML:
@@ -141,6 +156,7 @@ export default function PostCreator({ setIsOpen }) {
         onChange={(value, delta, source, editor) => {
           const articleLen = editor.getLength();
           const quillArticle = editor.getHTML();
+          // const quillArticle = editor.getText();
 
           setArticle(quillArticle);
           setPostable(articleLen > 2 && imageId !== null);
