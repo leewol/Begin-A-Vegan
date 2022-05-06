@@ -5,11 +5,10 @@ class Users extends Sequelize.Model {
     return super.init(
       {
         id: {
-          type: Sequelize.STRING(36),
+          type: Sequelize.UUID,
           defaultValue: Sequelize.UUIDV4,
           allowNull: false,
           primaryKey: true,
-          autoIncrement: true,
         },
         email: {
           type: Sequelize.STRING(200),
@@ -48,11 +47,7 @@ class Users extends Sequelize.Model {
         },
         description: {
           type: Sequelize.STRING(100),
-          allowNull: true,
-        },
-        provider: {
-          type: Sequelize.STRING(100),
-          allowNull: true,
+          allowNull: false,
         },
       },
       {
@@ -67,24 +62,19 @@ class Users extends Sequelize.Model {
     );
   }
   static associate(models) {
-    Users.hasMany(models.Postings, {
+    models.Users.hasMany(models.Postings, {
       foreignKey: "users_id",
       sourceKey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    Users.hasMany(models.Comments, {
+    models.Users.hasMany(models.Comments, {
       foreignKey: "users_id",
       sourceKey: "id",
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    Users.hasMany(models.Likes, {
-      foreignKey: "users_id",
-      sourceKey: "id",
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    });
+    models.Users.belongsToMany(models.Postings, { through: "Like", as: "Liked" });
   }
 }
 

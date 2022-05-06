@@ -43,6 +43,7 @@ userAuthRouter.post("/users", async (req, res) => {
     nickname: req.body.nickname,
     is_vegan: req.body.is_vegan,
     profile_url: req.body.profile_url,
+    description: req.body.description,
   };
 
   await Users.create(user)
@@ -74,13 +75,13 @@ userAuthRouter.post("/login", (req, res, next) => {
       const token = jwt.sign(
         {
           type: "JWT",
-          email: email,
-          password: password,
+          email,
+          password,
         },
         process.env.JWT_SECRET_KEY,
       );
 
-      res.cookie("token", token, { httpOnly: true });
+      res.cookie("token", token);
       return res.json(Users);
     });
   })(req, res, next);
@@ -118,7 +119,7 @@ const upload = multer({
     },
     filename(req, file, cb) {
       const ext = file.originalname.substring(file.originalname.lastIndexOf(".")); // 중복피하기위한 확장자 추출 ex(.png)
-      cb(null, file.fieldname + "-" + Date.now() + ext); //파일명 저장 이름 + 날짜 + 확장자
+      cb(null, `${file.fieldname}-${Date.now()}${ext}`); //파일명 저장 이름 + 날짜 + 확장자
     },
   }),
   limits: { fileSize: 20 * 1024 * 1024 }, // 크기 지정
@@ -128,9 +129,19 @@ const upload = multer({
 // storage 옵션만 s3로 바꾸면 멀터가 알아서 스토리지로 올려줌
 userAuthRouter.post("/profile", upload.single("image"), login_required, async (req, res) => {
   console.log(req.file);
+  await req.user.update({ profile_url: req.file.path });
   res.json(req.file);
 });
 //upload array = 여러장 / single = 한장
+
+userAuthRouter.get("/me", login_required, async (req, res) => {
+  res.json(req.user);
+});
+
+userAuthRouter.put("/description", login_required, async (req, res) => {
+  req.user = await req.user.update({ description: req.body.description });
+  res.json(req.user);
+});
 
 userAuthRouter.get("/records/:id", async (req, res) => {
   try {
