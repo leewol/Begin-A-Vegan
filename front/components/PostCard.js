@@ -36,13 +36,14 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function PostCard({ posting, setPostingList }) {
-  // console.log(posting);
+  console.log(posting);
   const postingsId = posting.id;
   const { users_id, User, Likes, article, file_url, Comments, is_deleted } = posting;
 
   // 게시글 본문 문단별로 분리
   const articleArr = article.split("<").map((el) => el.replace("p>", "").replace("/p>", ""));
 
+  const [likes, setLikes] = useState(Likes);
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
@@ -59,7 +60,7 @@ export default function PostCard({ posting, setPostingList }) {
             sx={{ width: 36, height: 36 }}
           />
         }
-        action={<Like postingsId={postingsId} Likes={Likes} />}
+        action={<Like postingsId={postingsId} likes={likes} setLikes={setLikes} />}
         title={User.nickname}
         titleTypographyProps={{ fontWeight: 600 }}
       />
@@ -73,12 +74,12 @@ export default function PostCard({ posting, setPostingList }) {
 
       <CardContent>
         <Typography variant="button" color="text" mt={1} gutterBottom>
-          {Likes.length === 0 ? (
+          {likes.length === 0 ? (
             <span>
               가장 먼저 <b>좋아요</b>를 눌러 보세요!
             </span>
           ) : (
-            <b>좋아요 {Likes.length}개</b>
+            <b>좋아요 {likes.length}개</b>
           )}
         </Typography>
         <Typography variant="body2" color="text" mt={1}>
