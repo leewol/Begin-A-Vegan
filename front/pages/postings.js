@@ -44,14 +44,10 @@ export default function Posting() {
         <GrassIcon />
       </Button>
       <SlideBox isOpen={isOpen}>
-        <PostCreator
-          setIsOpen={setIsOpen}
-          postingList={postingList}
-          setPostingList={setPostingList}
-        />
+        <PostCreator setIsOpen={setIsOpen} setPostingList={setPostingList} />
       </SlideBox>
       {postingList.map((posting) => (
-        <PostCard key={posting.id} posting={posting} />
+        <PostCard key={posting.id} posting={posting} setPostingList={setPostingList} />
       ))}
     </>
   );

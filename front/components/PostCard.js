@@ -35,7 +35,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function PostCard({ posting }) {
+export default function PostCard({ posting, setPostingList }) {
   // console.log(posting);
   const postingsId = posting.id;
   const { users_id, User, Likes, article, file_url, Comments, is_deleted } = posting;
@@ -116,7 +116,11 @@ export default function PostCard({ posting }) {
           <PostingComments Comments={Comments} />
         </CardContent>
       </Collapse>
-      <CommentCreator profile={User.profile_url} postingsId={postingsId} />
+      <CommentCreator
+        profile={User.profile_url}
+        postingsId={postingsId}
+        setPostingList={setPostingList}
+      />
     </Card>
   );
 }

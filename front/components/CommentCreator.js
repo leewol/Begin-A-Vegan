@@ -27,7 +27,7 @@ const InputBox = styled.input`
 `;
 
 // * userID 정보는 백엔드에서 처리됨
-export default function CommentCreator({ profile, postingsId }) {
+export default function CommentCreator({ profile, postingsId, setPostingList }) {
   const [content, setContent] = useState("");
   const [contentable, setContentable] = useState(true);
 
@@ -38,7 +38,7 @@ export default function CommentCreator({ profile, postingsId }) {
   };
   const handleCommentClick = async () => {
     try {
-      await Api.post(`/${postingsId}/comments/comment`, {
+      Api.post(`/${postingsId}/comments/comment`, {
         content,
       });
     } catch (err) {
