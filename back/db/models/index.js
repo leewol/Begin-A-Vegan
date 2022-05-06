@@ -1,4 +1,5 @@
 import Comment from "./comment";
+import Likes from "./like_users_postings";
 import Posting from "./posting";
 import User from "./user";
 
@@ -8,14 +9,15 @@ class ModelManager {
     User.init(sequelize);
     Posting.init(sequelize);
     Comment.init(sequelize);
+    Likes.init(sequelize);
 
     // await User.sync();
     // await Posting.sync();
     // await Comment.sync();
 
     // User.associate(sequelize.models);
-    // Posting.associate(sequelize.models);
-    // Comment.associate(sequelize.models);
+    Posting.associate(sequelize.models);
+    Comment.associate(sequelize.models);
   }
 }
 
