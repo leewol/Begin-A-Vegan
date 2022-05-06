@@ -46,7 +46,7 @@ export default function Nav() {
           span {
             display: inline-block;
             padding-bottom: 2px;
-            background-image: linear-gradient(white, white);
+            background-image: linear-gradient(#06ff00, #06ff00);
             background-position: right -100% bottom 0;
             background-size: 200% 2px;
             background-repeat: no-repeat;
