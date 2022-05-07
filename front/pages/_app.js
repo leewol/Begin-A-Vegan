@@ -8,6 +8,11 @@ import "react-quill/dist/quill.snow.css";
 // config.autoAddCss = false;
 import { UserProvider } from "../lib/userContext";
 
+import dayjs from "dayjs";
+import dayOfYear from "dayjs/plugin/dayOfYear";
+
+dayjs.extend(dayOfYear);
+
 export default function MyApp({ Component, pageProps }) {
   return (
     <UserProvider>

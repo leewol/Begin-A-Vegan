@@ -183,12 +183,11 @@ function Calendar() {
   const [open, setOpen] = useState(true);
   const { user } = useUserState();
   const now = dayjs();
+  const firstOfMonth = now.startOf("month");
 
   useEffect(() => {
     if (!user) return;
-    Api.get(`/records/${user.userId}`).then((res) =>
-      setRecords(res.data.map((data) => dayjs(data.created_at))),
-    );
+    Api.get(`/records/${user.userId}`).then((res) => setRecords(res.data));
   }, [user]);
 
   const seedingHandler = () => {
@@ -225,12 +224,7 @@ function Calendar() {
                               data-date={date.format()}
                               key={index}
                               className={`${styles.step} ${
-                                styles[
-                                  `step0${
-                                    records.filter((record) => record.startOf("d").diff(date) === 0)
-                                      .length
-                                  }`
-                                ]
+                                styles[`step0${records[firstDateOfWeek.dayOfYear() - 1 + index]}`]
                               }`}
                             ></span>
                           );
@@ -258,9 +252,8 @@ function Calendar() {
         이번 달은{" "}
         <em>
           {records
-            .reduce((prev, curr) => prev + (curr.month() === now.month()), 0)
-            .toString()
-            .padStart(2, "0")}
+            .slice(firstOfMonth.dayOfYear() - 1, firstOfMonth.add(1, "month").dayOfYear())
+            .reduce((a, b) => a + b, 0)}
           일
         </em>
         동안 Vegan!
