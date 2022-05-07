@@ -46,7 +46,7 @@ export default function Like({ postingsId, likes, setLikes }) {
   // 조건 - 좋아요 유저 목록에 있는 id 중에 현재 로그인된 유저 id가 있는가
   return (
     <IconButton aria-label="like" onClick={handleLikeClick} sx={{ ml: -1.2, mr: -0.5 }}>
-      {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+      {liked ? <FavoriteIcon sx={{ color: "#f95076" }} /> : <FavoriteBorderIcon />}
     </IconButton>
   );
 }

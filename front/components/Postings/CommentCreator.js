@@ -49,6 +49,7 @@ export default function CommentCreator({ profile, postingsId, setPostingComments
       console.error("댓글 등록에 실패하였습니다.", err);
     }
     setContent("");
+    setContentable(true);
   };
 
   return (
@@ -66,7 +67,12 @@ export default function CommentCreator({ profile, postingsId, setPostingComments
           onChange={handleCommentChange}
         />
       </TextBox>
-      <Button variant="text" onClick={handleCommentClick} disabled={contentable}>
+      <Button
+        variant="text"
+        onClick={handleCommentClick}
+        disabled={contentable}
+        sx={{ color: "#3dad94" }}
+      >
         COMMENT
       </Button>
     </CommentBox>

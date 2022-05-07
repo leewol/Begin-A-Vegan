@@ -15,6 +15,16 @@ import * as Api from "../../lib/api";
     => document is not defined 오류
 */
 
+const PostCreatorBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  div {
+    width: 500px;
+  }
+`;
+
 const QuillWrapper = dynamic(
   async () => {
     const { default: ForwardedRefQuill } = await import("react-quill");
@@ -134,25 +144,35 @@ export default function PostCreator({ setIsOpen, setPostingList }) {
 
   return (
     <form onSubmit={handleQuillSubmit}>
-      <QuillWrapper
-        forwardedRef={quillRef}
-        theme="snow"
-        modules={modules}
-        formats={formats}
-        value={article}
-        onChange={(value, delta, source, editor) => {
-          const articleLen = editor.getLength();
-          const quillArticle = editor.getHTML();
-          // const quillArticle = editor.getText();
+      <PostCreatorBox>
+        <div>
+          <QuillWrapper
+            forwardedRef={quillRef}
+            theme="snow"
+            modules={modules}
+            formats={formats}
+            value={article}
+            onChange={(value, delta, source, editor) => {
+              const articleLen = editor.getLength();
+              const quillArticle = editor.getHTML();
+              // const quillArticle = editor.getText();
 
-          setArticle(quillArticle);
-          setPostable(articleLen > 2 && imageId !== null);
-        }}
-        placeholder={"포스팅 내용을 입력하세요"}
-      />
-      <Button type="submit" variant="contained" size="small" disabled={!postable}>
-        공유하기
-      </Button>
+              setArticle(quillArticle);
+              setPostable(articleLen > 2 && imageId !== null);
+            }}
+            placeholder={"포스팅 내용을 입력하세요"}
+          />
+        </div>
+        <Button
+          type="submit"
+          variant="contained"
+          size="small"
+          disabled={!postable}
+          sx={{ mt: 2, mb: 2, backgroundColor: "#3dad94" }}
+        >
+          공유하기
+        </Button>
+      </PostCreatorBox>
     </form>
   );
 }
