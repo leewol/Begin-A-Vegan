@@ -63,11 +63,11 @@ export default function MyPage() {
     articleIsLoading.current = true;
     Promise.all([
       Api.get(`/postings/${me.id}/postings`).then((res) => {
-        setArticles((prev) => [...prev, ...res.data]);
+        setArticles(res.data);
         lastId.current = res.data.length < 10 ? null : res.data.reverse()[0].id;
       }),
       Api.get(`/postings/${me.id}/like_postings`).then((res) => {
-        setLikeArticles((prev) => [...prev, ...res.data.map((data) => data.Posting)]);
+        setLikeArticles(res.data.map((data) => data.Posting));
       }),
     ]).then(() => (articleIsLoading.current = false));
   }, [me]);
