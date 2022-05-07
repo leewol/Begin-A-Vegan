@@ -9,6 +9,7 @@ import sample from "../public/sample_profile.jpg";
 import edit from "../public/edit_icon.png";
 import arrowRight from "../public/arrow_right.png";
 import Header from "../components/Header";
+import Nav from "../components/Nav";
 import styles from "../styles/mypage.module.css";
 import { useUserState } from "../lib/userContext";
 
@@ -101,9 +102,10 @@ export default function MyPage() {
   return (
     <div>
       <Header></Header>
+			<Nav></Nav>
       <div className={styles.layout}>
         <div className={styles.mypage_layout}>
-          <h3 className={styles.titleA}>My Page</h3>
+          {/* <h3 className={styles.titleA}>My Page</h3> */}
           <div className={state ? `${styles.profile}` : `${styles.profile} ${styles.edit}`}>
             <p className={styles.titleB}>{/*Profile*/}</p>
             <div className={styles.profile_img}>

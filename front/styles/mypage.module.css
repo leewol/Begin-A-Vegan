@@ -1,5 +1,5 @@
 .layout {
-  padding: 30px 30px 30px 300px;
+  padding: 160px 30px 30px 300px;
   height: calc(100vh - 46px);
   position: relative;
 }
@@ -8,11 +8,13 @@
   padding: 50px 0;
   margin-right: 424px;
 }
-.titleA {
+/* .titleA {
   font-size: 35px;
+	color:#c7c7c7;
   margin: 0;
+	margin-left: 30px;
   margin-bottom: 35px;
-}
+} */
 .titleB {
   width: 100%;
   font-weight: 700;
@@ -208,6 +210,7 @@
 }
 
 .seeding {
+	padding-top: 30px;
   position: fixed;
   right: 30px;
   top: 170px;
