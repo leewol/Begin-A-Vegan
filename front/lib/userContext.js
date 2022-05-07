@@ -41,21 +41,23 @@ export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    Api.get("/me").then((res) => {
-      const {
-        id: userId,
-        email: userEmail,
-        nickname: userNickname,
-        profile_url: userProfile,
-      } = res.data;
-      dispatch({
-        type: "LOGIN",
-        userId,
-        userEmail,
-        userNickname,
-        userProfile,
-      });
-    });
+    Api.get("/me")
+      .then((res) => {
+        const {
+          id: userId,
+          email: userEmail,
+          nickname: userNickname,
+          profile_url: userProfile,
+        } = res.data;
+        dispatch({
+          type: "LOGIN",
+          userId,
+          userEmail,
+          userNickname,
+          userProfile,
+        });
+      })
+      .catch(() => {});
   }, []);
 
   return (
