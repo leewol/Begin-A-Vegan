@@ -120,7 +120,7 @@ export default function MyPage() {
           <div className={state ? `${styles.profile}` : `${styles.profile} ${styles.edit}`}>
             <p className={styles.titleB}>{/*Profile*/}</p>
             <div className={styles.profile_img}>
-              <Image src={newProfileImageUrl ?? me?.profile_url ?? sample} alt="" layout="fill" />
+              <Image src={newProfileImageUrl || me?.profile_url || sample} alt="" layout="fill" />
               <div className={styles.img_add}>
                 <input className={styles.upload_name} />
                 <label htmlFor="file">이미지수정</label>
@@ -175,9 +175,7 @@ export default function MyPage() {
             <ul>
               {(isViewingPostings ? articles : likeArticles).map((article) => (
                 <li className={styles.box} key={article.id}>
-                  <div>
-                    <Image src={article.file_url} layout="fill" />
-                  </div>
+                  <div>{article.file_url && <Image src={article.file_url} layout="fill" />}</div>
                 </li>
               ))}
             </ul>
