@@ -55,13 +55,14 @@ commentRouter.get("/postings/:postings_id/comments/", login_required, async (req
       return res.status(403).send("존재하지 않는 게시글입니다.");
     }
     const comments = await Comments.findAll({
-      where: { postings_id: postings_id },
+      where: { postings_id },
       include: [
         {
           model: Users,
           attributes: ["nickname", "profile_url"],
         },
       ],
+      order: [["created_at", "ASC"]],
     });
     res.status(200).json(comments);
   } catch (error) {
