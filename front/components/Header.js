@@ -44,16 +44,20 @@ function Header() {
       </div>
       {/* 오른쪽 상단 수평 네비게이션 바 */}
       <div className={styles.menu}>
-        <Link href="/login">
-          <a>
-            <span>LOGIN</span>
-          </a>
-        </Link>
-        <Link href="/users">
-          <a>
-            <span>SIGNUP</span>
-          </a>
-        </Link>
+        {!user ? (
+          <Link href="/login">
+            <a>
+              <span>LOGIN</span>
+            </a>
+          </Link>
+        ) : null}
+        {!user ? (
+          <Link href="/users">
+            <a>
+              <span>SIGNUP</span>
+            </a>
+          </Link>
+        ) : null}
         {user ? (
           <Link href="/mypage/:id">
             <a>
