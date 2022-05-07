@@ -36,12 +36,12 @@ const Button = styled.button`
   margin-top: 15px;
   width: 100%;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 20px;
   vertical-align: middle;
   border: 1px solid;
   border-radius: 6px;
-  color: #21e065;
+  color: #59a592;
   background-color: #fafbfc;
   border-color: #1b1f2326;
   box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px 0px,
@@ -50,7 +50,7 @@ const Button = styled.button`
   transition-property: color, background-color, border-color;
   :hover {
     color: #ffffff;
-    background-color: #21e065;
+    background-color: #59a592;
     border-color: #1b1f2326;
     box-shadow: rgba(27, 31, 35, 0.1) 0px 1px 0px 0px,
       rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset;
