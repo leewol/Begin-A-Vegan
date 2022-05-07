@@ -38,8 +38,12 @@ const ExpandMore = styled((props) => {
 
 export default function PostCard({ posting, setPostingList }) {
   console.log(posting);
+  const loginUserId = "c5b9ee16-e480-4754-9610-3141e56351f7"; // ! 임시
   const postingsId = posting.id;
   const { users_id, User, Likes, article, file_url, Comments } = posting;
+  const isMine = loginUserId === users_id;
+
+  console.log(isMine);
 
   // 게시글 본문 문단별로 분리
   const articleArr = article.split("<").map((el) => el.replace("p>", "").replace("/p>", ""));
@@ -63,7 +67,9 @@ export default function PostCard({ posting, setPostingList }) {
             sx={{ width: 36, height: 36 }}
           />
         }
-        action={<PostingMore postingsId={postingsId} setPostingList={setPostingList} />}
+        action={
+          <PostingMore postingsId={postingsId} setPostingList={setPostingList} isMine={isMine} />
+        }
         title={User.nickname}
         titleTypographyProps={{ fontWeight: 600 }}
       />
@@ -116,15 +122,20 @@ export default function PostCard({ posting, setPostingList }) {
         </ExpandMore>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        {/* 수정 및 삭제 넣기 */}
+        {/* 수정 넣기 */}
         <CardContent>
-          <PostingComments Comments={Comments} />
+          <PostingComments
+            postingComments={postingComments}
+            loginUserId={loginUserId}
+            setPostingComments={setPostingComments}
+          />
         </CardContent>
       </Collapse>
       <CommentCreator
         profile={User.profile_url}
         postingsId={postingsId}
         setPostingList={setPostingList}
+        setPostingComments={setPostingComments}
       />
     </Card>
   );
