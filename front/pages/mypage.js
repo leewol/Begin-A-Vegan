@@ -105,7 +105,7 @@ export default function MyPage() {
 			<Nav></Nav>
       <div className={styles.layout}>
         <div className={styles.mypage_layout}>
-          <h3 className={styles.titleA}>My Page</h3>
+          {/* <h3 className={styles.titleA}>My Page</h3> */}
           <div className={state ? `${styles.profile}` : `${styles.profile} ${styles.edit}`}>
             <p className={styles.titleB}>{/*Profile*/}</p>
             <div className={styles.profile_img}>
