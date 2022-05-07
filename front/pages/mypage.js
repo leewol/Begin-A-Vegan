@@ -226,7 +226,12 @@ function Calendar() {
                               data-date={date.format()}
                               key={index}
                               className={`${styles.step} ${
-                                styles[`step0${records[firstDateOfWeek.dayOfYear() - 1 + index]}`]
+                                styles[
+                                  `step0${Math.min(
+                                    records[firstDateOfWeek.dayOfYear() - 1 + index],
+                                    5,
+                                  )}`
+                                ]
                               }`}
                             ></span>
                           );
@@ -253,9 +258,11 @@ function Calendar() {
       <p className={styles.now}>
         이번 달은{" "}
         <em>
-          {records
-            .slice(firstOfMonth.dayOfYear() - 1, firstOfMonth.add(1, "month").dayOfYear())
-            .reduce((a, b) => a + b, 0)}
+          {
+            records
+              .slice(firstOfMonth.dayOfYear() - 1, firstOfMonth.add(1, "month").dayOfYear())
+              .filter(Boolean).length
+          }
           일
         </em>
         동안 Vegan!
