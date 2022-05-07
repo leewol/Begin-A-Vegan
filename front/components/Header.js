@@ -1,11 +1,10 @@
 import React, { useContext, useEffect } from "react";
 import Router from "next/router";
 import Link from "next/link";
-
 import Image from "next/image";
 import styles from "../styles/Header.module.css";
 import styled from "styled-components";
-import Router from "next/router";
+
 import { useUserState, useUserDispatch } from "../lib/userContext";
 import * as Api from "../lib/api";
 
