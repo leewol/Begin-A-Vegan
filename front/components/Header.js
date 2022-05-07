@@ -1,17 +1,35 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
+import Router from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "../styles/Header.module.css";
-import Router from "next/router";
-import { AppContext } from "../pages/_app";
+import styled from "styled-components";
+
+import { useUserState, useUserDispatch } from "../lib/userContext";
+import * as Api from "../lib/api";
 
 function Header() {
-  const store = useContext(AppContext);
+  const { user } = useUserState();
+  const dispatch = useUserDispatch();
 
-  const logout = (event) => {
-    store.setLogin(false);
-    store.setUser(false);
-    Router.push("/");
+  // 데이터 받아졌는지 확인용으로 추가했어요 필요하시면 주석 풀고 확인..!
+  // useEffect(() => {
+  //   console.log(userState);
+  // }, [userState]);
+
+  const onLogout = async (event) => {
+    event.preventDefault();
+
+    try {
+      await Api.post("/logout");
+      alert("로그아웃 되었습니다.");
+      dispatch({
+        type: "LOGOUT",
+      });
+      Router.push("/");
+    } catch (error) {
+      console.log("로그아웃에 실패하였습니다.");
+    }
   };
 
   return (
@@ -26,26 +44,32 @@ function Header() {
       </div>
       {/* 오른쪽 상단 수평 네비게이션 바 */}
       <div className={styles.menu}>
-        <Link href="/login">
-          <a>
-            <span>LOGIN</span>
-          </a>
-        </Link>
-        <Link href="/users">
-          <a>
-            <span>SIGNUP</span>
-          </a>
-        </Link>
-        <Link href="/mypage">
-          <a>
-            <span>MYPAGE</span>
-          </a>
-        </Link>
-        {login && (
-          <a onClick={logout} style={{ cursor: "pointer" }}>
+        {!user ? (
+          <Link href="/login">
+            <a>
+              <span>LOGIN</span>
+            </a>
+          </Link>
+        ) : null}
+        {!user ? (
+          <Link href="/users">
+            <a>
+              <span>SIGNUP</span>
+            </a>
+          </Link>
+        ) : null}
+        {user ? (
+          <Link href="/mypage">
+            <a>
+              <span>MYPAGE</span>
+            </a>
+          </Link>
+        ) : null}
+        {user ? (
+          <a onClick={onLogout} style={{ cursor: "pointer" }}>
             <span>LOGOUT</span>
           </a>
-        )}
+        ) : null}
       </div>
       <style jsx>
         {`

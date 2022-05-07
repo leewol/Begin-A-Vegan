@@ -52,6 +52,7 @@ userAuthRouter.post("/users", async (req, res) => {
     .catch((err) => {
       console.log(err);
     });
+  res.status(200).json(user);
 });
 
 userAuthRouter.post("/login", (req, res, next) => {

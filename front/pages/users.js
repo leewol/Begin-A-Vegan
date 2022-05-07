@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import * as Api from "../lib/api";
 import styled from "styled-components";
 import Router from "next/router";
+import { useUserDispatch } from "../lib/userContext";
 
 const Button = styled.button`
   display: inline-block;
@@ -55,6 +56,8 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const dispatch = useUserDispatch();
+
   const onEmailHandler = (event) => {
     setEmail(event.target.value);
   };
@@ -92,6 +95,14 @@ export default function Signup() {
         email,
         nickname,
         password,
+      });
+      dispatch({
+        type: "CREATE_USER",
+        user: {
+          email,
+          nickname,
+          password,
+        },
       });
       Router.push("/");
     } catch (error) {

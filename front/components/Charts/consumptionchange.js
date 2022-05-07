@@ -5,13 +5,19 @@ const MyResponsiveBar = dynamic(() => import("../Nivo/consumptionchange"), {
   ssr: false,
 });
 
+const chartstyles = {
+  fontFamily: "sans-serif",
+  fontSize: "14px",
+  textAlign: "center",
+};
+
 const Chartconsumptionchange = () => {
   return (
-    <div className="divStream">
+    <div style={chartstyles} className="divStream">
       <MyResponsiveBar data={consumptionchange} />
       <style jsx>{`
         .divStream {
-          height: 60vh;
+          height: 56vh;
           width: 40vw;
         }
       `}</style>

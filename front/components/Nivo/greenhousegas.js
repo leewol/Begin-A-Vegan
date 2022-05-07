@@ -1,7 +1,42 @@
 import { ResponsiveStream } from "@nivo/stream";
 
+const theme = {
+  textColor: "#f7fdfa",
+  axis: {
+    legend: {
+      text: {
+        fontSize: 12,
+        fill: "#777777",
+      },
+    },
+    ticks: {
+      line: {
+        stroke: "#F4EEA9",
+        strokeWidth: 1,
+      },
+      text: {
+        fontSize: 9,
+        fill: "#F4EEA9",
+      },
+    },
+  },
+  grid: {
+    line: {
+      stroke: "#519259",
+      strokeWidth: 0.5,
+    },
+  },
+};
+
+const chartstyles = {
+  fontFamily: "sans-serif",
+  fontSize: "20px",
+  textAlign: "center",
+};
+
 const MyResponsiveStream = ({ data }) => (
   <ResponsiveStream
+    style={chartstyles}
     data={data}
     keys={[
       "UK",
@@ -17,7 +52,8 @@ const MyResponsiveStream = ({ data }) => (
       "China",
     ]}
     valueFormat=" >-,"
-    margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+    theme={theme}
+    margin={{ top: 50, right: 120, bottom: 50, left: 70 }}
     axisTop={null}
     axisRight={{
       orient: "right",
@@ -33,7 +69,7 @@ const MyResponsiveStream = ({ data }) => (
       tickSize: 5,
       tickPadding: 5,
       tickRotation: 0,
-      legend: "Year",
+      legend: "",
       legendOffset: 36,
       tickValues: 5,
       format: (v) => v + 1993 + v * 5,
@@ -45,6 +81,7 @@ const MyResponsiveStream = ({ data }) => (
       tickRotation: 0,
       legend: "",
       legendOffset: -40,
+      format: " >-,",
     }}
     enableGridY={false}
     curve="cardinal"
@@ -95,26 +132,26 @@ const MyResponsiveStream = ({ data }) => (
       modifiers: [["darker", 0.7]],
     }}
     motionConfig="molasses"
-    legends={[
-      {
-        anchor: "bottom-right",
-        direction: "column",
-        translateX: 145,
-        itemWidth: 80,
-        itemHeight: 15,
-        itemTextColor: "#999999",
-        symbolSize: 6,
-        symbolShape: "circle",
-        effects: [
-          {
-            on: "hover",
-            style: {
-              itemTextColor: "#000000",
-            },
-          },
-        ],
-      },
-    ]}
+    // legends={[
+    //   {
+    //     anchor: "bottom-right",
+    //     direction: "column",
+    //     translateX: 145,
+    //     itemWidth: 80,
+    //     itemHeight: 15,
+    //     itemTextColor: "#999999",
+    //     symbolSize: 6,
+    //     symbolShape: "circle",
+    //     effects: [
+    //       {
+    //         on: "hover",
+    //         style: {
+    //           itemTextColor: "#000000",
+    //         },
+    //       },
+    //     ],
+    //   },
+    // ]}
   />
 );
 

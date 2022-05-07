@@ -1,12 +1,15 @@
 import Link from "next/link";
 import styles from "../styles/Nav.module.css";
+import { useUserState } from "../lib/userContext";
 
 export default function Nav() {
+  const { user } = useUserState();
+
   return (
     <nav>
       <ul className={styles.category}>
         <li>
-          <Link href="/about">
+          <Link href="#about">
             <a>
               {/* 데이터 시각화 자료 */}
               <span>ABOUT</span>
@@ -21,21 +24,15 @@ export default function Nav() {
             </a>
           </Link>
         </li>
-        {/* 아코디언 패턴 컬렉션으로 INFORMATION 밑에 숨어있다가 클릭하면 나타나게 하기 */}
-        {/* <li>
-          <Link href="/">
-            <a>
-              <span>VEGAN RECIPE</span>
-            </a>
-          </Link>
-        </li> */}
-        <li>
-          <Link href="/postings">
-            <a>
-              <span>COMMUNITY</span>
-            </a>
-          </Link>
-        </li>
+        {user ? (
+          <li>
+            <Link href="/postings">
+              <a>
+                <span>COMMUNITY</span>
+              </a>
+            </Link>
+          </li>
+        ) : null}
       </ul>
       <style jsx>
         {`
