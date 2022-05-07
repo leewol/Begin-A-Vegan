@@ -41,11 +41,14 @@ function Header() {
             <span>MYPAGE</span>
           </a>
         </Link>
-        {login && (
+        {/* {login && (
           <a onClick={logout} style={{ cursor: "pointer" }}>
             <span>LOGOUT</span>
           </a>
-        )}
+        )} */}
+        <a onClick={logout} style={{ cursor: "pointer" }}>
+          <span>LOGOUT</span>
+        </a>
       </div>
       <style jsx>
         {`
