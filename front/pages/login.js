@@ -69,8 +69,12 @@ export default function Login() {
       });
       const user = res.data;
       dispatch({
+        // 요 부분 데이터를 바꿨어요
         type: "LOGIN",
-        userId: email,
+        userId: user.id,
+        userEmail: user.email,
+        userNickname: user.nickname,
+        userProfile: user.profile_url,
       });
       Router.push("/");
     } catch (error) {

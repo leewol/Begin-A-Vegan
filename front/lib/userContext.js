@@ -16,7 +16,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         user: {
+          // 요 부분 데이터를 바꿨어요
           userId: action.userId,
+          userEmail: action.userEmail,
+          userNickname: action.userNickname,
+          userProfile: action.userProfile,
         },
       };
     case "LOGOUT":

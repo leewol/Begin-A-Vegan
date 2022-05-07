@@ -1,5 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
+import Router from "next/router";
 import Link from "next/link";
+
 import Image from "next/image";
 import styles from "../styles/Header.module.css";
 import styled from "styled-components";
@@ -10,6 +12,12 @@ import * as Api from "../lib/api";
 function Header() {
   const { user } = useUserState();
   const dispatch = useUserDispatch();
+  const userState = useUserState();
+
+  // 데이터 받아졌는지 확인용으로 추가했어요 필요하시면 주석 풀고 확인..!
+  // useEffect(() => {
+  //   console.log(userState);
+  // }, [userState]);
 
   const onLogout = async (event) => {
     event.preventDefault();
