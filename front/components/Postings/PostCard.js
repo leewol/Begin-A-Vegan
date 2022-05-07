@@ -10,15 +10,16 @@ import {
   Avatar,
   Typography,
   Collapse,
+  IconButton,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import IconButton from "@mui/material/IconButton";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import InsertCommentIcon from "@mui/icons-material/InsertComment";
 
 import CommentCreator from "./CommentCreator";
 import PostingComments from "./PostingComments";
 import Like from "./Like";
+import PostingMore from "./PostingMore";
 
 // TODO : 피드 레이아웃 완성
 // * 유저 데이터 받아오기
@@ -37,13 +38,19 @@ const ExpandMore = styled((props) => {
 
 export default function PostCard({ posting, setPostingList }) {
   console.log(posting);
+  const loginUserId = "c5b9ee16-e480-4754-9610-3141e56351f7"; // ! 임시
   const postingsId = posting.id;
-  const { users_id, User, Likes, article, file_url, Comments, is_deleted } = posting;
+  const { users_id, User, Likes, article, file_url, Comments } = posting;
+  const isMine = loginUserId === users_id;
+
+  console.log(isMine);
 
   // 게시글 본문 문단별로 분리
   const articleArr = article.split("<").map((el) => el.replace("p>", "").replace("/p>", ""));
 
   const [likes, setLikes] = useState(Likes);
+  // ! 조회 추가되면 댓글 상태관리 설정하기
+  const [postingComments, setPostingComments] = useState(Comments);
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
@@ -60,7 +67,9 @@ export default function PostCard({ posting, setPostingList }) {
             sx={{ width: 36, height: 36 }}
           />
         }
-        action={<Like postingsId={postingsId} likes={likes} setLikes={setLikes} />}
+        action={
+          <PostingMore postingsId={postingsId} setPostingList={setPostingList} isMine={isMine} />
+        }
         title={User.nickname}
         titleTypographyProps={{ fontWeight: 600 }}
       />
@@ -73,6 +82,7 @@ export default function PostCard({ posting, setPostingList }) {
       />
 
       <CardContent>
+        <Like postingsId={postingsId} likes={likes} setLikes={setLikes} />
         <Typography variant="button" color="text" mt={1} gutterBottom>
           {likes.length === 0 ? (
             <span>
@@ -112,15 +122,20 @@ export default function PostCard({ posting, setPostingList }) {
         </ExpandMore>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        {/* 수정 및 삭제 넣기 */}
+        {/* 수정 넣기 */}
         <CardContent>
-          <PostingComments Comments={Comments} />
+          <PostingComments
+            postingComments={postingComments}
+            loginUserId={loginUserId}
+            setPostingComments={setPostingComments}
+          />
         </CardContent>
       </Collapse>
       <CommentCreator
         profile={User.profile_url}
         postingsId={postingsId}
         setPostingList={setPostingList}
+        setPostingComments={setPostingComments}
       />
     </Card>
   );

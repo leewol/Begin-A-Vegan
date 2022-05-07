@@ -6,7 +6,7 @@ import AWS from "aws-sdk";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
 
-import * as Api from "../lib/api";
+import * as Api from "../../lib/api";
 
 /* 
   * document 조작의 순서 : 
@@ -14,6 +14,16 @@ import * as Api from "../lib/api";
     [react-quill 로드 -> react-quill이 document 조작 -> document 정의] (일반 Import)
     => document is not defined 오류
 */
+
+const PostCreatorBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  div {
+    width: 500px;
+  }
+`;
 
 const QuillWrapper = dynamic(
   async () => {
@@ -95,13 +105,12 @@ export default function PostCreator({ setIsOpen, setPostingList }) {
 
     // 게시글 포스팅
     try {
-      Api.post("/postings/posting", {
+      await Api.post("/postings/posting", {
         article,
         file_url: postingImage,
       });
 
       // 포스팅 후 게시글 리스트 다시 set
-      // ! 근데 한 번은 update 되는데 두 번째부터는 안 된다..
       const res = await Api.get("/postingList");
       setPostingList(res.data);
     } catch (err) {
@@ -135,25 +144,35 @@ export default function PostCreator({ setIsOpen, setPostingList }) {
 
   return (
     <form onSubmit={handleQuillSubmit}>
-      <QuillWrapper
-        forwardedRef={quillRef}
-        theme="snow"
-        modules={modules}
-        formats={formats}
-        value={article}
-        onChange={(value, delta, source, editor) => {
-          const articleLen = editor.getLength();
-          const quillArticle = editor.getHTML();
-          // const quillArticle = editor.getText();
+      <PostCreatorBox>
+        <div>
+          <QuillWrapper
+            forwardedRef={quillRef}
+            theme="snow"
+            modules={modules}
+            formats={formats}
+            value={article}
+            onChange={(value, delta, source, editor) => {
+              const articleLen = editor.getLength();
+              const quillArticle = editor.getHTML();
+              // const quillArticle = editor.getText();
 
-          setArticle(quillArticle);
-          setPostable(articleLen > 2 && imageId !== null);
-        }}
-        placeholder={"포스팅 내용을 입력하세요"}
-      />
-      <Button type="submit" variant="contained" size="small" disabled={!postable}>
-        공유하기
-      </Button>
+              setArticle(quillArticle);
+              setPostable(articleLen > 2 && imageId !== null);
+            }}
+            placeholder={"포스팅 내용을 입력하세요"}
+          />
+        </div>
+        <Button
+          type="submit"
+          variant="contained"
+          size="small"
+          disabled={!postable}
+          sx={{ mt: 2, mb: 2, backgroundColor: "#3dad94" }}
+        >
+          공유하기
+        </Button>
+      </PostCreatorBox>
     </form>
   );
 }

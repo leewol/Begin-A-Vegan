@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Button, Avatar } from "@mui/material";
 import styled from "styled-components";
 
-import * as Api from "../lib/api";
+import * as Api from "../../lib/api";
 
 const CommentBox = styled.div`
   display: flex;
@@ -27,7 +27,7 @@ const InputBox = styled.input`
 `;
 
 // * userID 정보는 백엔드에서 처리됨
-export default function CommentCreator({ profile, postingsId, setPostingList }) {
+export default function CommentCreator({ profile, postingsId, setPostingComments }) {
   const [content, setContent] = useState("");
   const [contentable, setContentable] = useState(true);
 
@@ -38,13 +38,18 @@ export default function CommentCreator({ profile, postingsId, setPostingList }) 
   };
   const handleCommentClick = async () => {
     try {
-      Api.post(`/${postingsId}/comments/comment`, {
+      await Api.post(`/${postingsId}/comments/comment`, {
         content,
       });
+
+      // 포스팅 후 댓글 리스트 다시 set
+      const res = await Api.get(`/postings/${postingsId}/comments`);
+      setPostingComments(res.data);
     } catch (err) {
       console.error("댓글 등록에 실패하였습니다.", err);
     }
     setContent("");
+    setContentable(true);
   };
 
   return (
@@ -62,7 +67,12 @@ export default function CommentCreator({ profile, postingsId, setPostingList }) 
           onChange={handleCommentChange}
         />
       </TextBox>
-      <Button variant="text" onClick={handleCommentClick} disabled={contentable}>
+      <Button
+        variant="text"
+        onClick={handleCommentClick}
+        disabled={contentable}
+        sx={{ color: "#3dad94" }}
+      >
         COMMENT
       </Button>
     </CommentBox>
