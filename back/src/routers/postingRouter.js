@@ -51,7 +51,7 @@ postingRouter.get("/postingList", login_required, async (req, res, next) => {
       ],
       order: [
         ["created_at", "DESC"],
-        [Comments, "created_at", "DESC"],
+        [Comments, "created_at", "ASC"],
       ],
     });
     res.status(200).json(postings);
@@ -86,7 +86,7 @@ postingRouter.get("/postings/:id", login_required, async (req, res, next) => {
       ],
       order: [
         ["created_at", "DESC"],
-        [Comments, "created_at", "DESC"],
+        [Comments, "created_at", "ASC"],
       ],
     });
 
@@ -126,7 +126,7 @@ postingRouter.get("/postings/:users_id/like_postings", login_required, async (re
           ],
           order: [
             ["created_at", "DESC"],
-            [Comments, "created_at", "DESC"],
+            [Comments, "created_at", "ASC"],
           ],
         },
       ],
@@ -165,7 +165,7 @@ postingRouter.get("/postings/:users_id/postings", login_required, async (req, re
       ],
       order: [
         ["created_at", "DESC"],
-        [Comments, "created_at", "DESC"],
+        [Comments, "created_at", "ASC"],
       ],
     });
     res.status(200).json(postings);
@@ -205,7 +205,7 @@ postingRouter.put("/postings/:id", login_required, async (req, res, next) => {
       ],
       order: [
         ["created_at", "DESC"],
-        [Comments, "created_at", "DESC"],
+        [Comments, "created_at", "ASC"],
       ],
     });
     res.status(200).json(updatedPosting);
