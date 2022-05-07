@@ -7,7 +7,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 import * as Api from "../../lib/api";
 
-export default function PostingMore({ postingsId, setPostingList }) {
+export default function PostingMore({ postingsId, setPostingList, isMine }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -42,7 +42,7 @@ export default function PostingMore({ postingsId, setPostingList }) {
         aria-haspopup="true"
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
-        onClick={handleMoreClick}
+        onClick={isMine ? handleMoreClick : undefined}
       >
         <MoreHorizIcon />
       </IconButton>
@@ -65,7 +65,7 @@ export default function PostingMore({ postingsId, setPostingList }) {
         disableRestoreFocus
       >
         <Typography variant="body2" sx={{ p: 1 }}>
-          게시글 삭제
+          {isMine ? "게시글 삭제" : "다른 사람의 게시글입니다"}
         </Typography>
       </Popover>
     </>

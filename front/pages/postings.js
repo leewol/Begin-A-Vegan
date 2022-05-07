@@ -28,7 +28,7 @@ export default function Posting() {
   };
 
   useEffect(() => {
-    // * 여러개 불러오기
+    // 포스팅 리스트 불러오기
     Api.get("/postingList")
       .then((res) => {
         setPostingList(res.data);
