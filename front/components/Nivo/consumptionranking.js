@@ -1,5 +1,27 @@
 import { ResponsiveBump } from "@nivo/bump";
 
+const theme = {
+  textColor: "#f7fdfa",
+  axis: {
+    legend: {
+      text: {
+        fontSize: 12,
+        fill: "#777777",
+      },
+    },
+    ticks: {
+      line: {
+        stroke: "#F4EEA9",
+        strokeWidth: 1,
+      },
+      text: {
+        fontSize: 11,
+        fill: "#519259",
+      },
+    },
+  },
+};
+
 const MyResponsiveBump = ({ data }) => (
   <ResponsiveBump
     data={data}
@@ -11,6 +33,7 @@ const MyResponsiveBump = ({ data }) => (
     inactiveOpacity={0.15}
     startLabel={false}
     endLabel={true}
+    endLabelPadding={30}
     startLabelPadding={30}
     startLabelTextColor={{ from: "color", modifiers: [] }}
     pointSize={8}
@@ -22,6 +45,7 @@ const MyResponsiveBump = ({ data }) => (
     pointBorderColor={{ from: "serie.color" }}
     enableGridX={false}
     enableGridY={false}
+    theme={theme}
     axisTop={{
       tickSize: 0,
       tickPadding: 5,
@@ -32,7 +56,7 @@ const MyResponsiveBump = ({ data }) => (
     }}
     axisBottom={{
       tickSize: 0,
-      tickPadding: 5,
+      tickPadding: 10,
       tickRotation: 0,
       legend: "",
       legendPosition: "middle",
@@ -40,7 +64,7 @@ const MyResponsiveBump = ({ data }) => (
     }}
     axisLeft={{
       tickSize: 0,
-      tickPadding: 5,
+      tickPadding: 10,
       tickRotation: 0,
       legend: "",
       legendPosition: "middle",
@@ -48,13 +72,13 @@ const MyResponsiveBump = ({ data }) => (
     }}
     axisRight={{
       tickSize: 0,
-      tickPadding: 1,
+      tickPadding: 10,
       tickRotation: 0,
       legend: "",
       legendPosition: "middle",
-      legendOffset: 60,
+      legendOffset: 80,
     }}
-    margin={{ top: 0, right: 100, bottom: 40, left: 40 }}
+    margin={{ top: 20, right: 100, bottom: 40, left: 40 }}
   />
 );
 
