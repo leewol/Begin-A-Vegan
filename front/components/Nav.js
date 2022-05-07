@@ -6,7 +6,7 @@ export default function Nav() {
     <nav>
       <ul className={styles.category}>
         <li>
-          <Link href="/about">
+          <Link href="#about">
             <a>
               {/* 데이터 시각화 자료 */}
               <span>ABOUT</span>

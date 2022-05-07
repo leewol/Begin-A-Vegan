@@ -12,7 +12,7 @@ const Chartglobalsealevel = () => {
       <style jsx>{`
         .divchart {
           height: 50vh;
-          width: 50vw;
+          width: 60vw;
         }
       `}</style>
     </div>
