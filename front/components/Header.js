@@ -1,17 +1,35 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
+import Router from "next/router";
 import Link from "next/link";
+
 import Image from "next/image";
 import styles from "../styles/Header.module.css";
-import Router from "next/router";
-import { AppContext } from "../pages/_app";
+
+import { useUserDispatch, useUserState } from "../lib/userContext";
+import * as Api from "../lib/api";
 
 function Header() {
-  const store = useContext(AppContext);
+  const dispatch = useUserDispatch();
+  const userState = useUserState();
 
-  const logout = (event) => {
-    store.setLogin(false);
-    store.setUser(false);
-    Router.push("/");
+  // 데이터 받아졌는지 확인용으로 추가했어요 필요하시면 주석 풀고 확인..!
+  // useEffect(() => {
+  //   console.log(userState);
+  // }, [userState]);
+
+  const onLogout = async (event) => {
+    event.preventDefault();
+
+    try {
+      await Api.post("/logout");
+      alert("로그아웃 되었습니다.");
+      dispatch({
+        type: "LOGOUT",
+      });
+      Router.push("/");
+    } catch (error) {
+      console.log("로그아웃에 실패하였습니다.");
+    }
   };
 
   return (
@@ -41,12 +59,7 @@ function Header() {
             <span>MYPAGE</span>
           </a>
         </Link>
-        {/* {login && (
-          <a onClick={logout} style={{ cursor: "pointer" }}>
-            <span>LOGOUT</span>
-          </a>
-        )} */}
-        <a onClick={logout} style={{ cursor: "pointer" }}>
+        <a onClick={onLogout} style={{ cursor: "pointer" }}>
           <span>LOGOUT</span>
         </a>
       </div>
