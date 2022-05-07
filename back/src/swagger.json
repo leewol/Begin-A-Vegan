@@ -361,6 +361,29 @@
         }
       }
     },
+    "/postings/{postings_id}/comments/": {
+      "get": {
+        "summary": "해당 게시물에 달린 모든댓글 조회 ",
+        "parameters": [
+          {
+            "name": "postings_id",
+            "in": "path",
+            "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/postings/{postings_id}/like": {
       "post": {
         "summary": "좋아요!",
