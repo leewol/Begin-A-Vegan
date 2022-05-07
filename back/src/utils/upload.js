@@ -5,17 +5,17 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const s3 = new aws.S3({
-  region: process.env.AWS_REGION,
+  region: process.env.S3_REGION,
   credentials: new aws.Credentials({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    accessKeyId: process.env.S3_ACCESS_KEY,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
   }),
 });
 
 const upload = multer({
   storage: multerS3({
     s3,
-    bucket: "portfolio-10team",
+    bucket: process.env.S3_BUCKET,
     key: (req, file, cb) => {
       // 중복피하기위한 확장자 추출 ex(.png)
       const ext = file.originalname.split(".").pop();

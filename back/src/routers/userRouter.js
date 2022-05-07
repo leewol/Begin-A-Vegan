@@ -6,7 +6,6 @@ import bcrypt from "bcrypt";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 import { login_required } from "../middlewares/login_required";
-import { cookie } from "express/lib/response";
 import upload from "../utils/upload";
 
 const userAuthRouter = express.Router();
@@ -115,7 +114,7 @@ userAuthRouter.patch("/users/:id", async (req, res, next) => {
 // storage 옵션만 s3로 바꾸면 멀터가 알아서 스토리지로 올려줌
 userAuthRouter.post("/profile", upload.single("image"), login_required, async (req, res) => {
   console.log(req.file);
-  await req.user.update({ profile_url: req.file.location });
+  await req.user.update({ profile_url: req.file.path });
   res.json(req.file);
 });
 //upload array = 여러장 / single = 한장
