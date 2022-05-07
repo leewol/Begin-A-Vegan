@@ -2,11 +2,13 @@ import React, { useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "../styles/Header.module.css";
+import styled from "styled-components";
 import Router from "next/router";
-import { useUserDispatch } from "../lib/userContext";
+import { useUserState, useUserDispatch } from "../lib/userContext";
 import * as Api from "../lib/api";
 
 function Header() {
+  const { user } = useUserState();
   const dispatch = useUserDispatch();
 
   const onLogout = async (event) => {
@@ -23,6 +25,15 @@ function Header() {
       console.log("로그아웃에 실패하였습니다.");
     }
   };
+
+  const Span = styled.span`
+    display: inline-block;
+    padding-bottom: 2px;
+    background-image: linear-gradient(gray, gray);
+    background-position: right -100% bottom 0;
+    background-size: 200% 2px;
+    background-repeat: no-repeat;
+  `;
 
   return (
     <div className={styles.header}>
@@ -46,14 +57,26 @@ function Header() {
             <span>SIGNUP</span>
           </a>
         </Link>
-        <Link href="/mypage/:id">
+        {user ? (
+          <Link href="/mypage/:id">
+            <a>
+              <span>MYPAGE</span>
+            </a>
+          </Link>
+        ) : (
           <a>
-            <span>MYPAGE</span>
+            <Span>MYPAGE</Span>
           </a>
-        </Link>
-        <a onClick={onLogout} style={{ cursor: "pointer" }}>
-          <span>LOGOUT</span>
-        </a>
+        )}
+        {user ? (
+          <a onClick={onLogout} style={{ cursor: "pointer" }}>
+            <span>LOGOUT</span>
+          </a>
+        ) : (
+          <a>
+            <Span>LOGOUT</Span>
+          </a>
+        )}
       </div>
       <style jsx>
         {`
