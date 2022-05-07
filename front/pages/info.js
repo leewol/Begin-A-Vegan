@@ -15,6 +15,8 @@ import {
   faGlassWater,
 } from "@fortawesome/free-solid-svg-icons";
 
+import Header from "../components/Header";
+
 const InfoIndexText = styled.div`
   width: 25%;
   margin-left: 10%;
@@ -123,6 +125,7 @@ export default function Info() {
   // 선택지 & 각 화면 슬라이드
   return (
     <FullPage ref={fullPageRef} duration={50} className="index">
+      {/* <Header /> */}
       <Slide key="selecting-section" className="section">
         <InfoIndexText>
           <h1>

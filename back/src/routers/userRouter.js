@@ -53,6 +53,7 @@ userAuthRouter.post("/users", async (req, res) => {
     .catch((err) => {
       console.log(err);
     });
+  res.status(200).json(user);
 });
 
 userAuthRouter.post("/login", (req, res, next) => {
@@ -135,6 +136,11 @@ userAuthRouter.post("/profile", upload.single("image"), login_required, async (r
 //upload array = 여러장 / single = 한장
 
 userAuthRouter.get("/me", login_required, async (req, res) => {
+  res.json(req.user);
+});
+
+userAuthRouter.put("/nickname", login_required, async (req, res) => {
+  req.user = await req.user.update({ nickname: req.body.nickname });
   res.json(req.user);
 });
 
