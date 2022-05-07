@@ -3,15 +3,25 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from "../styles/Header.module.css";
 import Router from "next/router";
-import { AppContext } from "../pages/_app";
+import { useUserDispatch } from "../lib/userContext";
+import * as Api from "../lib/api";
 
 function Header() {
-  const store = useContext(AppContext);
+  const dispatch = useUserDispatch();
 
-  const logout = (event) => {
-    store.setLogin(false);
-    store.setUser(false);
-    Router.push("/");
+  const onLogout = async (event) => {
+    event.preventDefault();
+
+    try {
+      await Api.post("/logout");
+      alert("로그아웃 되었습니다.");
+      dispatch({
+        type: "LOGOUT",
+      });
+      Router.push("/");
+    } catch (error) {
+      console.log("로그아웃에 실패하였습니다.");
+    }
   };
 
   return (
@@ -41,11 +51,9 @@ function Header() {
             <span>MYPAGE</span>
           </a>
         </Link>
-        {login && (
-          <a onClick={logout} style={{ cursor: "pointer" }}>
-            <span>LOGOUT</span>
-          </a>
-        )}
+        <a onClick={onLogout} style={{ cursor: "pointer" }}>
+          <span>LOGOUT</span>
+        </a>
       </div>
       <style jsx>
         {`

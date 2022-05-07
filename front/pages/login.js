@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Header from "../components/Header";
 import Router from "next/router";
 import styled from "styled-components";
+import { useUserState, useUserDispatch } from "../lib/userContext";
 
 import * as Api from "../lib/api";
 
@@ -44,6 +45,9 @@ const Input = styled.input`
 `;
 
 export default function Login() {
+  const { userList } = useUserState();
+  const dispatch = useUserDispatch();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -64,6 +68,10 @@ export default function Login() {
         password,
       });
       const user = res.data;
+      dispatch({
+        type: "LOGIN",
+        userId: email,
+      });
       Router.push("/");
     } catch (error) {
       console.log("로그인에 실패하였습니다!\n", error);
