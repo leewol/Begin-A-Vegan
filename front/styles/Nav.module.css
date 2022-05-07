@@ -1,7 +1,7 @@
 .category {
   display: flex;
   flex-direction: column;
-  margin-top: 300px;
+  margin-top: 220px;
   list-style: none;
   color: #06ff00;
   position: fixed;
