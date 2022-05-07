@@ -14,7 +14,7 @@ export default function Like({ postingsId, likes, setLikes }) {
   // 로그인한 유저가 해당 post에 좋아요를 한 기록이 있는지
   let defaultLiked = false;
   likes.forEach((likesObj) => {
-    if (likesObj) {
+    if (!defaultLiked && likesObj) {
       defaultLiked = Object.values(likesObj).includes(loginUserId);
     }
   });
