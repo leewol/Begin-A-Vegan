@@ -6,12 +6,12 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 
 import * as Api from "../lib/api";
 
-export default function Like({ postingsId, Likes }) {
-  const loginUserId = "1911be41-3616-4cbb-8a82-cb962a9c"; // 임시
+export default function Like({ postingsId, likes, setLikes }) {
+  const loginUserId = "c5b9ee16-e480-4754-9610-3141e56351f7"; // 임시
 
   // 로그인한 유저가 해당 post에 좋아요를 한 기록이 있는지
   let defaultLiked = false;
-  Likes.forEach((likesObj) => {
+  likes.forEach((likesObj) => {
     if (likesObj) {
       defaultLiked = Object.values(likesObj).includes(loginUserId);
     }
@@ -25,6 +25,7 @@ export default function Like({ postingsId, Likes }) {
     if (!liked) {
       try {
         await Api.post(`/postings/${postingsId}/like`);
+        setLikes((current) => [...current, { users_id: loginUserId }]);
       } catch (err) {
         console.error("좋아요에 실패했습니다.", err);
       }
@@ -34,6 +35,9 @@ export default function Like({ postingsId, Likes }) {
     // 원래 true면 delete
     try {
       await Api.delete(`/postings/${postingsId}/like`);
+      setLikes((current) => {
+        return current.filter((el) => !Object.values(el).includes(loginUserId));
+      });
     } catch (err) {
       console.error("좋아요 취소에 실패했습니다.", err);
     }

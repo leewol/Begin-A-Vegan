@@ -138,6 +138,11 @@ userAuthRouter.get("/me", login_required, async (req, res) => {
   res.json(req.user);
 });
 
+userAuthRouter.put("/nickname", login_required, async (req, res) => {
+  req.user = await req.user.update({ nickname: req.body.nickname });
+  res.json(req.user);
+});
+
 userAuthRouter.put("/description", login_required, async (req, res) => {
   req.user = await req.user.update({ description: req.body.description });
   res.json(req.user);
