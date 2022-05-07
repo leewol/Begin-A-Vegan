@@ -59,7 +59,7 @@ function Header() {
           </Link>
         ) : null}
         {user ? (
-          <Link href="/mypage/:id">
+          <Link href="/mypage">
             <a>
               <span>MYPAGE</span>
             </a>

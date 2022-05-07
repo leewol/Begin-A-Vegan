@@ -10,6 +10,7 @@ import edit from "../public/edit_icon.png";
 import arrowRight from "../public/arrow_right.png";
 import Header from "../components/Header";
 import styles from "../styles/mypage.module.css";
+import { useUserState } from "../lib/userContext";
 
 export default function MyPage() {
   const [state, setState] = useState(true);
@@ -23,8 +24,6 @@ export default function MyPage() {
   const articleIsLoading = useRef(false);
   const lastId = useRef(undefined);
   const [newProfileImageUrl, setNewProfileImageUrl] = useState();
-  const [records, setRecords] = useState([]);
-  const now = dayjs();
 
   const updateUser = useCallback(() => {
     Api.get("/me").then((res) => {
@@ -64,28 +63,24 @@ export default function MyPage() {
     articleIsLoading.current = true;
     Promise.all([
       Api.get(`/postings/${me.id}/postings`).then((res) => {
-        setArticles((prev) => [...prev, ...res.data]);
+        setArticles(res.data);
         lastId.current = res.data.length < 10 ? null : res.data.reverse()[0].id;
       }),
       Api.get(`/postings/${me.id}/like_postings`).then((res) => {
-        setLikeArticles((prev) => [...prev, ...res.data]);
+        setLikeArticles(res.data.map((data) => data.Posting));
       }),
     ]).then(() => (articleIsLoading.current = false));
   }, [me]);
 
-  const [open, setOpen] = useState(true);
-  const seedingHandler = () => {
-    setOpen(!open);
-  };
-
   useEffect(() => {
     updateUser();
-  }, []);
+  }, [updateUser]);
 
   useEffect(() => {
     if (!me) return;
+    loadArticles();
     setNewDescription(me.description);
-  }, [me]);
+  }, [loadArticles, me]);
 
   useEffect(() => {
     // 무한스크롤
@@ -97,14 +92,6 @@ export default function MyPage() {
       window.removeEventListener("scroll", onScrollHandler);
     };
   }, [loadArticles]);
-
-  useEffect(() => {
-    if (!me) return;
-    loadArticles();
-    Api.get(`/records/${me.id}`).then((res) =>
-      setRecords(res.data.map((data) => dayjs(data.created_at))),
-    );
-  }, [me]);
 
   const onChangeImageHandler = (event) => {
     setFile(event.target.files[0]);
@@ -120,14 +107,7 @@ export default function MyPage() {
           <div className={state ? `${styles.profile}` : `${styles.profile} ${styles.edit}`}>
             <p className={styles.titleB}>{/*Profile*/}</p>
             <div className={styles.profile_img}>
-              <Image
-                src={
-                  newProfileImageUrl ??
-                  (me?.profile_url ? `${Api.SERVER_URL}/${me.profile_url}` : sample)
-                }
-                alt=""
-                layout="fill"
-              />
+              <Image src={newProfileImageUrl || me?.profile_url || sample} alt="" layout="fill" />
               <div className={styles.img_add}>
                 <input className={styles.upload_name} />
                 <label htmlFor="file">이미지수정</label>
@@ -183,88 +163,107 @@ export default function MyPage() {
               {(isViewingPostings ? articles : likeArticles).map((article) => (
                 <li className={styles.box} key={article.id}>
                   <div>
-                    <Image src={`${Api.SERVER_URL}/${article.file_url}`} layout="fill" />
+                    {article.file_url && (
+                      <Image src={article.file_url} layout="fill" alt="article" />
+                    )}
                   </div>
                 </li>
               ))}
             </ul>
           </div>
         </div>
-        <div className={open ? `${styles.seeding}` : `${styles.seeding} ${styles.show}`}>
-          <p className={styles.titleB}>My Vegan Calendar</p>
-          <div className={styles.calendar}>
-            {/*깃헙잔디잔디*/}
-            <div className={styles.calendar_inner}>
-              <div className={styles.week}>
-                <p>Mon</p>
-                <p>Wed</p>
-                <p>Fri</p>
-              </div>
-
-              <div className={styles.month}>
-                {[...Array(5 * 5)].map((_, outIndex) => {
-                  const firstDateOfWeek = now.subtract(outIndex, "w").startOf("w");
-                  return (
-                    <div className={styles.month_box} key={outIndex}>
-                      {(outIndex == 24 || firstDateOfWeek.date() < 7) && (
-                        <p>{firstDateOfWeek.format("MMM")}</p>
-                      )}
-                      <div className={styles.check}>
-                        <div>
-                          {[...Array(Math.min(now.diff(firstDateOfWeek, "d") + 1, 7))].map(
-                            (_, index) => {
-                              const date = firstDateOfWeek.add(index, "d");
-                              return (
-                                <span
-                                  data-date={date.format()}
-                                  key={index}
-                                  className={`${styles.step} ${
-                                    styles[
-                                      "step0" +
-                                        records.filter(
-                                          (record) => record.startOf("d").diff(date) === 0,
-                                        ).length
-                                    ]
-                                  }`}
-                                ></span>
-                              );
-                            },
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-            <div className={styles.annotation}>
-              {/*일정단계안내 className으로 구분 총 5단계*/}
-              <p>Less</p>
-              <span className={`${styles.step} ${styles.step01}`}></span>
-              <span className={`${styles.step} ${styles.step02}`}></span>
-              <span className={`${styles.step} ${styles.step03}`}></span>
-              <span className={`${styles.step} ${styles.step04}`}></span>
-              <span className={`${styles.step} ${styles.step05}`}></span>
-              <p>More</p>
-            </div>
-          </div>
-          <p className={styles.now}>
-            이번 달은{" "}
-            <em>
-              {records
-                .reduce((prev, curr) => prev + (curr.month() === now.month()), 0)
-                .toString()
-                .padStart(2, "0")}
-              일
-            </em>
-            동안 Vegan!
-          </p>
-          <span className={styles.btn} onClick={seedingHandler}>
-            <Image src={arrowRight} alt="" />
-            CALENDAR
-          </span>
-        </div>
+        <MemoizedCalendar />
       </div>
     </div>
   );
 }
+
+function Calendar() {
+  const [records, setRecords] = useState([]);
+  const [open, setOpen] = useState(true);
+  const { user } = useUserState();
+  const now = dayjs();
+  const firstOfMonth = now.startOf("month");
+
+  useEffect(() => {
+    if (!user) return;
+    Api.get(`/records/${user.userId}`).then((res) => setRecords(res.data));
+  }, [user]);
+
+  const seedingHandler = () => {
+    setOpen(!open);
+  };
+
+  return (
+    <div className={open ? `${styles.seeding}` : `${styles.seeding} ${styles.show}`}>
+      <p className={styles.titleB}>My Vegan Calendar</p>
+      <div className={styles.calendar}>
+        {/*깃헙잔디잔디*/}
+        <div className={styles.calendar_inner}>
+          <div className={styles.week}>
+            <p>Mon</p>
+            <p>Wed</p>
+            <p>Fri</p>
+          </div>
+
+          <div className={styles.month}>
+            {[...Array(5 * 5)].map((_, outIndex) => {
+              const firstDateOfWeek = now.subtract(outIndex, "w").startOf("w");
+              return (
+                <div className={styles.month_box} key={outIndex}>
+                  {(outIndex == 24 || firstDateOfWeek.date() < 7) && (
+                    <p>{firstDateOfWeek.format("MMM")}</p>
+                  )}
+                  <div className={styles.check}>
+                    <div>
+                      {[...Array(Math.min(now.diff(firstDateOfWeek, "d") + 1, 7))].map(
+                        (_, index) => {
+                          const date = firstDateOfWeek.add(index, "d");
+                          return (
+                            <span
+                              data-date={date.format()}
+                              key={index}
+                              className={`${styles.step} ${
+                                styles[`step0${records[firstDateOfWeek.dayOfYear() - 1 + index]}`]
+                              }`}
+                            ></span>
+                          );
+                        },
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div className={styles.annotation}>
+          {/*일정단계안내 className으로 구분 총 5단계*/}
+          <p>Less</p>
+          <span className={`${styles.step} ${styles.step01}`}></span>
+          <span className={`${styles.step} ${styles.step02}`}></span>
+          <span className={`${styles.step} ${styles.step03}`}></span>
+          <span className={`${styles.step} ${styles.step04}`}></span>
+          <span className={`${styles.step} ${styles.step05}`}></span>
+          <p>More</p>
+        </div>
+      </div>
+      <p className={styles.now}>
+        이번 달은{" "}
+        <em>
+          {records
+            .slice(firstOfMonth.dayOfYear() - 1, firstOfMonth.add(1, "month").dayOfYear())
+            .reduce((a, b) => a + b, 0)}
+          일
+        </em>
+        동안 Vegan!
+      </p>
+      <span className={styles.btn} onClick={seedingHandler}>
+        <Image src={arrowRight} alt="" />
+        CALENDAR
+      </span>
+    </div>
+  );
+}
+
+const MemoizedCalendar = React.memo(Calendar);
