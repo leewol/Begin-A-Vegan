@@ -8,6 +8,7 @@ import * as Api from "../lib/api";
 import PostCreator from "../components/Postings/PostCreator";
 import PostCard from "../components/Postings/PostCard";
 import Header from "../components/Header";
+import Nav from "../components/Nav";
 
 // TODO : 게시글 피드 형태로 보여 주기
 // * 모든 게시글 데이터 받아오기 (등록 시간 최근 순)
@@ -49,6 +50,7 @@ export default function Posting() {
   return (
     <>
       <Header />
+			<Nav />
       <PostingPage>
         <IconButton aria-label="posting" onClick={openPostingForm} sx={{ color: "black", mb: 5 }}>
           <AddIcon />
