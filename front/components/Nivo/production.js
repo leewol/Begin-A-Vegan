@@ -1,5 +1,33 @@
 import { ResponsiveStream } from "@nivo/stream";
 
+const theme = {
+  textColor: "#f7fdfa",
+  axis: {
+    legend: {
+      text: {
+        fontSize: 12,
+        fill: "#777777",
+      },
+    },
+    ticks: {
+      line: {
+        stroke: "#F4EEA9",
+        strokeWidth: 1,
+      },
+      text: {
+        fontSize: 9,
+        fill: "#F4EEA9",
+      },
+    },
+  },
+  grid: {
+    line: {
+      stroke: "#519259",
+      strokeWidth: 0.5,
+    },
+  },
+};
+
 const MyResponsiveStream = ({ data }) => (
   <ResponsiveStream
     data={data}
@@ -19,6 +47,7 @@ const MyResponsiveStream = ({ data }) => (
     id={["1993", "1999", "2005", "2011", "2017"]}
     valueFormat=" >-,"
     margin={{ top: 50, right: 60, bottom: 50, left: 130 }}
+    theme={theme}
     axisTop={null}
     axisRight={{
       orient: "right",
@@ -34,7 +63,7 @@ const MyResponsiveStream = ({ data }) => (
       tickSize: 5,
       tickPadding: 5,
       tickRotation: 0,
-      legend: "Year",
+      legend: "",
       legendOffset: 36,
       tickValues: 5,
       format: (v) => v + 1993 + v * 5,
@@ -104,7 +133,7 @@ const MyResponsiveStream = ({ data }) => (
         translateX: -130,
         itemWidth: 80,
         itemHeight: 15,
-        itemTextColor: "#999999",
+        itemTextColor: "#F4EEA9",
         symbolSize: 6,
         symbolShape: "circle",
         effects: [
