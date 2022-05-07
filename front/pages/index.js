@@ -139,7 +139,7 @@ const Textarrange_final = styled.div`
 export default function Home() {
   return (
     <main>
-      <FullPage>
+      <FullPage duration={50}>
         <Layout />
         <Slide>
           <section className={styles.first}>

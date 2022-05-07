@@ -16,6 +16,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import Header from "../components/Header";
+// import Layout from "../components/Layout";
 
 const InfoIndexText = styled.div`
   width: 25%;
@@ -125,7 +126,7 @@ export default function Info() {
   // 선택지 & 각 화면 슬라이드
   return (
     <FullPage ref={fullPageRef} duration={50} className="index">
-      {/* <Header /> */}
+      <Header />
       <Slide key="selecting-section" className="section">
         <InfoIndexText>
           <h1>

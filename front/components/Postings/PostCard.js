@@ -37,19 +37,15 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function PostCard({ posting, setPostingList }) {
-  console.log(posting);
   const loginUserId = "c5b9ee16-e480-4754-9610-3141e56351f7"; // ! 임시
   const postingsId = posting.id;
   const { users_id, User, Likes, article, file_url, Comments } = posting;
   const isMine = loginUserId === users_id;
 
-  console.log(isMine);
-
   // 게시글 본문 문단별로 분리
   const articleArr = article.split("<").map((el) => el.replace("p>", "").replace("/p>", ""));
 
   const [likes, setLikes] = useState(Likes);
-  // ! 조회 추가되면 댓글 상태관리 설정하기
   const [postingComments, setPostingComments] = useState(Comments);
   const [expanded, setExpanded] = useState(false);
 

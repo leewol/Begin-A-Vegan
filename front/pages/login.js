@@ -7,8 +7,24 @@ import { useUserState, useUserDispatch } from "../lib/userContext";
 import * as Api from "../lib/api";
 
 const Container = styled.form`
-  margin-left: 40%;
-  margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
+
+const InputBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+`;
+
+const Input = styled.input`
+  height: 32px;
+  width: 200px;
 `;
 
 const Button = styled.button`
@@ -16,6 +32,8 @@ const Button = styled.button`
   outline: 0;
   cursor: pointer;
   padding: 5px 16px;
+  margin-top: 15px;
+  width: 100%;
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
@@ -37,11 +55,6 @@ const Button = styled.button`
       rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset;
     transition-duration: 0.1s;
   }
-`;
-
-const Input = styled.input`
-  height: 32px;
-  width: 200px;
 `;
 
 export default function Login() {
@@ -87,6 +100,9 @@ export default function Login() {
     <div>
       <Header />
       <Container onSubmit={onSubmit}>
+        <div>
+          <h2>LOGIN</h2>
+        </div>
         <div style={{ marginBottom: "5px" }}>
           <Input
             type="email"
@@ -96,7 +112,7 @@ export default function Login() {
             onChange={onEmailHandler}
           />
         </div>
-        <div>
+        <InputBox>
           <Input
             type="password"
             name="password"
@@ -105,7 +121,7 @@ export default function Login() {
             onChange={onPasswordHandler}
           />
           <Button type="submit">LOGIN</Button>
-        </div>
+        </InputBox>
       </Container>
     </div>
   );

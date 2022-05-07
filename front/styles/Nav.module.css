@@ -1,4 +1,9 @@
 .category {
+  display: flex;
+  flex-direction: column;
+  margin-top: 300px;
   list-style: none;
   color: #06ff00;
+  position: fixed;
+  z-index: 10;
 }

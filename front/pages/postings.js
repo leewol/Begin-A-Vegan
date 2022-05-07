@@ -17,6 +17,7 @@ const PostingPage = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-top: 200px;
 `;
 
 const SlideBox = styled.div`

@@ -1,9 +1,10 @@
 .header {
-  /* position: fixed;
-  z-index: 10; */
   display: flex;
   justify-content: space-between;
   margin-left: 20px;
+  position: fixed;
+  z-index: 10;
+  width: 100%;
 }
 
 .menu {

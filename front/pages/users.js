@@ -13,7 +13,7 @@ const Button = styled.button`
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
-  width: 200px;
+  width: 100%;
   vertical-align: middle;
   border: 1px solid;
   border-radius: 6px;
@@ -35,19 +35,30 @@ const Button = styled.button`
 `;
 
 const Container = styled.div`
-  margin-left: 40%;
-  margin-top: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
+
+const InputBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+`;
+
+const Input = styled.input`
+  height: 32px;
+  width: 230px;
+  margin-bottom: 5px;
 `;
 
 const Text = styled.span`
   font-size: 12px;
   color: red;
-`;
-
-const Input = styled.input`
-  height: 32px;
-  width: 200px;
-  margin-bottom: 5px;
 `;
 
 export default function Signup() {
@@ -119,51 +130,53 @@ export default function Signup() {
           <h2>SIGN UP</h2>
         </div>
 
-        <form onSubmit={onSubmit}>
-          <div>
-            <Input
-              type="email"
-              name="email"
-              placeholder="EMAIL"
-              value={email}
-              onChange={onEmailHandler}
-            />
-            {!isEmailValid && <Text>이메일 형식이 올바르지 않습니다.</Text>}
-          </div>
-          <div>
-            <Input
-              name="nickname"
-              placeholder="NICKNAME"
-              value={nickname}
-              onChange={onNicknameHandler}
-            />
-          </div>
-          <div>
-            <Input
-              type="password"
-              name="password"
-              placeholder="PASSWORD"
-              value={password}
-              onChange={onPasswordHandler}
-            />
-            {!isPasswordValid && <Text>비밀번호를 4글자 이상으로 입력해주세요.</Text>}
-          </div>
-          <div>
-            <Input
-              type="password"
-              name="confirm-password"
-              placeholder="CONFIRM PASSWORD"
-              value={confirmPassword}
-              onChange={onConfirmPasswordHandler}
-            />
-            {!isPasswordSame && (
-              <div>
-                <span>비밀번호와 일치하지 않습니다.</span>
-              </div>
-            )}
-          </div>
-          <Button type="submit">CREATE ACCOUNT</Button>
-        </form>
+        <InputBox>
+          <form onSubmit={onSubmit}>
+            <div>
+              <Input
+                type="email"
+                name="email"
+                placeholder="EMAIL"
+                value={email}
+                onChange={onEmailHandler}
+              />
+              {!isEmailValid && <Text>이메일 형식이 올바르지 않습니다.</Text>}
+            </div>
+            <div>
+              <Input
+                name="nickname"
+                placeholder="NICKNAME"
+                value={nickname}
+                onChange={onNicknameHandler}
+              />
+            </div>
+            <div>
+              <Input
+                type="password"
+                name="password"
+                placeholder="PASSWORD"
+                value={password}
+                onChange={onPasswordHandler}
+              />
+              {!isPasswordValid && <Text>비밀번호를 4글자 이상으로 입력해주세요.</Text>}
+            </div>
+            <div>
+              <Input
+                type="password"
+                name="confirm-password"
+                placeholder="CONFIRM PASSWORD"
+                value={confirmPassword}
+                onChange={onConfirmPasswordHandler}
+              />
+              {!isPasswordSame && (
+                <div>
+                  <span>비밀번호와 일치하지 않습니다.</span>
+                </div>
+              )}
+              <Button type="submit">CREATE ACCOUNT</Button>
+            </div>
+          </form>
+        </InputBox>
       </Container>
     </div>
   );
