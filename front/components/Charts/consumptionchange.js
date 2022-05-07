@@ -17,7 +17,7 @@ const Chartconsumptionchange = () => {
       <MyResponsiveBar data={consumptionchange} />
       <style jsx>{`
         .divStream {
-          height: 60vh;
+          height: 56vh;
           width: 40vw;
         }
       `}</style>

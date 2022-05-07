@@ -49,15 +49,34 @@ const Charttext1 = styled.div`
   flex-direction: column;
   align-items: flex-start;
   margin-left: -50px;
-  margin-top: ;
+  margin-top: 2%;
   h1 {
     color: #f4eea9;
   }
   p {
-    color: #519259;
+    color: #f0edcc;
     font-weight: ;
     font-size: 20px;
     line-height: 0px;
+  }
+`;
+
+const Charttext2 = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: -50px;
+  margin-top: 3%;
+  p {
+    color: #f0edcc;
+    font-weight: ;
+    font-size: 22px;
+    line-height: 0px;
+  }
+  p > span {
+    color: #f0bb62;
+    font-size: 24px;
+    font-weight: bold;
   }
 `;
 
@@ -67,6 +86,7 @@ const Textarrange_col = styled.div`
   align-items: center;
   h1 {
     color: #f4eea9;
+    font-size: 22px;
   }
   p {
     color: #519259;
@@ -77,6 +97,12 @@ const Textarrange_col = styled.div`
   span {
     color: #519259;
     font-size: 12px;
+  }
+
+  h1 > span {
+    color: #f0bb62;
+    font-weight: bold;
+    font-size: 24px;
   }
 `;
 
@@ -107,7 +133,7 @@ const Textarrange_final = styled.div`
     line-height: 30px;
   }
   margin-bottom: 10%;
-  margin-left: ;
+  margin-left: -40%;
 `;
 
 export default function Home() {
@@ -156,16 +182,22 @@ export default function Home() {
                   <div className="divStream">
                     <Chartproduction />
                   </div>
-                  <h1>전 세계 육류 생산량 2배 가량 증가</h1>
                 </Textarrange_col>
                 <Textarrange_col>
                   <p>Total Greenhouse Gas (MtCo2e)</p>
                   <div className="divStream">
                     <Chartgreenhousegas />
                   </div>
-                  <h1>축산업, 세계 메탄가스 배출의 30% 차지</h1>
                 </Textarrange_col>
               </Chartarrange2>
+              <Charttext2>
+                <p>
+                  전 세계 육류 생산량 <span>2배</span> 가량 증가
+                </p>
+                <p>
+                  축산업이 세계 메탄가스 배출의 <span>30%</span> 차지
+                </p>
+              </Charttext2>
             </MainChartsection>
           </section>
         </Slide>
@@ -179,7 +211,9 @@ export default function Home() {
                   <div className="divBump">
                     <Chartconsumptionranking />
                   </div>
-                  <h1>국내 육류 소비 순위, 네 계단 상승</h1>
+                  <h1>
+                    국내 육류 소비 순위, <span>네 계단</span> 상승
+                  </h1>
                 </Textarrange_col>
                 <Textarrange_col>
                   <p>Meat Consumption Growth(%)</p>
@@ -187,7 +221,9 @@ export default function Home() {
                   <div className="divBump">
                     <Chartconsumptionchange />
                   </div>
-                  <h1>국내 육류 소비 증가율, 세계 2위!!</h1>
+                  <h1>
+                    국내 육류 소비 증가율, 세계 <span>2위!!</span>
+                  </h1>
                 </Textarrange_col>
               </Chartarrange2>
             </MainChartsection>
@@ -203,8 +239,10 @@ export default function Home() {
                 </p>
                 <span>우리가 먹는 고기 한 점에 지구는 점점 뜨거워지고 있습니다</span>
                 <span>
-                  동물 한 마리의 생명을 살리면 CO2 9.1kg에 달하는 양을 감축시키고, 더불어 4,200L의
-                  물과 20.4kg의 곡식을 절약하고, 숲 2.8미터제곱를 살릴 수 있습니다.
+                  우리가 동물 한 마리의 생명을 살리면 이산화탄소 9.1kg에 달하는 양을 감축시키고
+                </span>
+                <span>
+                  더불어 물 4,200L, 곡식 20.4kg을 절약하고, 숲 2.8제곱미터를 살릴 수 있습니다.
                 </span>
               </Textarrange_final>
               <Image src="/vegan_save.png" alt="begin a vegan" width={1200} height={200} />
