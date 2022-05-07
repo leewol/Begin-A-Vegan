@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useContext, useReducer, useEffect } from "react";
+import * as Api from "../lib/api";
 
 const initialState = {
   userList: [],
@@ -38,6 +39,24 @@ const UserDispatchContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    Api.get("/me").then((res) => {
+      const {
+        id: userId,
+        email: userEmail,
+        nickname: userNickname,
+        profile_url: userProfile,
+      } = res.data;
+      dispatch({
+        type: "LOGIN",
+        userId,
+        userEmail,
+        userNickname,
+        userProfile,
+      });
+    });
+  }, []);
 
   return (
     <UserStateContext.Provider value={state}>
