@@ -11,7 +11,6 @@ import * as Api from "../lib/api";
 function Header() {
   const { user } = useUserState();
   const dispatch = useUserDispatch();
-  const userState = useUserState();
 
   // 데이터 받아졌는지 확인용으로 추가했어요 필요하시면 주석 풀고 확인..!
   // useEffect(() => {
@@ -32,15 +31,6 @@ function Header() {
       console.log("로그아웃에 실패하였습니다.");
     }
   };
-
-  const Span = styled.span`
-    display: inline-block;
-    padding-bottom: 2px;
-    background-image: linear-gradient(gray, gray);
-    background-position: right -100% bottom 0;
-    background-size: 200% 2px;
-    background-repeat: no-repeat;
-  `;
 
   return (
     <div className={styles.header}>
@@ -70,20 +60,12 @@ function Header() {
               <span>MYPAGE</span>
             </a>
           </Link>
-        ) : (
-          <a>
-            <Span>MYPAGE</Span>
-          </a>
-        )}
+        ) : null}
         {user ? (
           <a onClick={onLogout} style={{ cursor: "pointer" }}>
             <span>LOGOUT</span>
           </a>
-        ) : (
-          <a>
-            <Span>LOGOUT</Span>
-          </a>
-        )}
+        ) : null}
       </div>
       <style jsx>
         {`
