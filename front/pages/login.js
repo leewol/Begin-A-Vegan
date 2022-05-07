@@ -70,7 +70,10 @@ export default function Login() {
       const user = res.data;
       dispatch({
         type: "LOGIN",
-        userId: email,
+        userId: user.id,
+        userEmail: user.email,
+        userNickname: user.nickname,
+        userProfile: user.profile_url,
       });
       Router.push("/");
     } catch (error) {
