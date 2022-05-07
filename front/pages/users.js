@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
+import Nav from "../components/Nav";
 import * as Api from "../lib/api";
 import styled from "styled-components";
 import Router from "next/router";
@@ -125,6 +126,7 @@ export default function Signup() {
   return (
     <div>
       <Header />
+			<Nav />
       <Container>
         <div>
           <h2>SIGN UP</h2>
