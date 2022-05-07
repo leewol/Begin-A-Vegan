@@ -18,8 +18,8 @@ postingRouter.post("/postings/posting", login_required, async (req, res, next) =
       file_url: req.body.file_url,
     };
 
-    const newPosting = await Postings.create(posting);
-    res.status(200).json(newPosting);
+    Postings.create(posting);
+    res.status(200).json("success");
   } catch (error) {
     console.log(error);
     next(error);

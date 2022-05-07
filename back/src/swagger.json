@@ -255,6 +255,38 @@
       }
     },
     "/postings/{postings_id}/comments/{comments_id}": {
+      "get": {
+        "summary": "댓글 조회",
+        "parameters": [
+          {
+            "name": "postings_id",
+            "in": "path",
+            "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "comments_id",
+            "in": "path",
+            "description": "The Id of the user to return",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
       "put": {
         "summary": "댓글 수정",
         "parameters": [

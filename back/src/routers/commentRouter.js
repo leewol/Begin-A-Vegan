@@ -26,13 +26,33 @@ commentRouter.post("/:postings_id/comments/comment", login_required, async (req,
   }
 });
 
+// 댓글 조회
+commentRouter.get(
+  "/postings/:postings_id/comments/:comments_id",
+  login_required,
+  async (req, res, next) => {
+    try {
+      const posting = Postings.findOne({ where: { id: req.params.postings_id } });
+      if (!posting) {
+        return res.status(403).send("존재하지 않는 게시글입니다.");
+      }
+      const comment = await Comments.findOne({
+        where: { id: req.params.comments_id },
+      });
+      res.status(200).json(comment);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
+
 // 댓글 수정
 commentRouter.put(
   "/postings/:postings_id/comments/:comments_id",
   login_required,
   async (req, res, next) => {
     try {
-      const posting = await Postings.findOne({ where: { id: req.params.postings_id } });
+      const posting = Postings.findOne({ where: { id: req.params.postings_id } });
       if (!posting) {
         return res.status(403).send("존재하지 않는 게시글입니다.");
       }
@@ -40,16 +60,7 @@ commentRouter.put(
         { content: req.body.content },
         { where: { id: req.params.comments_id } },
       );
-      const updatedComment = await Comments.findOne({
-        where: { id: req.params.comments_id },
-        include: [
-          {
-            model: Users,
-            attributes: ["nickname", "profile_url"],
-          },
-        ],
-      });
-      res.status(200).json(updatedComment);
+      res.status(200).json("success");
     } catch (error) {
       next(error);
     }
