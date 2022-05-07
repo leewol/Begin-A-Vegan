@@ -16,6 +16,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import Header from "../components/Header";
+import Nav from "../components/Nav";
 // import Layout from "../components/Layout";
 
 const InfoIndexText = styled.div`
@@ -127,6 +128,7 @@ export default function Info() {
   return (
     <FullPage ref={fullPageRef} duration={50} className="index">
       <Header />
+			<Nav/>
       <Slide key="selecting-section" className="section">
         <InfoIndexText>
           <h1>
