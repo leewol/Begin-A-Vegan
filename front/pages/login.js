@@ -69,6 +69,7 @@ export default function Login() {
       });
       const user = res.data;
       dispatch({
+        // 요 부분 데이터를 바꿨어요
         type: "LOGIN",
         userId: user.id,
         userEmail: user.email,
