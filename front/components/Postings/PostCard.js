@@ -20,6 +20,7 @@ import CommentCreator from "./CommentCreator";
 import PostingComments from "./PostingComments";
 import Like from "./Like";
 import PostingMore from "./PostingMore";
+import { useUserState } from "../../lib/userContext";
 
 // TODO : 피드 레이아웃 완성
 // * 유저 데이터 받아오기
@@ -37,7 +38,8 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function PostCard({ posting, setPostingList }) {
-  const loginUserId = "c5b9ee16-e480-4754-9610-3141e56351f7"; // ! 임시
+  const { user } = useUserState();
+  const loginUserId = user.userId;
   const postingsId = posting.id;
   const { users_id, User, Likes, article, file_url, Comments } = posting;
   const isMine = loginUserId === users_id;
