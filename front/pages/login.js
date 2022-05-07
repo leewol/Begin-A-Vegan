@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
+import Nav from "../components/Nav";
 import Router from "next/router";
 import styled from "styled-components";
 import { useUserState, useUserDispatch } from "../lib/userContext";
@@ -99,6 +100,7 @@ export default function Login() {
   return (
     <div>
       <Header />
+			<Nav />
       <Container onSubmit={onSubmit}>
         <div>
           <h2>LOGIN</h2>
