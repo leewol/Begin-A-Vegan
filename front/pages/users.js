@@ -59,7 +59,9 @@ const Input = styled.input`
 
 const Text = styled.span`
   font-size: 12px;
-  color: red;
+	font-weight: 800;
+	font-family: 'NanumSquare';
+  color: #d31616;
 `;
 
 export default function Signup() {
