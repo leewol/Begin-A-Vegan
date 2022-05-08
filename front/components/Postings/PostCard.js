@@ -61,7 +61,7 @@ export default function PostCard({ posting, setPostingList }) {
         avatar={
           <Avatar
             alt="User"
-            src={User.profile_url || "/img/defaultPic.png"}
+            src={User.profile_url || "/img/sample_profile.jpg"}
             sx={{ width: 36, height: 36 }}
           />
         }
@@ -75,7 +75,7 @@ export default function PostCard({ posting, setPostingList }) {
       <CardMedia
         component="img"
         sx={{ maxHeight: 600, marginBottom: 1 }}
-        image={file_url.includes("https://") ? file_url : "/img/defaultPic.png"}
+        image={file_url.includes("https://") ? file_url : "/img/sample_profile.jpg"}
         alt="user-image"
       />
 

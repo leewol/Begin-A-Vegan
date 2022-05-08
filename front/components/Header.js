@@ -38,7 +38,7 @@ function Header() {
       <div className={styles.logo}>
         <Link href="/">
           <a style={{ marginLeft: "5px" }}>
-            <Image src="/logo.png" alt="logo" width={200} height={200} />
+            <Image src="/img/logo.png" alt="logo" width={200} height={200} />
           </a>
         </Link>
       </div>

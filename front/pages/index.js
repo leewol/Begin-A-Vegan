@@ -245,7 +245,7 @@ export default function Home() {
                   더불어 물 4,200L, 곡식 20.4kg을 절약하고, 숲 2.8제곱미터를 살릴 수 있습니다.
                 </span>
               </Textarrange_final>
-              <Image src="/vegan_save.png" alt="begin a vegan" width={1200} height={200} />
+              <Image src="/img/vegan_save.png" alt="begin a vegan" width={1200} height={200} />
             </MainChartsection>
           </section>
         </Slide>

@@ -5,9 +5,9 @@ import * as Api from "../lib/api";
 import { Routes, Route } from "react-router-dom";
 // import PrivateRoute from "./hook/PrivateRoute";
 // import './style/css/index.css';
-import sample from "../public/sample_profile.jpg";
-import edit from "../public/edit_icon.png";
-import arrowRight from "../public/arrow_right.png";
+import sample from "../public/img/sample_profile.jpg";
+import edit from "../public/img/edit_icon.png";
+import arrowRight from "../public/img/arrow_right.png";
 import Header from "../components/Header";
 import Nav from "../components/Nav";
 import styles from "../styles/mypage.module.css";
@@ -102,7 +102,7 @@ export default function MyPage() {
   return (
     <div>
       <Header></Header>
-			<Nav></Nav>
+      <Nav></Nav>
       <div className={styles.layout}>
         <div className={styles.mypage_layout}>
           {/* <h3 className={styles.titleA}>My Page</h3> */}

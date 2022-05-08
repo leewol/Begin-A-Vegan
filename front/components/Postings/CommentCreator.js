@@ -57,7 +57,7 @@ export default function CommentCreator({ profile, postingsId, setPostingComments
       <TextBox>
         <Avatar
           alt="User"
-          src={profile || "/img/defaultPic.png"}
+          src={profile || "/img/sample_profile.jpg"}
           sx={{ width: 28, height: 28, marginRight: 2 }}
         />
         <InputBox

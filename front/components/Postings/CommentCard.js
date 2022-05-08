@@ -38,7 +38,7 @@ export default function CommentCard({ commentInfo, loginUserId, setPostingCommen
     <TextBox isMine={isMine}>
       <Avatar
         alt="User"
-        src={User.profile_url || "/img/defaultPic.png"}
+        src={User.profile_url || "/img/sample_profile.jpg"}
         sx={{ width: 24, height: 24, marginRight: 1 }}
       />
       <span>
