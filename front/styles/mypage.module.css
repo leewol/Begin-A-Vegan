@@ -140,6 +140,8 @@
 }
 .profile .profile_info .text p {
   display: block;
+	font-weight: 500;
+	font-family: 'NanumSquare';
 }
 .profile .profile_info .text textarea {
   resize: none;
@@ -173,9 +175,15 @@
   flex: 1;
   background-color: transparent;
   border: none;
+	color: #bdbdbd;
+	font-weight: 500;
+	font-family: 'NanumSquare';
 }
 .posting_bar .bar_wrap .active {
-  border-bottom: 1px solid rgb(0, 0, 0);
+  border-bottom: 2px solid #000000;
+	color: #000000;
+	font-weight: 700;
+	font-family: 'NanumSquare';
 }
 
 .postings ul {
@@ -515,10 +523,12 @@
   }
 
   .seeding {
+		padding-top: 30px;
     width: calc(100% - 70px);
     right: calc(-100% + 70px);
   }
   .seeding.show {
+		padding-top: 30px;
     right: 20px;
   }
 }
