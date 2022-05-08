@@ -2,3 +2,7 @@
 node_modules
 .eslintcache
 package-lock.json
+.env
+config.json
+back/uploads/*.*
+!uploads/.gitkeep

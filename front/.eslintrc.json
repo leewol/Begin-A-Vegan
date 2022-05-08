@@ -4,15 +4,8 @@
     "es2021": true,
     "node": true
   },
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "ecmaVersion": "latest",
-    "sourceType": "module"
-  },
-  "plugins": ["react"],
+  "extends": ["next/core-web-vitals"],
+  "plugins": ["import"],
   "rules": {
     "no-unused-vars": ["warn"],
     "quotes": ["warn", "double"],
@@ -41,8 +34,8 @@
     "space-before-blocks": ["warn", "always"],
     "prefer-arrow-callback": ["warn"],
     "arrow-spacing": ["warn"],
-    "arrow-parens": ["warn", "as-needed"],
-    "no-confusing-arrow": ["warn", { "onlyOneSimpleParam": false }],
+    "arrow-parens": ["warn", "always"],
+    "no-confusing-arrow": ["warn", { "allowParens": true, "onlyOneSimpleParam": false }],
     "no-duplicate-imports": ["error"],
     "no-case-declarations": ["warn"],
     "brace-style": ["error"],
@@ -53,14 +46,14 @@
     "space-in-parens": ["error"],
     "array-bracket-spacing": ["warn"],
     "object-curly-spacing": ["warn", "always", { "objectsInObjects": false }],
-    "max-len": ["warn", { "code": 80 }],
+    "max-len": ["warn", { "code": 100 }],
     "comma-style": ["error"],
     "comma-dangle": [
       "warn",
       {
         "arrays": "always-multiline",
         "objects": "always-multiline",
-        "imports": "never",
+        "imports": "always-multiline",
         "exports": "never",
         "functions": "never"
       }

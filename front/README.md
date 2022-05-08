@@ -2,10 +2,17 @@
 
 ## 실행 방법
 
+### 개발 서버:
+
 ```bash
-npm install
-npm start
+npm run dev
+# or
+yarn dev
 ```
+
+브라우저로 [http://localhost:3000](http://localhost:3000) 접속 시 결과 확인 가능
+
+<br/>
 
 ## 파일 구조
 
