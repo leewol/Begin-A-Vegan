@@ -2,7 +2,7 @@
 데이터 세트를 분석하여 인사이트를 얻어, 문제를 정의하고 해결하는 웹서비스 프로젝트
 
 <div align="center">
-<img width="300" alt="offerlogo" src="![logo](/uploads/8ab8193d2edbac6f5015850437fb10c5/logo.png)">
+<img width="300" alt="offerlogo" src=![logo](/uploads/8ab8193d2edbac6f5015850437fb10c5/logo.png)>
 </div>
 
 ## 프로젝트 주제
