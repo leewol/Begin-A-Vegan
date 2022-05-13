@@ -1,9 +1,7 @@
 # 데이터 분석 웹 서비스 프로젝트
 데이터 세트를 분석하여 인사이트를 얻어, 문제를 정의하고 해결하는 웹서비스 프로젝트
 
-<div align="center">
-<img width="300" alt="offerlogo" src=![logo](/uploads/8ab8193d2edbac6f5015850437fb10c5/logo.png)>
-</div>
+![logo](/uploads/8ab8193d2edbac6f5015850437fb10c5/logo.png)
 
 ## 프로젝트 주제
 내 식탁에서 부터 온실가스를 줄여보아요!
